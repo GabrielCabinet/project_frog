@@ -41,7 +41,7 @@ class Package():
         self.package_metadata_file_name = self.package_name+'_metadata.txt'                          # Props_Pomme_metadata.txt
         self.package_metadata_path = os.path.join(self.package_path,self.package_metadata_file_name) #W:/Project_Vivarium/Prop_Pomme/ # Props_Pomme_metadata.txt
 
-
+#t
         #--------------------
         #Package Write or Read
         #---------------------
@@ -53,7 +53,7 @@ class Package():
                 self.sub_folders =   ["Wip","Output","Preview"]                  #Sub folders list
                 self.package_kind = argv[1]                                      #Package kind: Char,Prop,...
                 self.package_description = argv[2]                               #Package description
-                
+
                 self.package_kind_template_task_dic = {                                            # Package kind template dictionary
                         'Char': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Prop': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
