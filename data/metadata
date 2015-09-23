@@ -1,0 +1,79 @@
+
+import sys
+import os.path, time
+from users import *
+from core import *
+
+
+
+class Metadata:
+
+    def __init__(self,file):
+
+        self.file = str(file)                  # Absolut path of the metadata.txt file
+
+        self.metadata_dictionary = read_dictionary_from_file(self.file)             # Return metadata file as a dictionary
+        #self.metadata_template_key = ['last_modified_time', 'created_tim', 'statut']
+
+        self.last_modified_time = self.metadata_dictionary.get('last_modified_time','unknown')     # Return last modified time or unknown if key does'nt exist in dictionary
+
+        self.created_time = self.metadata_dictionary.get('created_time','unknown')
+
+        self.statut = self.metadata_dictionary.get('statut','unknown')
+
+
+    def refresh_metadata(self):
+        self.metadata_dictionary =  read_dictionary_from_file(self.file)
+
+    def add_metadata(self,metadata_dic):
+        '''
+        Update dictionary by writing or overwriting a metadata into the metadata dictionary
+        :param metadata: A dictionary{key,value} for metadata    #{'last_modified':'20/09/1993'}
+        :type metadata: dict
+        :return
+
+        '''
+
+        self.refresh_metadata()
+        update_dic_with_new_dic_to_disk(self.metadata_dictionary, metadata_dic, self.file)
+
+        return
+
+
+
+def build_metadata():
+
+
+    return
+
+
+
+
+def get_created_time(file):
+    '''
+    Return the last date modification
+    :param file: absolute path           # D:/file
+    :return:
+    '''
+    return time.ctime(os.path.getctime(file))
+
+
+
+
+
+###### TESTS #######
+####################
+
+metadata = Metadata('D:/metadata_pomme_text_file.txt')
+print "METADATA TEST /n *************************"
+print metadata.last_modified_time
+print metadata.created_time
+print metadata.statut
+
+
+
+
+
+
+
+
