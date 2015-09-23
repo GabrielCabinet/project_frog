@@ -59,7 +59,7 @@ class Example(QtGui.QWidget):
         bot_layout.addWidget(chat_lbl)
 
         # VIEW WINDOW LAYOUT
-        viw_window_layout = q
+ 
 
 
 

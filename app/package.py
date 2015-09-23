@@ -11,6 +11,7 @@ from Project import *
 session_config = SessionConfig()
 project = Project(session_config.session_project_name)
 
+
 class Package():
 
     '''
@@ -39,10 +40,10 @@ class Package():
         :return:
         '''
         self.package_name= str(package_name)
-        self.root_path = project.root
+        self.root_path = project.project_root
         self.package_path = os.path.join(self.root_path,self.package_name)
         self.package_metadata_file_name = self.package_name+'_metadata.txt'
-        self.package_metadata_path = os.path.join(self.package_path,package_metadata_file_)
+        self.package_metadata_path = os.path.join(self.package_path,self.package_metadata_file_name)
 
 
 
@@ -51,23 +52,29 @@ class Package():
                 self.sub_folders =   ["Wip","Output","Preview"]
                 self.package_kind = argv[1]
                 self.package_description = argv[2]
-                template_dic = {'Char':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
+                tasks_list_template_dic = {'Char':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Prop': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Back':["Reference", "Modeling", "Shading", "Textures"],
                         'Shot': ["Animation", "Assembly", "Compositing", "FX","Layout","Layout_Anim","Lighting","Previz","Render_out"] }
-                self.kind_template_dic = template_dic.get(kind,'unknown')
-                self.write_package_to_disk()
-            except:
-                    msg =  "Can't intialise paramater of the package:" + self.package_name
+                try:
+                    self.tasks_list_template = tasks_list_template_dic.get(self.package_kind,'unknown')
+                except:
+                    msg  = self.package_name+ ': Cant get tasks list template from tasks list template dic'+str(str)
                     print msg, sys.exc_info()[0]
+
+                self.write_package_to_disk()
+
+            except:
+                msg =  "Can't intialise paramater of the package:" + self.package_name
+                print msg, sys.exc_info()[0]
         else:
             try:
 
                 self.package_metadata_dic = read_dictionary_from_file(self.package_metadata_path)
                 self.task_list = get_immediate_sub_directories(self.package_path)
             except:
-                    msg =  "Can't get paramater of the package:" + self.package_name
-                    print msg, sys.exc_info()[0]
+                msg =  "Can't get paramater of the package:" + self.package_name
+                print msg, sys.exc_info()[0]
 
 
 
@@ -75,17 +82,28 @@ class Package():
     def write_package_to_disk(self):
         try:
             self.package_metadata_dic =  {'package_name':self.package_name,
-                                       'package_king':int(self.package_king),
+                                       'package_king':self.package_kind,
                                       'created_by':session_config.session_user_name,
                                       'user_who_work_on': [],
-                                    'created_time':get_time_now(),
-                                        'last_modified_time':get_time_now(),
+                                    'created_time':str(get_time_now()),
+                                        'last_modified_time':str(get_time_now()),
                                         'description':self.package_description}
-            self.create_package_directory()
 
-            write_dic_to_file(package_metadata_path, self.package_metadata_dic)
         except:
-            print "Can't create package:", sys.exc_info()[0]
+            msg =  self.package_name+": Can't build package metadata:"
+            print msg, sys.exc_info()[0]
+        try:
+            self.create_package_directory()
+        except:
+            msg =  self.package_name+": Can't create package directory:"
+            print msg, sys.exc_info()[0]
+        try:
+            print self.package_metadata_path
+            print self.package_metadata_dic
+            write_dic_to_file(self.package_metadata_path, self.package_metadata_dic)
+        except:
+                msg =  self.package_name+": Can't write metadata to disk:"
+                print msg, sys.exc_info()[0]
 
 
 
@@ -103,7 +121,7 @@ class Package():
         ect...
         :return:
         '''
-        for task in self.kind_template_dic:
+        for task in self.tasks_list_template:
             self.create_task_folders(task_name=task)
         return True
 
@@ -155,13 +173,7 @@ class Package():
         package_task_path = os.path.join(self.root,self.package_name,task_name)  # ROOT/PACKAGE_NAME/TASK_NAME
         return  package_task_path
 
-    def list_package_tasks_directory(self):
-        '''
-        List package tasks
-        :return:
-        '''
-        tasks_dirs = get_immediate_sub_directories(self.package_path)
-        return tasks_dirs
+
 
     def list_sub_directories(self, task_name):
         '''
@@ -179,11 +191,82 @@ class Package():
         return files
 
 
+'''
+package = Package('Char_TEST01',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST02',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST03',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST04',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST05',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST06',True ,'Char','Un chouette test de package' )
+package = Package('Back_TEST01',True ,'Back','Un chouette test de package' )
+package = Package('Back_TEST02',True ,'Back','Un chouette test de package' )
+package = Package('Back_TEST03',True ,'Back','Un chouette test de package' )
+package = Package('Shot_TEST01',True ,'Back','Un chouette test de package' )
+package = Package('Shot_TEST02',True ,'Back','Un chouette test de package' )
+package = Package('Shot_TEST03',True ,'Back','Un chouette test de package' )
+package = Package('Shot_TEST04',True ,'Back','Un chouette test de package' )
 
-package = Package('Char_TEST',True ,2,'Un chouette test de package' )
+'''
+def list_package_tasks_directory(package_path):
+        '''
+        List package tasks
+        :return:
+        '''
+        tasks_dirs = get_immediate_sub_directories(package_path)
+        return tasks_dirs
+
+
+def list_packages(name_filter="", task_filter=""):
+    '''
+    List package using optional filter
+    :param name_filter: use '*' as a wild card before or after the name
+    :type name_filter: str
+    :param task_filter: Array of task package MUST have.
+    :type task_filter: list
+    '''
+    session_config = SessionConfig()
+    project = Project(session_config.session_project_name)
+    project_root = project.project_root                 #W:/Vivarium
+    list_package = os.listdir(project_root)             # List all package in root directory
+
+    #Filter by name
+    if name_filter:
+        # Filter list of packages
+        list_package = [package for package in list_package if
+                re.findall("^%s$" % name_filter.lower().replace("*", ".+"), package.lower())]
+    # Return List of Package matching Name Filter
+
+    #Filter by task_filter
+    if task_filter:
+        remove_list = []
+        for package in list_package:
+            list_package_task = list_package_tasks_directory(os.path.join(project_root,package))
+            print "%s,%s"%(package , list_package_task)
+            for task in task_filter:
+                if task not in list_package_task:
+                    remove_list.append(package)
+        list_package = [package for package in list_package if package not in remove_list ]
 
 
 
+
+
+    return list_package
+
+
+a = list_packages(task_filter=['Rigging'])
+print a
+
+
+
+
+'''
+filter by
+
+package name
+package metadata
+get package (name = 'caillou*',package_kind = 'back', has_task=['yolo','coucou'], user_who_work_on['Gabi','Philou'], created_after = '18:20:13.190000']
+'''
 
 
 
