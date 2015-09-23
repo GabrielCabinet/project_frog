@@ -6,8 +6,7 @@ import sys
 import json
 import pprint
 from datetime import datetime
-
-dir = os.path.dirname(__file__)
+script_root_dir = os.path.abspath(__file__ + "/../../")
 
 
 """

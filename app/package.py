@@ -12,9 +12,10 @@ session_config = SessionConfig()
 project = Project(session_config.session_project_name)
 
 class Package():
+
     '''
     Classe Package
-    testoioi
+
     '''
 
     def __init__(self, package_name, *argv):
@@ -41,9 +42,7 @@ class Package():
         self.root_path = project.root
         self.package_path = os.path.join(self.root_path,self.package_name)
         self.package_metadata_file_name = self.package_name+'_metadata.txt'
-        self.package_metadata_path = os.path.join(self.package_path,package_metadata_file_name)
-        print 'yo'
-        print 'salut'
+        self.package_metadata_path = os.path.join(self.package_path,package_metadata_file_)
 
 
 
