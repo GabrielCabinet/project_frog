@@ -16,7 +16,7 @@ PROCESS DICTIONARY
 
 
 def get_time_now():
-    now = datetime.datetime.now().time()
+    now = datetime.now().time()
     return now
 
 def merge_two_dicts(x, y):
@@ -175,6 +175,6 @@ def get_current_user_name():
         return 'unknown'
 
 
-
+print get_time_now()
 
 
