@@ -42,7 +42,8 @@ class Package():
         self.package_path = os.path.join(self.root_path,self.package_name)
         self.package_metadata_file_name = self.package_name+'_metadata.txt'
         self.package_metadata_path = os.path.join(self.package_path,package_metadata_file_name)
-        print 'yol'
+        print 'yo'
+        print 'salut'
 
 
 
