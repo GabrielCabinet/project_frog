@@ -20,14 +20,7 @@ class Package():
     '''
 
     def __init__(self, package_name, *argv):
-        '''
-        :param package_name:
-        :param write: write = True create new package
-        :param package_kind: kind of asset (char, shot,pros,bg)
 
-        :param :
-        :return:
-        '''
         '''
         :param package_name: Name of the package
         :param write: Write or Read package (TRUE)
@@ -43,9 +36,10 @@ class Package():
         self.root_path = project.project_root
         self.package_path = os.path.join(self.root_path,self.package_name)
         self.package_metadata_file_name = self.package_name+'_metadata.txt'
+        self.package_mini_file_name = self.package_name+'_mini.jpg'
         self.package_metadata_path = os.path.join(self.package_path,self.package_metadata_file_name)
 
-
+        self.package_mini_path = os.path.join(self.package_path,self.package_mini_file_name)
 
         if argv[0] is True:
             try:

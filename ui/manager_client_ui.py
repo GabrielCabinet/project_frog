@@ -12,7 +12,7 @@ __author__ = 'GABI'
 
 from PySide import QtCore, QtGui
 from app.core import *
-from app.package import  *
+from app.package import *
 from app.comment import *
 from pprint import pprint
 def list_packages(name_filter="", task_filter=""):
@@ -101,20 +101,32 @@ class TabDialog(QtGui.QWidget):
 
         self.setWindowTitle("Tab Dialog")
 
-class TaskList(QtGui.QWidget):
-    self.task_list_layout = QtGui.QVBoxLayout(self)
 
 
 class AssetLib(QtGui.QWidget):
-#http://stackoverflow.com/questions/10184941/how-to-detect-mouse-click-on-images-displayed-in-gui-created-using-pyside
+
 
     def __init__(self, parent=None):
         super(AssetLib, self).__init__(parent)
 
-        layout  = QtGui.QHBoxLayout(self)
+        #Get config
+        #http://stackoverflow.com/questions/10184941/how-to-detect-mouse-click-on-images-displayed-in-gui-created-using-pyside
+        session_config = SessionConfig()
+        project = Project(session_config.session_project_name)
+        self.project_root = project.project_root
 
-        # CURRENT ASSET
+
+        # Top layout
+        self.layout  = QtGui.QHBoxLayout(self)
+
+        # Sub Layout
         self.asset_viewer_layout = QtGui.QVBoxLayout()
+
+        #Miniature Layout
+        self.miniature_layout = QtGui.QGridLayout()
+
+
+        #Comment Layout
         self.comment_layout = QtGui.QVBoxLayout()
         self.comment_label = QtGui.QLabel("Some Com")
         self.comment_edit_button = QtGui.QPushButton("Edit")
@@ -122,110 +134,96 @@ class AssetLib(QtGui.QWidget):
         self.comment_layout.addWidget(self.comment_label)
         self.comment_layout.addWidget(self.comment_edit_button)
         self.comment_layout.addWidget(self.comment_add_button)
+
+        #Current asset layout
         self.current_asset_layout = QtGui.QHBoxLayout()
         self.package_mini = QtGui.QLabel("Task Miniature:")               #INIT LABEL FOR MAX MINIATURE
         self.package_metadata = QtGui.QLabel("Metadata:")                 #LABEL POUR METADATA
         self.current_asset_layout.addWidget(self.package_metadata)
-        layout.addStretch(1)
+        self.layout.addStretch(1)
         self.current_asset_layout.addWidget(self.package_mini)
+
+        #Add layout to sublayout
         self.asset_viewer_layout.addLayout(self.current_asset_layout)
         self.asset_viewer_layout.addLayout(self.comment_layout)
+        self.layout.addLayout(self.asset_viewer_layout)
+
+        self.layout.addLayout(self.miniature_layout)
+        # LIST LES PACKAGES
         list_package = list_packages()
 
-        layout.addLayout(self.asset_viewer_layout)
-        miniature_layout = QtGui.QGridLayout()
+        self.create_packages_contact_sheet(list_package)
+        self.create_package_current_asset('Back_TEST03')
+
+    def picture_buttonClick(self):
+        self.update_all(self.sender().text())
+
+
+    def update_all(self,package_name):
+        self.create_package_current_asset(package_name)
+        self.package =
+        self.create_package_info(package_name)
+        return
+
+    def update_comment(self,package_name):
+        return
+
+    def create_packages_contact_sheet(self,list_package):
+        # Grid Layout for package miniature
+        clearLayout(self.miniature_layout)
         row = 0
         colum = -1
         for package in list_package:
-            package_layout = QtGui.QVBoxLayout()
-            picture = PictureLabel(package, self)
-            picture.pictureClicked.connect(self.update_label)
-            package_info_label = QtGui.QLabel(package)
 
-            package_layout.addWidget(picture)
-            package_layout.addWidget(package_info_label)
+            # Create layout for package img and metadata
+
+            self.package = package
+            #Create miniature and comment.
+            mini_filename = "%s_mini.jpg"%(package)
+
+            self.mini_file_path = os.path.join(self.project_root,package,mini_filename)
+
+
+            #Create pushbutton
+            self.picture_button = QtGui.QToolButton()
+            self.picture_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+            self.picture_button.setText(package)
+            self.pixmap = QtGui.QPixmap(self.mini_file_path)
+            self.ico = QtGui.QIcon(self.pixmap)
+            self.picture_button.setIcon(self.ico)
+            self.picture_button.setIconSize(QtCore.QSize(50,50))
+
+            #Connect Button
+            self.picture_button.clicked.connect(self.picture_buttonClick)
+
+
             if colum >= 5:
                 colum = 0
                 row = row +1
             else:
                 colum = colum+1
-            miniature_layout.addLayout(package_layout,row,colum)
-        layout.addLayout(miniature_layout)
+            self.miniature_layout.addWidget(self.picture_button,row,colum)
+
+        self.setLayout(self.layout)
+
+    def create_package_info(self, current_package):
+        self.package = Package(current_package,False)
+        print self.package.package_metadata_path
+        print self.package.package_metadata_dic
 
 
-        self.setLayout(layout)
+        # SET METADATA
+        if os.path.isfile(self.package.package_metadata_path) :
+            self.metadata = read_dictionary_from_file(self.package.package_metadata_path)
+            self.metadata_str = ""
+            for key, value in self.metadata.iteritems():
+                self.metadata_str = "%s<P><b>%s</b>: %s </P>"%(self.metadata_str, underscore_to_camelcase(key), value)
+            self.package_metadata.setText(self.metadata_str)
+        #SET PIXMAP
+            pixmap = QtGui.QPixmap(self.package.package_mini_path)
+            self.package_mini.setPixmap(pixmap)
 
-    def update_label(self, metadata,package,mini_file_path,comment_file_path):
-
-        clearLayout(self.comment_layout)
-
-        self.metadata_str = ""
-        for key, value in metadata.iteritems() :
-            # data_txt =
-            #data_labal = QtQui.QLabel()
-            self.metadata_str = "%s<P><b>%s</b>: %s </P>"%(self.metadata_str, underscore_to_camelcase(key), value)
-        self.package_metadata.setText(self.metadata_str)
-        pixmap = QtGui.QPixmap(mini_file_path)
-        self.package_mini.setPixmap(pixmap)
-        comment = Comment(comment_file_path)
-        for com in comment.comment_dictionary.keys():
-            self.com_layout  = QtGui.QHBoxLayout()
-            comment_text = comment.comment_dictionary[com].get('comment','unknown')
-            comment_text_label = QtGui.QLabel(str(comment_text))
-            comment_date_label = QtGui.QLabel(comment.comment_dictionary[com].get('date','unknown'))
-            comment_file_label = QtGui.QLabel(comment.comment_dictionary[com].get('file','unkown'))
-            comment_user_label = QtGui.QLabel(comment.comment_dictionary[com].get('user','unkown'))
-            self.com_layout.addWidget(comment_user_label)
-            self.com_layout.addWidget(comment_text_label)
-            self.com_layout.addStretch(1)
-            self.com_layout.addWidget(comment_date_label)
-            self.com_layout.addWidget(comment_file_label)
-
-
-            self.comment_layout.addLayout(self.com_layout)
-
-    def update_task_layout(self, package_name):
         return
-
-
-class PictureLabel(QtGui.QLabel):
-    '''
-    Create a clickable label
-    '''
-
-    pictureClicked = QtCore.Signal(dict,str,str,str) # can be other types (list, dict, object...)
-
-    def __init__(self, package, parent=None):
-
-        super(PictureLabel, self).__init__(parent)
-        # GET CONFIG
-        session_config = SessionConfig()
-        project = Project(session_config.session_project_name)
-        project_root = project.project_root
-
-        #GET MINIATURE FROM PACKAGE DIR
-        mini_filename = "mini_%s.jpg"%(package)
-        comment_filename = "%s_comment.txt"%(package)
-        self.package = package
-        self.mini_file_path = os.path.join(project_root,package,mini_filename)
-        self.comment_file_path = os.path.join(project_root,package,comment_filename)
-        metadata_filename = "%s_metadata.txt"%(package)
-        metadata_file_path = os.path.join(project_root,package,metadata_filename )
-        if os.path.isfile(self.mini_file_path) :
-            self.setPixmap(QtGui.QPixmap(self.mini_file_path).scaled(90,90, QtCore.Qt.KeepAspectRatio))
-        else:
-            self.setPixmap(os.path.join(script_root_dir,'img/logo_menu.jpg'))
-
-        if os.path.isfile(metadata_file_path) :
-            self.metadata = read_dictionary_from_file(metadata_file_path)
-        else:
-            self.metadata = {}
-
-    def mousePressEvent(self, event):
-
-        print "from PictureLabel.mousePressEvent"
-
-        self.pictureClicked.emit(self.metadata,self.package,self.mini_file_path, self.comment_file_path)
 
 class Browser(QtGui.QWidget):
     def __init__(self,  parent=None):
