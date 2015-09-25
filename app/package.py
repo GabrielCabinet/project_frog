@@ -138,7 +138,7 @@ class Package():
         # Create folder and sub_folders for one task
 
         # Get the path, check if folder already exist, then create it.
-        task_path = os.path.join(self.root_path,self.package_name, task_name)  # ROOT_PATH/PACKAGE_NAME/TASK_NAME
+        task_path = os.path.join(self.root_path, self.package_name, task_name)  # ROOT_PATH/PACKAGE_NAME/TASK_NAME
         if not os.path.exists(task_path):
             os.makedirs(task_path)
 
@@ -216,57 +216,6 @@ def list_package_tasks_directory(package_path):
         return tasks_dirs
 
 
-def list_packages(name_filter="", task_filter=""):
-    '''
-    List package using optional filter
-    :param name_filter: use '*' as a wild card before or after the name
-    :type name_filter: str
-    :param task_filter: Array of task package MUST have.
-    :type task_filter: list
-    '''
-    session_config = SessionConfig()
-    project = Project(session_config.session_project_name)
-    project_root = project.project_root                 #W:/Vivarium
-    list_package = os.listdir(project_root)             # List all package in root directory
-
-    #Filter by name
-    if name_filter:
-        # Filter list of packages
-        list_package = [package for package in list_package if
-                re.findall("^%s$" % name_filter.lower().replace("*", ".+"), package.lower())]
-    # Return List of Package matching Name Filter
-
-    #Filter by task_filter
-    if task_filter:
-        remove_list = []
-        for package in list_package:
-            list_package_task = list_package_tasks_directory(os.path.join(project_root,package))
-            print "%s,%s"%(package , list_package_task)
-            for task in task_filter:
-                if task not in list_package_task:
-                    remove_list.append(package)
-        list_package = [package for package in list_package if package not in remove_list ]
-
-
-
-
-
-    return list_package
-
-
-a = list_packages(task_filter=['Rigging'])
-print a
-
-
-
-
-'''
-filter by
-
-package name
-package metadata
-get package (name = 'caillou*',package_kind = 'back', has_task=['yolo','coucou'], user_who_work_on['Gabi','Philou'], created_after = '18:20:13.190000']
-'''
 
 
 

@@ -37,7 +37,8 @@ Requirements:
     the example
 
 """
-import logging
+
+from app.core import *
 import sys
 from PySide import QtGui, QtCore
 # make the example runnable without the need to install

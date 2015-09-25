@@ -1,25 +1,14 @@
-
-
-
-
-
-
-
-
-
-
-import os
-import sys
 from PySide import QtGui, QtCore
-
-class FrogManager(QtGui.QWidget):
+import sys
+import os
+class Example(QtGui.QWidget):
 
     def __init__(self):
-        super(FrogManager, self).__init__()
+        super(Example, self).__init__()
         self.initUI()
 
     def initUI(self):
-        self.img_fold = r"C:\Users\GABI\PycharmProjects\frog_manager_home\project_frog\Shot_002"
+        self.img_fold = r"C:\Users\GABI\Pictures\WallPaper"
 
         self.widget_layout = QtGui.QVBoxLayout(self)
         self.scrollarea = QtGui.QScrollArea()
@@ -48,7 +37,7 @@ class FrogManager(QtGui.QWidget):
 def main():
 
     app = QtGui.QApplication(sys.argv)
-    ex = FrogManager()
+    ex = Example()
     sys.exit(app.exec_())
 
 
