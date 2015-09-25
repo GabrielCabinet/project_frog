@@ -15,6 +15,7 @@ from app.core import *
 from app.package import *
 from app.comment import *
 from pprint import pprint
+import webbrowser
 def list_packages(name_filter="", task_filter=""):
     '''
     List package using optional filter
@@ -129,11 +130,8 @@ class AssetLib(QtGui.QWidget):
         #Comment Layout
         self.comment_layout = QtGui.QVBoxLayout()
         self.comment_label = QtGui.QLabel("Some Com")
-        self.comment_edit_button = QtGui.QPushButton("Edit")
-        self.comment_add_button = QtGui.QPushButton("Add")
+
         self.comment_layout.addWidget(self.comment_label)
-        self.comment_layout.addWidget(self.comment_edit_button)
-        self.comment_layout.addWidget(self.comment_add_button)
 
         #Current asset layout
         self.current_asset_layout = QtGui.QHBoxLayout()
@@ -153,19 +151,61 @@ class AssetLib(QtGui.QWidget):
         list_package = list_packages()
 
         self.create_packages_contact_sheet(list_package)
-        self.create_package_current_asset('Back_TEST03')
+        self.create_package_info('Back_TEST03')
 
     def picture_buttonClick(self):
         self.update_all(self.sender().text())
 
 
     def update_all(self,package_name):
-        self.create_package_current_asset(package_name)
-        self.package =
-        self.create_package_info(package_name)
-        return
 
-    def update_comment(self,package_name):
+        self.create_package_info(package_name)
+        self.create_package_comment(package_name)
+
+
+        return
+    def edit_comment_buttonClik(self, comment_file_path):
+       webbrowser.open(comment_file_path)
+    def create_package_comment(self,package_name):
+        clearLayout(self.comment_layout)
+        self.comment_edit_button = QtGui.QPushButton("Edit")
+        self.comment_add_button = QtGui.QPushButton("Add")
+        self.comment_button_layout = QtGui.QHBoxLayout()
+        self.comment_button_layout.addWidget(self.comment_edit_button)
+        self.comment_button_layout.addWidget(self.comment_add_button)
+
+        self.comment_layout.addLayout(self.comment_button_layout)
+
+       # self.comment_layout.addWidget(self.comment_edit_button)
+        #self.comment_layout.addWidget(self.comment_add_button)
+        self.comment_tab_name_layout = QtGui.QHBoxLayout()
+        self.comment_tab_name_layout.addWidget(QtGui.QLabel('User'))
+        self.comment_tab_name_layout.addWidget(QtGui.QLabel('Commentaire'))
+        self.comment_tab_name_layout.addStretch(1)
+        self.comment_tab_name_layout.addWidget(QtGui.QLabel('Date'))
+        self.comment_tab_name_layout.addWidget(QtGui.QLabel('File'))
+        self.comment_layout.addLayout(self.comment_tab_name_layout)
+
+
+        self.comment_file_name = package_name + '_comment.txt'
+        self.comment_file_path = os.path.join(self.project_root,package_name,self.comment_file_name)
+        self.comment_edit_button.clicked.connect(lambda: self.edit_comment_buttonClik(self.comment_file_path))
+        comment = Comment(self.comment_file_path)
+        for com in comment.comment_dictionary.keys():
+            self.com_layout  = QtGui.QHBoxLayout()
+            comment_text = comment.comment_dictionary[com].get('comment','unknown')
+            comment_text_label = QtGui.QLabel(str(comment_text))
+            comment_date_label = QtGui.QLabel(comment.comment_dictionary[com].get('date','unknown'))
+            comment_file_label = QtGui.QLabel(comment.comment_dictionary[com].get('file','unkown'))
+            comment_user_label = QtGui.QLabel(comment.comment_dictionary[com].get('user','unkown'))
+            self.com_layout.addWidget(comment_user_label)
+            self.com_layout.addWidget(comment_text_label)
+            self.com_layout.addStretch(1)
+            self.com_layout.addWidget(comment_date_label)
+            self.com_layout.addWidget(comment_file_label)
+            self.comment_layout.addLayout(self.com_layout)
+
+
         return
 
     def create_packages_contact_sheet(self,list_package):
@@ -206,8 +246,9 @@ class AssetLib(QtGui.QWidget):
 
         self.setLayout(self.layout)
 
-    def create_package_info(self, current_package):
-        self.package = Package(current_package,False)
+    def create_package_info(self, package):
+        self.package = Package(package,False)
+
         print self.package.package_metadata_path
         print self.package.package_metadata_dic
 
