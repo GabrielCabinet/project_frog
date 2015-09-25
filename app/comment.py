@@ -1,12 +1,12 @@
 __author__ = 'GABI'
 
-
+from app.package import  *
+from app.comment import *
 
 import sys
 import os.path, time
-from users import *
 from core import *
-
+from PySide import QtCore, QtGui
 
 
 class Comment:
@@ -23,6 +23,16 @@ class Comment:
         self.refresh_comment()
         update_dic_with_new_dic_to_disk(self.comment_dictionary, comment_dic, self.file)
         return
+
+    def to_string(self):
+        self.refresh_comment()
+        self.comment_str = ""
+        for key, value in self.comment_dictionary.iteritems():
+            # data_txt =
+            #data_labal = QtQui.QLabel()
+            self.comment_str = "%s<P><b>%s</b>: %s </P>"%(self.comment_str, underscore_to_camelcase(key), value)
+            return self.comment_str
+
 
 ###### TESTS #######
 ####################

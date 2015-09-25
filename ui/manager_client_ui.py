@@ -13,7 +13,8 @@ __author__ = 'GABI'
 from PySide import QtCore, QtGui
 from app.core import *
 from app.package import  *
-
+from app.comment import *
+from pprint import pprint
 def list_packages(name_filter="", task_filter=""):
     '''
     List package using optional filter
@@ -100,6 +101,10 @@ class TabDialog(QtGui.QWidget):
 
         self.setWindowTitle("Tab Dialog")
 
+class TaskList(QtGui.QWidget):
+    self.task_list_layout = QtGui.QVBoxLayout(self)
+
+
 class AssetLib(QtGui.QWidget):
 #http://stackoverflow.com/questions/10184941/how-to-detect-mouse-click-on-images-displayed-in-gui-created-using-pyside
 
@@ -107,104 +112,135 @@ class AssetLib(QtGui.QWidget):
         super(AssetLib, self).__init__(parent)
 
         layout  = QtGui.QHBoxLayout(self)
+
+        # CURRENT ASSET
+        self.asset_viewer_layout = QtGui.QVBoxLayout()
+        self.comment_layout = QtGui.QVBoxLayout()
+        self.comment_label = QtGui.QLabel("Some Com")
+        self.comment_edit_button = QtGui.QPushButton("Edit")
+        self.comment_add_button = QtGui.QPushButton("Add")
+        self.comment_layout.addWidget(self.comment_label)
+        self.comment_layout.addWidget(self.comment_edit_button)
+        self.comment_layout.addWidget(self.comment_add_button)
+        self.current_asset_layout = QtGui.QHBoxLayout()
+        self.package_mini = QtGui.QLabel("Task Miniature:")               #INIT LABEL FOR MAX MINIATURE
+        self.package_metadata = QtGui.QLabel("Metadata:")                 #LABEL POUR METADATA
+        self.current_asset_layout.addWidget(self.package_metadata)
+        layout.addStretch(1)
+        self.current_asset_layout.addWidget(self.package_mini)
+        self.asset_viewer_layout.addLayout(self.current_asset_layout)
+        self.asset_viewer_layout.addLayout(self.comment_layout)
         list_package = list_packages()
+
+        layout.addLayout(self.asset_viewer_layout)
+        miniature_layout = QtGui.QGridLayout()
+        row = 0
+        colum = -1
         for package in list_package:
+            package_layout = QtGui.QVBoxLayout()
             picture = PictureLabel(package, self)
-            picture.pictureClicked.connect(self.anotherSlot)
+            picture.pictureClicked.connect(self.update_label)
+            package_info_label = QtGui.QLabel(package)
 
-            layout.addWidget(picture)
+            package_layout.addWidget(picture)
+            package_layout.addWidget(package_info_label)
+            if colum >= 5:
+                colum = 0
+                row = row +1
+            else:
+                colum = colum+1
+            miniature_layout.addLayout(package_layout,row,colum)
+        layout.addLayout(miniature_layout)
 
 
+        self.setLayout(layout)
+
+    def update_label(self, metadata,package,mini_file_path,comment_file_path):
+
+        clearLayout(self.comment_layout)
+
+        self.metadata_str = ""
+        for key, value in metadata.iteritems() :
+            # data_txt =
+            #data_labal = QtQui.QLabel()
+            self.metadata_str = "%s<P><b>%s</b>: %s </P>"%(self.metadata_str, underscore_to_camelcase(key), value)
+        self.package_metadata.setText(self.metadata_str)
+        pixmap = QtGui.QPixmap(mini_file_path)
+        self.package_mini.setPixmap(pixmap)
+        comment = Comment(comment_file_path)
+        for com in comment.comment_dictionary.keys():
+            self.com_layout  = QtGui.QHBoxLayout()
+            comment_text = comment.comment_dictionary[com].get('comment','unknown')
+            comment_text_label = QtGui.QLabel(str(comment_text))
+            comment_date_label = QtGui.QLabel(comment.comment_dictionary[com].get('date','unknown'))
+            comment_file_label = QtGui.QLabel(comment.comment_dictionary[com].get('file','unkown'))
+            comment_user_label = QtGui.QLabel(comment.comment_dictionary[com].get('user','unkown'))
+            self.com_layout.addWidget(comment_user_label)
+            self.com_layout.addWidget(comment_text_label)
+            self.com_layout.addStretch(1)
+            self.com_layout.addWidget(comment_date_label)
+            self.com_layout.addWidget(comment_file_label)
 
 
-    def anotherSlot(self, metadata=""):
+            self.comment_layout.addLayout(self.com_layout)
 
-        print str(metadata)
-        print "now I'm in Main.anotherSlot"
+    def update_task_layout(self, package_name):
+        return
 
 
 class PictureLabel(QtGui.QLabel):
+    '''
+    Create a clickable label
+    '''
 
-    pictureClicked = QtCore.Signal(dict) # can be other types (list, dict, object...)
+    pictureClicked = QtCore.Signal(dict,str,str,str) # can be other types (list, dict, object...)
 
     def __init__(self, package, parent=None):
-        super(PictureLabel, self).__init__(parent)
 
-        
-        self.setPixmap(image)
+        super(PictureLabel, self).__init__(parent)
+        # GET CONFIG
+        session_config = SessionConfig()
+        project = Project(session_config.session_project_name)
+        project_root = project.project_root
+
+        #GET MINIATURE FROM PACKAGE DIR
+        mini_filename = "mini_%s.jpg"%(package)
+        comment_filename = "%s_comment.txt"%(package)
+        self.package = package
+        self.mini_file_path = os.path.join(project_root,package,mini_filename)
+        self.comment_file_path = os.path.join(project_root,package,comment_filename)
+        metadata_filename = "%s_metadata.txt"%(package)
+        metadata_file_path = os.path.join(project_root,package,metadata_filename )
+        if os.path.isfile(self.mini_file_path) :
+            self.setPixmap(QtGui.QPixmap(self.mini_file_path).scaled(90,90, QtCore.Qt.KeepAspectRatio))
+        else:
+            self.setPixmap(os.path.join(script_root_dir,'img/logo_menu.jpg'))
+
+        if os.path.isfile(metadata_file_path) :
+            self.metadata = read_dictionary_from_file(metadata_file_path)
+        else:
+            self.metadata = {}
 
     def mousePressEvent(self, event):
+
         print "from PictureLabel.mousePressEvent"
-        metadata = {'package_name':'pomme','package_kind':'Char'}
-        self.pictureClicked.emit(metadata)
+
+        self.pictureClicked.emit(self.metadata,self.package,self.mini_file_path, self.comment_file_path)
 
 class Browser(QtGui.QWidget):
     def __init__(self,  parent=None):
         super(Browser, self).__init__(parent)
 
-        current_asset = CurrentAsset()
-        bibliotheque = Bibliotheque()
         arborescence = Arborescence()
         test =  AssetLib()
-
         mainLayout = QtGui.QHBoxLayout()
-
-        '''
-        j=0
-        i = 0
-        row_lenght = 5
-
-        for package in list_packages:
-
-            if j >= row_lenght:
-                i = i +1
-                j=0
-            else:
-                j = j+1
-
-            package_layout = QtGui.QVBoxLayout()
-
-            mainLayout.addWidget(package_widget,i,j)
-        pos = [(0, 0), (0, 1), (0, 2), (0, 3),
-                (1, 0), (1, 1), (1, 2), (1, 3),
-                (2, 0), (2, 1), (2, 2), (2, 3),
-                (3, 0), (3, 1), (3, 2), (3, 3 ),
-                (4, 0), (4, 1), (4, 2), (4, 3)]
-        for p in pos:
-            j = j+1
-            img_path = os.path.join(script_root_dir,'img/logo_menu.jpg')
-            pixmap = QtGui.QPixmap(img_path)
-            lbl_miniature = QtGui.QLabel(self)
-            lbl_miniature.setPixmap(pixmap)
-            mainLayout.addWidget(lbl_miniature,p[0],p[1])
-
-        '''
         mainLayout.addStretch(1)
 
-        mainLayout.addWidget(arborescence)
-        mainLayout.addWidget(current_asset)
+
         mainLayout.addWidget(test)
         mainLayout.addStretch(1)
         self.setLayout(mainLayout)
-
-
-
-
-class CurrentAsset(QtGui.QWidget):
-       def __init__(self,  parent=None):
-        super(CurrentAsset, self).__init__(parent)
-
-        fileNameLabel = QtGui.QLabel("Task Miniature:")
-        fileNameEdit = QtGui.QLabel("Metadata:")
-
-        mainLayout = QtGui.QHBoxLayout()
-
-        mainLayout.addWidget(fileNameEdit)
-        mainLayout.addStretch(1)
-
-        mainLayout.addWidget(fileNameLabel)
-        mainLayout.addStretch(1)
-        self.setLayout(mainLayout)
+        mainLayout.addWidget(arborescence)
 
 class Arborescence(QtGui.QWidget):
 

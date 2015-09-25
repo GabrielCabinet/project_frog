@@ -54,6 +54,27 @@ PROCESS DICTIONARY
 
 '''
 
+def clearLayout(layout):
+    #http://josbalcaen.com/maya-python-pyqt-delete-all-widgets-in-a-layout/
+    '''
+    Clean pyside layout
+    :param layout:
+    :return:
+    '''
+    while layout.count():
+        child = layout.takeAt(0)
+        if child.widget() is not None:
+            child.widget().deleteLater()
+        elif child.layout() is not None:
+            clearLayout(child.layout())
+
+def underscore_to_camelcase(text):
+    """
+    Converts underscore_delimited_text to camelCase.
+    Useful for JSON output
+    """
+    return ''.join(word.title()  for i, word in enumerate(text.split('_')))
+
 def get_time_now():
     now = datetime.now().time()
 
