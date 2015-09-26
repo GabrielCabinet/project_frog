@@ -1,36 +1,58 @@
-import sys
-from PySide.QtCore import *
-from PySide.QtGui import *
-from app.core import *
-class Widget(QWidget):
-     
-    def __init__(self, parent= None):
-        super(Widget, self).__init__()
-         
-        layout = QVBoxLayout(self)
-        self.buttonGroup = QButtonGroup()
-        self.buttonGroup.setExclusive(False)
-        #QToolButton
-        textButton = QToolButton()
-        textButton.setCheckable(True)
-        textButton.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-        textButton.setText("test \n yo")
-        textButton.setIcon(QIcon(QPixmap(os.path.join(script_root_dir,'img/logo_menu.jpg'))
-                            .scaled(80, 80)))
-        textButton.setIconSize(QSize(100, 100))
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-         
-        layout.addWidget(textButton)
-         
-        self.setLayout(layout)
-         
-         
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-     
-    dialog = Widget()
-    dialog.show()
+"""
+ZetCode PySide tutorial 
+
+This example shows
+how to use QtGui.QComboBox widget.
  
-    app.exec_()
+author: Jan Bodnar
+website: zetcode.com 
+last edited: August 2011
+"""
+
+import sys
+from PySide import QtGui, QtCore
+
+class Example(QtGui.QWidget):
+    
+    def __init__(self):
+        super(Example, self).__init__()
+        
+        self.initUI()
+        
+    def initUI(self):      
+
+        self.lbl = QtGui.QLabel("Ubuntu", self)
+
+        combo = QtGui.QComboBox(self)
+        combo.addItem("Ubuntu")
+        combo.addItem("Mandriva")
+        combo.addItem("Fedora")
+        combo.addItem("Red Hat")
+        combo.addItem("Gentoo")
+
+        combo.move(50, 50)
+        self.lbl.move(50, 150)
+
+        combo.activated[str].connect(self.onActivated)        
+         
+        self.setGeometry(300, 300, 300, 200)
+        self.setWindowTitle('QtGui.QComboBox')
+        self.show()
+        
+    def onActivated(self, text):
+      
+        self.lbl.setText(text)
+        self.lbl.adjustSize()  
+                
+def main():
+    
+    app = QtGui.QApplication(sys.argv)
+    ex = Example()
+    sys.exit(app.exec_())
 
 
+if __name__ == '__main__':
+    main()

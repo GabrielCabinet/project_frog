@@ -99,8 +99,8 @@ class TabDialog(QtGui.QWidget):
 
 
         tabWidget = QtGui.QTabWidget()
-        tabWidget.addTab(Browser(), "General")
-        tabWidget.addTab(PermissionsTab(), "Permissions")
+        tabWidget.addTab(Browser(), "Browser")
+        tabWidget.addTab(PermissionsTab(), "Manager")
         tabWidget.addTab(ApplicationsTab(), "Applications")
 
 
@@ -153,7 +153,7 @@ class AssetLib(QtGui.QWidget):
         self.current_asset_layout.addWidget(self.package_mini)
 
         #Task layout
-        self.all_tasks_layout = QtGui.QVBoxLayout()
+        self.all_tasks_layout = QtGui.QGridLayout()
 
         #Add layout to sublayout
         self.asset_viewer_layout.addLayout(self.current_asset_layout)
@@ -288,8 +288,28 @@ class AssetLib(QtGui.QWidget):
         return
 
     def create_package_task(self,package_name):
+
+        # Init counter for package task
+        row = 0
+        colum = 0
+
+        #Get Package class
         self.package = Package(package_name)
+
+        #Clear and generate a new layout for task
         clearLayout(self.all_tasks_layout)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Task"),row,1)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Schedule"),row,2)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Asigned to"),row,3)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Statut"),row,4)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Last user"),row,5)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Last edited"),row,6)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Created by"),row,7)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("File"),row,8)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Open"),row,9)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Folder"),row,10)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Preview"),row,11)
+
         list_task = get_immediate_sub_directories(self.package.package_path)
         for task in list_task:
             self.task = Task(package_name,task)
@@ -313,19 +333,22 @@ class AssetLib(QtGui.QWidget):
 
             self.open_task_button.clicked.connect(lambda path=self.task.task_path, fname_no_ext=self.file_name_without_extention:open_file_without_extention(path,fname_no_ext))
             self.fodler_task_button.clicked.connect(lambda path=path: open_folder_location(path))
-            task_layout.addWidget(task_name_label)
-            task_layout.addWidget(task_schedule_label)
-            task_layout.addWidget(task_asigned_to_label)
-            task_layout.addWidget(task_statut_label)
-            task_layout.addWidget(task_last_user_label)
-            task_layout.addWidget(task_last_edited_time)
-            task_layout.addWidget(task_created_by_label)
-            task_layout.addWidget(task_file_name_with_ex_label)
-            task_layout.addWidget(self.open_task_button)
-            task_layout.addWidget(self.fodler_task_button)
-            task_layout.addWidget(prev_task_button)
 
-            self.all_tasks_layout.addLayout(task_layout)
+            row = row+1
+
+            self.all_tasks_layout.addWidget(task_name_label,row,1)
+            self.all_tasks_layout.addWidget(task_schedule_label,row,2)
+            self.all_tasks_layout.addWidget(task_asigned_to_label,row,3)
+            self.all_tasks_layout.addWidget(task_statut_label,row,4)
+            self.all_tasks_layout.addWidget(task_last_user_label,row,5)
+            self.all_tasks_layout.addWidget(task_last_edited_time,row,6)
+            self.all_tasks_layout.addWidget(task_created_by_label,row,7)
+            self.all_tasks_layout.addWidget(task_file_name_with_ex_label,row,8)
+            self.all_tasks_layout.addWidget(self.open_task_button,row,9)
+            self.all_tasks_layout.addWidget(self.fodler_task_button,row,10)
+            self.all_tasks_layout.addWidget(prev_task_button,row,11)
+
+
 
 
 
@@ -380,6 +403,21 @@ class PermissionsTab(QtGui.QWidget):
         fileNameLabel = QtGui.QLabel("File Name:")
         fileNameEdit = QtGui.QLineEdit('yo')
 
+        #Layout create package
+        package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
+
+        package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
+        package_kind_combo.addItem("Prop")
+        package_kind_combo.addItem("Back")
+        package_kind_combo.addItem("Char")
+        package_kind_combo.addItem("Shot")
+
+        combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
+
+        self.layout_cut_in_cut_out= Qt.Gui.QHBoxLayout()
+
+        create_new_package_button = QPushButton('Create')
+
         mainLayout = QtGui.QVBoxLayout()
 
 
@@ -389,6 +427,18 @@ class PermissionsTab(QtGui.QWidget):
         mainLayout.addWidget(fileNameLabel)
         mainLayout.addStretch(1)
         self.setLayout(mainLayout)
+
+    def on_combo_box_Activated(self, text):
+        clearLayout(self.layout_cut_in_cut_out)
+        if text == "Shot":
+            
+            self.layout_cut_in_cut_out.addWidget()
+
+        else:
+            clearLayout(self.layout_cut_in_cut_out)
+
+        self.lbl.setText(text)
+        self.lbl.adjustSize()
 
 class ApplicationsTab(QtGui.QWidget):
     def __init__(self, parent=None):
