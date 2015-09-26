@@ -301,13 +301,16 @@ class AssetLib(QtGui.QWidget):
             task_last_user_label = QtGui.QLabel(self.task.last_user)
             task_last_edited_time = QtGui.QLabel( self.task.last_edited_time)
             task_created_by_label = QtGui.QLabel(self.task.created_by )
+            self.file_name_without_extention = "%s_%s"%(self.package.package_name,task)
+            self.task_file_name_with_ex = get_file_without_extention(self.task.task_path, self.file_name_without_extention)
+            task_file_name_with_ex_label = QtGui.QLabel(self.task_file_name_with_ex)
             #Button
             self.open_task_button = QtGui.QPushButton("Open",self)
             self.fodler_task_button = QtGui.QPushButton("Folder",self)
             prev_task_button = QtGui.QPushButton("Prev",self)
             #Connect button
             path = os.path.join(self.task.task_path,"Wip")
-            self.file_name_without_extention = "%s_%s"%(self.package.package_name,task)
+
             self.open_task_button.clicked.connect(lambda path=self.task.task_path, fname_no_ext=self.file_name_without_extention:open_file_without_extention(path,fname_no_ext))
             self.fodler_task_button.clicked.connect(lambda path=path: open_folder_location(path))
             task_layout.addWidget(task_name_label)
@@ -317,6 +320,7 @@ class AssetLib(QtGui.QWidget):
             task_layout.addWidget(task_last_user_label)
             task_layout.addWidget(task_last_edited_time)
             task_layout.addWidget(task_created_by_label)
+            task_layout.addWidget(task_file_name_with_ex_label)
             task_layout.addWidget(self.open_task_button)
             task_layout.addWidget(self.fodler_task_button)
             task_layout.addWidget(prev_task_button)

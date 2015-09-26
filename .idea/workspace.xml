@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0528c278-cd3d-48ab-b6ec-7a292c101587" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/logo.psd" afterPath="$PROJECT_DIR$/img/logo.psd" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Project.py" afterPath="$PROJECT_DIR$/app/Project.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/comment.py" afterPath="$PROJECT_DIR$/app/comment.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/core.py" afterPath="$PROJECT_DIR$/app/core.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ui/manager_client_ui.py" afterPath="$PROJECT_DIR$/ui/manager_client_ui.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/package.py" afterPath="$PROJECT_DIR$/app/package.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/project_database" afterPath="$PROJECT_DIR$/data/project_database" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/task.py" afterPath="$PROJECT_DIR$/app/task.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="frog_manager_home.iws" />
@@ -86,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="core.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="core.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/core.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33282673">
-              <caret line="199" column="4" selection-start-line="199" selection-start-column="4" selection-end-line="199" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
               <folding>
                 <element signature="e#20#37#0" expanded="true" />
               </folding>
@@ -98,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="manager_client_ui.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="manager_client_ui.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ui/manager_client_ui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="309" column="51" selection-start-line="309" selection-start-column="51" selection-end-line="309" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.48784193">
+              <caret line="295" column="0" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="45" />
               <folding>
                 <element signature="e#262#294#0" expanded="true" />
               </folding>
@@ -198,8 +192,8 @@
         <option value="$PROJECT_DIR$/app/package.py" />
         <option value="$PROJECT_DIR$/app/task.py" />
         <option value="$PROJECT_DIR$/data/project_database" />
-        <option value="$PROJECT_DIR$/ui/manager_client_ui.py" />
         <option value="$PROJECT_DIR$/app/core.py" />
+        <option value="$PROJECT_DIR$/ui/manager_client_ui.py" />
       </list>
     </option>
   </component>
@@ -630,7 +624,13 @@
       <option name="project" value="LOCAL" />
       <updated>1443212427893</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="task">
+      <created>1443277926524</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1443277926524</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -701,7 +701,8 @@
     <MESSAGE value="add task" />
     <MESSAGE value="button mini" />
     <MESSAGE value="rox_mini&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="rox_mini&#10;" />
+    <MESSAGE value="task" />
+    <option name="LAST_COMMIT_MESSAGE" value="task" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1102,22 +1103,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ui/manager_client_ui.py">
+    <entry file="file://$PROJECT_DIR$/app/core.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="309" column="51" selection-start-line="309" selection-start-column="51" selection-end-line="309" selection-end-column="51" />
+          <caret line="179" column="0" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
           <folding>
-            <element signature="e#262#294#0" expanded="true" />
+            <element signature="e#20#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/core.py">
+    <entry file="file://$PROJECT_DIR$/ui/manager_client_ui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33282673">
-          <caret line="199" column="4" selection-start-line="199" selection-start-column="4" selection-end-line="199" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.48784193">
+          <caret line="295" column="0" selection-start-line="295" selection-start-column="0" selection-end-line="295" selection-end-column="45" />
           <folding>
-            <element signature="e#20#37#0" expanded="true" />
+            <element signature="e#262#294#0" expanded="true" />
           </folding>
         </state>
       </provider>

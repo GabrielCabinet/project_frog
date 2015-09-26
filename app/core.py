@@ -14,47 +14,6 @@ import webbrowser
 """
 PROCESS DICTIONARY
 """
-'''
-    def list_packages(self, name_filter="", task_filter=""):
-    '''
-'''
-    List package using optional filter
-    :param name_filter: use '*' as a wild card before or after the name
-    :type name_filter: str
-    :param task_filter: Array of task package MUST have.
-    :type task_filter: list
-    '''
-'''
-    self.session_config = SessionConfig()
-    self.project = Project(session_config.session_project_name)
-    self.project_root = self.project.project_root                 #W:/Vivarium
-    self.list_package = os.listdir(self.project_root)             # List all package in root directory
-
-    #Filter by name
-    if name_filter:
-    # Filter list of packages
-        self.list_package = [package for package in list_package if
-        re.findall("^%s$" % name_filter.lower().replace("*", ".+"), package.lower())]
-        # Return List of Package matching Name Filter
-
-        #Filter by task_filter
-        if task_filter:
-            remove_list = []
-            for package in self.list_package:
-                list_package_task = list_package_tasks_directory(os.path.join(project_root,package))
-                print "%s,%s"%(package , list_package_task)
-                for task in task_filter:
-                    if task not in list_package_task:
-                            remove_list.append(package)
-                self.list_package = [package for package in self.list_package if package not in remove_list ]
-
-
-
-
-
-            return self.list_package
-
-'''
 
 def clearLayout(layout):
     #http://josbalcaen.com/maya-python-pyqt-delete-all-widgets-in-a-layout/
@@ -129,8 +88,6 @@ def list_packages(self, name_filter="", task_filter=""):
 
 
 
-
-
             return self.list_package
 def convert_str_to_dic(str):
     """
@@ -197,7 +154,7 @@ def read_dictionary_from_file(file):
         print "Can't read dictionary from fitle:", sys.exc_info()[0]
 
         return {}
-def 
+
 def write_dic_to_file(file, dic):
     '''
     Write a text file to disk
@@ -220,6 +177,15 @@ def open_folder_location(path):
     Popen_arg = r'explorer /select, "' + path + '"'
     Popen_arg
     subprocess.Popen(Popen_arg)
+
+def get_file_without_extention(file_path, filename_without_extention):
+    filename_with_extention = "no file"
+    for file in os.listdir(file_path):
+        if os.path.splitext(file)[0] == filename_without_extention:
+            filename_with_extention = file
+            return filename_with_extention
+    return  filename_with_extention
+
 
 def open_file_without_extention(file_path,filename_without_extention):
     file_exist = False
