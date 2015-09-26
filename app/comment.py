@@ -8,20 +8,40 @@ import os.path, time
 from core import *
 from PySide import QtCore, QtGui
 
-
+session_config = SessionConfig()
+project = Project(session_config.session_project_name)
 class Comment:
 
-    def __init__(self,file):
+    def __init__(self,package_name,write=False):
 
-        self.file = str(file)                  # Absolut path of the metadata.txt file
-        self.comment_dictionary = read_dictionary_from_file(self.file)            # Return comment file as a dictionary
+        self.comment_file_name = "%s_comment.txt"%(package_name)
+        self.comment_file_path = os.path.join(project.project_root,package_name,self.comment_file_name)
+        if write is True:
+            self.new_comment_dic = {"1":{
+                    "user":session_config.session_user_name,
+                    "comment": "Package creation ",
+                    "date": str(get_time_now()),
+                    "file": "unknown"}
+            }
+
+            try:
+                print '*****************'
+                print self.comment_file_path
+                print type(self.new_comment_dic)
+                print str(self.new_comment_dic)
+                write_dic_to_file(self.comment_file_path, self.new_comment_dic)
+            except:
+                msg =  "Can't write comment dic of the package to file:" + str(self.comment_dictionary)
+                print msg, sys.exc_info()[0]
+        else:
+            self.comment_dictionary = read_dictionary_from_file( self.comment_file_path)            # Return comment file as a dictionary
 
     def refresh_comment(self):
-        self.comment_dictionary = read_dictionary_from_file(self.file)
+        self.comment_dictionary = read_dictionary_from_file( self.comment_file_path)
 
     def add_comment(self, comment_dic):
         self.refresh_comment()
-        update_dic_with_new_dic_to_disk(self.comment_dictionary, comment_dic, self.file)
+        update_dic_with_new_dic_to_disk(self.comment_dictionary, comment_dic,self.comment_file_path)
         return
 
     def to_string(self):
@@ -32,32 +52,6 @@ class Comment:
             #data_labal = QtQui.QLabel()
             self.comment_str = "%s<P><b>%s</b>: %s </P>"%(self.comment_str, underscore_to_camelcase(key), value)
             return self.comment_str
-
-
-###### TESTS #######
-####################
-
-comment = Comment('C:/Users/GABI/PycharmProjects/frog_manager_home/comment.txt')
-
-for key in comment.comment_dictionary.keys():
-    com_dic = comment.comment_dictionary.get(key,'{}')
-    for com in com_dic.keys():
-        print "%s:%s"%(com,com_dic[com])
-
-comment.add_comment({
-    '14':{
-        'file':'test2.ma',
-        'date':'24/09/1993',
-        'comment': ["commentaire premiere ligne", "commentaire deuxiemme ligne"]
-    },
-    '13':{
-        'file':'test8.ma',
-        'date':'24/09/1993',
-        'comment':["commentaire premiere ligne", "commentaire deuxiemme ligne"]
-    }
-})
-
-
 
 
 

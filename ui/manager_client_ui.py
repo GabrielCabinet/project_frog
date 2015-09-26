@@ -15,7 +15,18 @@ from app.core import *
 from app.package import *
 from app.comment import *
 from pprint import pprint
-import webbrowser
+
+
+'''
+package = Package('Char_TEST38',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST39',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST40',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST45',True ,'Char','Un chouette test de package' )
+package = Package('Char_TEST50',True ,'Char','Un chouette test de package' )
+'''
+
+script_root_dir = os.path.abspath(__file__ + "/../../")
+
 def list_packages(name_filter="", task_filter=""):
     '''
     List package using optional filter
@@ -141,9 +152,13 @@ class AssetLib(QtGui.QWidget):
         self.layout.addStretch(1)
         self.current_asset_layout.addWidget(self.package_mini)
 
+        #Task layout
+        self.all_tasks_layout = QtGui.QVBoxLayout()
+
         #Add layout to sublayout
         self.asset_viewer_layout.addLayout(self.current_asset_layout)
         self.asset_viewer_layout.addLayout(self.comment_layout)
+        self.asset_viewer_layout.addLayout(self.all_tasks_layout)
         self.layout.addLayout(self.asset_viewer_layout)
 
         self.layout.addLayout(self.miniature_layout)
@@ -161,23 +176,24 @@ class AssetLib(QtGui.QWidget):
 
         self.create_package_info(package_name)
         self.create_package_comment(package_name)
+        self.create_package_task(package_name)
 
 
         return
-    def edit_comment_buttonClik(self, comment_file_path):
-       webbrowser.open(comment_file_path)
+
     def create_package_comment(self,package_name):
+        '''
+        Crate les commentaires du package
+        :param package_name:
+        :return:
+        '''
         clearLayout(self.comment_layout)
         self.comment_edit_button = QtGui.QPushButton("Edit")
         self.comment_add_button = QtGui.QPushButton("Add")
         self.comment_button_layout = QtGui.QHBoxLayout()
         self.comment_button_layout.addWidget(self.comment_edit_button)
         self.comment_button_layout.addWidget(self.comment_add_button)
-
         self.comment_layout.addLayout(self.comment_button_layout)
-
-       # self.comment_layout.addWidget(self.comment_edit_button)
-        #self.comment_layout.addWidget(self.comment_add_button)
         self.comment_tab_name_layout = QtGui.QHBoxLayout()
         self.comment_tab_name_layout.addWidget(QtGui.QLabel('User'))
         self.comment_tab_name_layout.addWidget(QtGui.QLabel('Commentaire'))
@@ -187,10 +203,9 @@ class AssetLib(QtGui.QWidget):
         self.comment_layout.addLayout(self.comment_tab_name_layout)
 
 
-        self.comment_file_name = package_name + '_comment.txt'
-        self.comment_file_path = os.path.join(self.project_root,package_name,self.comment_file_name)
-        self.comment_edit_button.clicked.connect(lambda: self.edit_comment_buttonClik(self.comment_file_path))
-        comment = Comment(self.comment_file_path)
+        comment = Comment(package_name,write=False)
+
+        self.comment_edit_button.clicked.connect(lambda: open_file_to_bloc_note(comment.comment_file_path))
         for com in comment.comment_dictionary.keys():
             self.com_layout  = QtGui.QHBoxLayout()
             comment_text = comment.comment_dictionary[com].get('comment','unknown')
@@ -213,6 +228,9 @@ class AssetLib(QtGui.QWidget):
         clearLayout(self.miniature_layout)
         row = 0
         colum = -1
+
+        self.defaut_pixmap = QtGui.QPixmap(os.path.join(script_root_dir,'img','defaut_package_icon.jpg'))
+        self.defaut_package_ico = QtGui.QIcon(self.defaut_pixmap)
         for package in list_package:
 
             # Create layout for package img and metadata
@@ -228,7 +246,11 @@ class AssetLib(QtGui.QWidget):
             self.picture_button = QtGui.QToolButton()
             self.picture_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
             self.picture_button.setText(package)
-            self.pixmap = QtGui.QPixmap(self.mini_file_path)
+            if os.path.isfile(self.mini_file_path):
+                self.pixmap = QtGui.QPixmap(self.mini_file_path)
+
+            else:
+                self.pixmap = self.defaut_pixmap
             self.ico = QtGui.QIcon(self.pixmap)
             self.picture_button.setIcon(self.ico)
             self.picture_button.setIconSize(QtCore.QSize(50,50))
@@ -248,11 +270,6 @@ class AssetLib(QtGui.QWidget):
 
     def create_package_info(self, package):
         self.package = Package(package,False)
-
-        print self.package.package_metadata_path
-        print self.package.package_metadata_dic
-
-
         # SET METADATA
         if os.path.isfile(self.package.package_metadata_path) :
             self.metadata = read_dictionary_from_file(self.package.package_metadata_path)
@@ -261,10 +278,55 @@ class AssetLib(QtGui.QWidget):
                 self.metadata_str = "%s<P><b>%s</b>: %s </P>"%(self.metadata_str, underscore_to_camelcase(key), value)
             self.package_metadata.setText(self.metadata_str)
         #SET PIXMAP
+        if os.path.isfile(self.package.package_mini_path):
+
             pixmap = QtGui.QPixmap(self.package.package_mini_path)
-            self.package_mini.setPixmap(pixmap)
+        else:
+            pixmap = QtGui.QPixmap(os.path.join(script_root_dir,'img','defaut_package_icon.jpg'))
+        self.package_mini.setPixmap(pixmap)
 
         return
+
+    def create_package_task(self,package_name):
+        self.package = Package(package_name)
+        clearLayout(self.all_tasks_layout)
+        list_task = get_immediate_sub_directories(self.package.package_path)
+        for task in list_task:
+            self.task = Task(package_name,task)
+            task_layout = QtGui.QHBoxLayout()
+            task_name_label = QtGui.QLabel(task)
+            task_schedule_label= QtGui.QLabel(self.task.schedule)
+            task_asigned_to_label= QtGui.QLabel( self.task.asigned_to)
+            task_statut_label =  QtGui.QLabel(self.task.statut )
+            task_last_user_label = QtGui.QLabel(self.task.last_user)
+            task_last_edited_time = QtGui.QLabel( self.task.last_edited_time)
+            task_created_by_label = QtGui.QLabel(self.task.created_by )
+            #Button
+            self.open_task_button = QtGui.QPushButton("Open",self)
+            self.fodler_task_button = QtGui.QPushButton("Folder",self)
+            prev_task_button = QtGui.QPushButton("Prev",self)
+            #Connect button
+            path = os.path.join(self.task.task_path,"Wip")
+            self.file_name_without_extention = "%s_%s"%(self.package.package_name,task)
+            self.open_task_button.clicked.connect(lambda path=self.task.task_path, fname_no_ext=self.file_name_without_extention:open_file_without_extention(path,fname_no_ext))
+            self.fodler_task_button.clicked.connect(lambda path=path: open_folder_location(path))
+            task_layout.addWidget(task_name_label)
+            task_layout.addWidget(task_schedule_label)
+            task_layout.addWidget(task_asigned_to_label)
+            task_layout.addWidget(task_statut_label)
+            task_layout.addWidget(task_last_user_label)
+            task_layout.addWidget(task_last_edited_time)
+            task_layout.addWidget(task_created_by_label)
+            task_layout.addWidget(self.open_task_button)
+            task_layout.addWidget(self.fodler_task_button)
+            task_layout.addWidget(prev_task_button)
+
+            self.all_tasks_layout.addLayout(task_layout)
+
+
+
+
+
 
 class Browser(QtGui.QWidget):
     def __init__(self,  parent=None):

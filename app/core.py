@@ -8,6 +8,8 @@ import pprint
 from datetime import datetime
 script_root_dir = os.path.abspath(__file__ + "/../../")
 
+import subprocess
+import webbrowser
 
 """
 PROCESS DICTIONARY
@@ -67,6 +69,14 @@ def clearLayout(layout):
             child.widget().deleteLater()
         elif child.layout() is not None:
             clearLayout(child.layout())
+
+def open_file_to_bloc_note(comment_file_path):
+    '''
+    Open a file in a blow note
+    :param comment_file_path:
+    :return:
+    '''
+    webbrowser.open(comment_file_path)
 
 def underscore_to_camelcase(text):
     """
@@ -187,7 +197,7 @@ def read_dictionary_from_file(file):
         print "Can't read dictionary from fitle:", sys.exc_info()[0]
 
         return {}
-
+def 
 def write_dic_to_file(file, dic):
     '''
     Write a text file to disk
@@ -201,9 +211,25 @@ def write_dic_to_file(file, dic):
             f.write(dic_format_json)
     except IOError as e:
         print "{0}".format(e)
+    except TypeError as e:
+        print "{0}".format(e)
     except:
         print "Unexpected error while writing file_text to disk:", sys.exc_info()[0]
         raise
+def open_folder_location(path):
+    Popen_arg = r'explorer /select, "' + path + '"'
+    Popen_arg
+    subprocess.Popen(Popen_arg)
+
+def open_file_without_extention(file_path,filename_without_extention):
+    file_exist = False
+    for file in os.listdir(file_path):
+        if os.path.splitext(file)[0] == filename_without_extention:
+            os.system("start "+os.path.join(file_path,file))
+            file_exist = True
+
+    if file_exist is False:
+            print "Can't open file %s.\nTry to open it manually\n%s"%(filename_without_extention,file_path)
 
 def update_dic_with_new_dic_to_disk(dic, new_dic, file ):
     '''
