@@ -412,11 +412,11 @@ class PermissionsTab(QtGui.QWidget):
         package_kind_combo.addItem("Char")
         package_kind_combo.addItem("Shot")
 
-        combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
+#        combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
 
-        self.layout_cut_in_cut_out= Qt.Gui.QHBoxLayout()
+  #      self.layout_cut_in_cut_out= Qt.Gui.QHBoxLayout()
 
-        create_new_package_button = QPushButton('Create')
+#        create_new_package_button = QPushButton('Create')
 
         mainLayout = QtGui.QVBoxLayout()
 
@@ -431,7 +431,7 @@ class PermissionsTab(QtGui.QWidget):
     def on_combo_box_Activated(self, text):
         clearLayout(self.layout_cut_in_cut_out)
         if text == "Shot":
-            
+
             self.layout_cut_in_cut_out.addWidget()
 
         else:
