@@ -6,7 +6,7 @@ import sys
 import json
 import pprint
 from datetime import datetime
-script_root_dir = os.path.abspath(__file__ + "/../../")
+
 
 import subprocess
 import webbrowser

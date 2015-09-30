@@ -17,13 +17,7 @@ from app.comment import *
 from pprint import pprint
 
 
-'''
-package = Package('Char_TEST38',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST39',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST40',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST45',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST50',True ,'Char','Un chouette test de package' )
-'''
+
 
 script_root_dir = os.path.abspath(__file__ + "/../../")
 
@@ -36,7 +30,9 @@ def list_packages(name_filter="", task_filter=""):
     :type task_filter: list
     '''
     session_config = SessionConfig()
-    project = Project(session_config.session_project_name)
+    project = Project('Vivarium')
+    #project = Project(session_config.session_project_name)
+    print session_config.session_project_name
     project_root = project.project_root                 #W:/Vivarium
     list_packages = os.listdir(project_root)             # List all package in root directory
 
@@ -100,7 +96,7 @@ class TabDialog(QtGui.QWidget):
 
         tabWidget = QtGui.QTabWidget()
         tabWidget.addTab(Browser(), "Browser")
-        tabWidget.addTab(PermissionsTab(), "Manager")
+        tabWidget.addTab(CreationPackgeTab(), "Manager")
         tabWidget.addTab(ApplicationsTab(), "Applications")
 
 
@@ -166,7 +162,7 @@ class AssetLib(QtGui.QWidget):
         list_package = list_packages()
 
         self.create_packages_contact_sheet(list_package)
-        self.create_package_info('Back_TEST03')
+
 
     def picture_buttonClick(self):
         self.update_all(self.sender().text())
@@ -396,49 +392,100 @@ class Bibliotheque(QtGui.QWidget):
 
 
 
-class PermissionsTab(QtGui.QWidget):
+class CreationPackgeTab(QtGui.QWidget):
     def __init__(self,  parent=None):
-        super(PermissionsTab, self).__init__(parent)
-
-        fileNameLabel = QtGui.QLabel("File Name:")
-        fileNameEdit = QtGui.QLineEdit('yo')
-
-        #Layout create package
-        package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
-
-        package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
-        package_kind_combo.addItem("Prop")
-        package_kind_combo.addItem("Back")
-        package_kind_combo.addItem("Char")
-        package_kind_combo.addItem("Shot")
-
-#        combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
-
-  #      self.layout_cut_in_cut_out= Qt.Gui.QHBoxLayout()
-
-#        create_new_package_button = QPushButton('Create')
-
-        mainLayout = QtGui.QVBoxLayout()
+        super(CreationPackgeTab, self).__init__(parent)
 
 
-        mainLayout.addWidget(fileNameEdit)
-        mainLayout.addStretch(1)
+        #Layout
+        self.main_creation_package_tab_layout = QtGui.QVBoxLayout()
+        self.info_package_layout = QtGui.QHBoxLayout()
+        self.layout_cut_in_cut_out= QtGui.QHBoxLayout()
+        self.all_tasks_layout = QtGui.QVBoxLayout()
 
-        mainLayout.addWidget(fileNameLabel)
-        mainLayout.addStretch(1)
-        self.setLayout(mainLayout)
+
+        #Create Widget
+        self.package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
+        self.package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
+        self.package_kind_combo.addItem("Prop")
+        self.package_kind_combo.addItem("Back")
+        self.package_kind_combo.addItem("Char")
+        self.package_kind_combo.addItem("Shot")
+        #Create Widget User
+        self.user_asigned_to_combo = QtGui.QComboBox(self)
+        self.user = User()
+        for user in self.user.all_user_dictionary.keys():
+            self.user_asigned_to_combo.addItem(user)
+
+        self.create_new_package_button = QtGui.QPushButton('Create')
+
+        #Add widget/layoyut to main
+        self.info_package_layout.addWidget(self.package_name_edit)
+        self.info_package_layout.addWidget(QtGui.QLabel('Type'))
+        self.info_package_layout.addWidget(self.package_kind_combo)
+        self.info_package_layout.addWidget(QtGui.QLabel('AssignTo'))
+        self.info_package_layout.addWidget(self.user_asigned_to_combo)
+        self.info_package_layout.addLayout(self.layout_cut_in_cut_out)
+        self.info_package_layout.addWidget(self.create_new_package_button)
+        self.main_creation_package_tab_layout.addLayout(self.info_package_layout)
+        self.uptdate_task_list ('Prop')
+        #Get tasks
+
+
+
+        #Connect
+        self.package_kind_combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
+        self.create_new_package_button.clicked.connect(self.on_create_new_package_cliked)
+
+
+        self.setLayout(self.main_creation_package_tab_layout)
+
+    def uptdate_task_list(self, kind):
+        script_root_dir = os.path.abspath(__file__ + "/../../")
+        template_all_task = read_dictionary_from_file(os.path.join(script_root_dir,'/data/template'))
+        clearLayout(self.all_tasks_layout)
+        self.tasks_list_template = template_all_task.get(kind,'unknown')
+        for task in self.tasks_list_template:
+            self.add_new_task_gui(task)
+
+
+    def add_new_task_gui(self,task):
+                self.task_layout = QtGui.QHBoxLayout()
+                self.task_name = QtGui.QLineEdit(task)
+                self.user_asigned_to_combo = QtGui.QComboBox(self)
+                self.user_asigned_to_combo.addItem('All')
+                self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
+                for user in self.user.all_user_dictionary.keys():
+                    self.user_asigned_to_combo.addItem(user)
+
+                self.task_layout.addWidget(self.task_name)
+                self.task_layout.addWidget(self.user_asigned_to_combo)
+                self.all_tasks_layout.addLayout(self.task_layout)
+
+
+
+    def on_create_new_package_cliked(self):
+        package = Package(str(self.package_kind_combo.currentText())+"_"+str(self.package_name_edit.text()),True ,str(self.package_kind_combo.currentText()),'Un chouette test de package', str(self.user_asigned_to_combo.currentText()))
+
 
     def on_combo_box_Activated(self, text):
         clearLayout(self.layout_cut_in_cut_out)
         if text == "Shot":
+            self.cut_in = QtGui.QSpinBox()
+            self.cut_in.setSingleStep(1)
 
-            self.layout_cut_in_cut_out.addWidget()
+            self.cut_out = QtGui.QSpinBox()
+            self.cut_out.setSingleStep(1)
+            self.cut_in.setMaximum(666666)
+            self.cut_out.setMaximum(666666)
+            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutIn'))
+            self.layout_cut_in_cut_out.addWidget(self.cut_in)
+            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutOut'))
+            self.layout_cut_in_cut_out.addWidget(self.cut_out)
 
         else:
             clearLayout(self.layout_cut_in_cut_out)
 
-        self.lbl.setText(text)
-        self.lbl.adjustSize()
 
 class ApplicationsTab(QtGui.QWidget):
     def __init__(self, parent=None):

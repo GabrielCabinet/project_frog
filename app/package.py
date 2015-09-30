@@ -31,6 +31,7 @@ class Package():
         :type package_king: int
         :param description: Description of the package
         :param description: str
+        :param asigned_to: User asigned to
 
         :return:
         '''
@@ -41,6 +42,7 @@ class Package():
         self.package_mini_file_name = str(self.package_name)+'_mini.jpg'
         self.package_metadata_path = os.path.join(self.package_path,self.package_metadata_file_name)
 
+
         self.package_mini_path = os.path.join(self.package_path,self.package_mini_file_name)
         try:
             if argv[0] is True:
@@ -49,6 +51,7 @@ class Package():
                 self.package_kind = argv[1]
 
                 self.package_description = argv[2]
+                self.asigned_to = argv[3]
                 tasks_list_template_dic = {'Char':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Prop': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Back':["Reference", "Modeling", "Shading", "Textures"],
@@ -65,7 +68,8 @@ class Package():
                                               'user_who_work_on': "",
                                               'created_time':str(get_time_now()),
                                               'last_modified_time':str(get_time_now()),
-                                              'description':self.package_description
+                                              'description':self.package_description,
+                                              'asigned_to':self.asigned_to
                                           }
             for task_name in self.tasks_list_template:
                 self.create_task_folders(task_name)
@@ -107,6 +111,7 @@ class Package():
                     os.makedirs(folder_path)
         else:
             print "Folder already existe. Can't create task folder:"+ task_name
+
 
 
 

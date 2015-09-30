@@ -2,7 +2,7 @@ __author__ = 'GABI'
 from core import *
 from session_config import *
 from Project import  *
-
+from users import *
 session_config = SessionConfig()
 project = Project(session_config.session_project_name)
 

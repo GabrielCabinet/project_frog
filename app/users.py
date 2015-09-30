@@ -3,7 +3,7 @@ import sys
 
 class User:
 
-    def __init__(self, name):
+    def __init__(self, name=""):
         """
         Initialise class attribut
         :param sself:
@@ -14,23 +14,14 @@ class User:
         try:
 
             self.name = name
-            self.all_user_dictionary = read_dictionary_from_file('C:/Users/GABI/PycharmProjects/frog_manager_home/user_database.txt')
+            self.all_user_dictionary = read_dictionary_from_file(r'C:\Users\GABI\PycharmProjects\project_frog\data\project_database')
 
+            self.user_dictionary = self.all_user_dictionary.get(name,{})
 
-            self.user_dictionary = self.all_user_dictionary.get(name,'unknown')
             self.password = self.user_dictionary.get('Password','unknown')
-            print "Succefully initialise user class"
+
+            print "Succefully initialise user class with the name:" + self.name
         except:
             print "Error: Can't initialise user class :", sys.exc_info()[0]
             pass
-
-
-# TEST
-current_user = User('Victor')
-print "USERS TEST "
-print "****************************"
-print "All user dic \n"+ str(current_user.all_user_dictionary)
-print current_user.password
-print "****************************"
-
 

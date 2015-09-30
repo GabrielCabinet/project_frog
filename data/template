@@ -1,0 +1,4 @@
+tasks_list_template_dic = {'Char':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
+                        'Prop': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
+                        'Back':["Reference", "Modeling", "Shading", "Textures"],
+                        'Shot': ["Animation", "Assembly", "Compositing", "FX","Layout","Layout_Anim","Lighting","Previz","Render_out"] }
