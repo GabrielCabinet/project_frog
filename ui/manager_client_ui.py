@@ -68,11 +68,11 @@ class Ui_MainWindow(QtGui.QDialog):
         bot_window =  BotWindow()
 
 
+
+
         buttonBox = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel)
         buttonBox.accepted.connect(self.accept)
         buttonBox.rejected.connect(self.reject)
-
-
 
 
         #LAYOUT

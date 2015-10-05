@@ -56,7 +56,7 @@ def merge_two_dicts(x, y):
     z.update(y)
     return z
 
-def list_packages(self, name_filter="", task_filter=""):
+def list_packages(project_root, name_filter="", task_filter=""):
     '''
     List package using optional filter
     :param name_filter: use '*' as a wild card before or after the name
@@ -64,32 +64,30 @@ def list_packages(self, name_filter="", task_filter=""):
     :param task_filter: Array of task package MUST have.
     :type task_filter: list
     '''
-    self.session_config = SessionConfig()
-    self.project = Project(session_config.session_project_name)
-    self.project_root = self.project.project_root                 #W:/Vivarium
-    self.list_package = os.listdir(self.project_root)             # List all package in root directory
+
+    list_package = os.listdir(project_root)             # List all package in root directory
 
     #Filter by name
     if name_filter:
     # Filter list of packages
-        self.list_package = [package for package in list_package if
+        list_package = [package for package in list_package if
         re.findall("^%s$" % name_filter.lower().replace("*", ".+"), package.lower())]
         # Return List of Package matching Name Filter
 
         #Filter by task_filter
         if task_filter:
             remove_list = []
-            for package in self.list_package:
+            for package in list_package:
                 list_package_task = list_package_tasks_directory(os.path.join(project_root,package))
                 print "%s,%s"%(package , list_package_task)
                 for task in task_filter:
                     if task not in list_package_task:
                             remove_list.append(package)
-                self.list_package = [package for package in self.list_package if package not in remove_list ]
+                list_package = [package for package in self.list_package if package not in remove_list ]
 
 
 
-            return self.list_package
+    return list_package
 def convert_str_to_dic(str):
     """
     COnvert string to dictionary
