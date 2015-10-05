@@ -1,58 +1,39 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-"""
-ZetCode PySide tutorial 
-
-This example shows
-how to use QtGui.QComboBox widget.
- 
-author: Jan Bodnar
-website: zetcode.com 
-last edited: August 2011
-"""
-
 import sys
-from PySide import QtGui, QtCore
-
-class Example(QtGui.QWidget):
-    
-    def __init__(self):
-        super(Example, self).__init__()
-        
-        self.initUI()
-        
-    def initUI(self):      
-
-        self.lbl = QtGui.QLabel("Ubuntu", self)
-
-        combo = QtGui.QComboBox(self)
-        combo.addItem("Ubuntu")
-        combo.addItem("Mandriva")
-        combo.addItem("Fedora")
-        combo.addItem("Red Hat")
-        combo.addItem("Gentoo")
-
-        combo.move(50, 50)
-        self.lbl.move(50, 150)
-
-        combo.activated[str].connect(self.onActivated)        
+from PySide.QtCore import *
+from PySide.QtGui import *
+ 
+class Widget(QWidget):
+     
+    def __init__(self, parent= None):
+        super(Widget, self).__init__()
+        self.setFixedHeight(200)
          
-        self.setGeometry(300, 300, 300, 200)
-        self.setWindowTitle('QtGui.QComboBox')
-        self.show()
-        
-    def onActivated(self, text):
-      
-        self.lbl.setText(text)
-        self.lbl.adjustSize()  
-                
-def main():
-    
-    app = QtGui.QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
-
-
+        #Container Widget        
+        widget = QWidget()
+        #Layout of Container Widget
+        layout = QVBoxLayout(self)
+        for _ in range(20):
+            btn = QPushButton("test")
+            layout.addWidget(btn)
+        widget.setLayout(layout)
+ 
+        #Scroll Area Properties
+        scroll = QScrollArea()
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll.setWidgetResizable(False)
+        scroll.setWidget(widget)
+         
+        #Scroll Area Layer add 
+        vLayout = QVBoxLayout(self)
+        vLayout.addWidget(scroll)
+        self.setLayout(vLayout)
+         
+         
 if __name__ == '__main__':
-    main()
+    app = QApplication(sys.argv)
+     
+    dialog = Widget()
+    dialog.show()
+ 
+    app.exec_()

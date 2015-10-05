@@ -4,9 +4,10 @@ import os
 import ast
 import sys
 import json
+import traceback
 import pprint
 from datetime import datetime
-
+script_root_dir = os.path.abspath(__file__ + "/../../")
 
 import subprocess
 import webbrowser
@@ -102,8 +103,9 @@ def convert_str_to_dic(str):
     try:
         dic = ast.literal_eval(str)
     except:
-        msg  = 'Cant convert str to dic'+str(str)
-        print msg, sys.exc_info()[0]
+        print traceback.format_exc()
+        print "Can't convert str to dic:"
+        print str(str)
     return dic
 
 """
@@ -125,7 +127,10 @@ def read_text_file(file):
     except IOError as e:
         print "{0}".format(e)
     except:
-        print "Unexpected error:", sys.exc_info()[0]
+
+        print traceback.format_exc()
+        print "Unexpected error read_text_file:"
+        print file
         raise
 
 def create_text_file(file, file_text):
@@ -141,7 +146,9 @@ def create_text_file(file, file_text):
     except IOError as e:
         print "{0}".format(e)
     except:
-        print "Unexpected error while writing file_text to disk:", sys.exc_info()[0]
+        print "Unexpected error while writing file_text to disk:"
+        print traceback.format_exc()
+        print file
         raise
 
 def read_dictionary_from_file(file):
@@ -151,7 +158,7 @@ def read_dictionary_from_file(file):
         return dictionary
 
     except:
-        print "Can't read dictionary from fitle:", sys.exc_info()[0]
+        print "Can't read dictionary from file:",traceback.format_exc() , file
 
         return {}
 
@@ -260,8 +267,9 @@ def get_current_user_name():
         current_user_name = current_user.name
         return current_user_name
     except:
-        print "Can't get current user:", sys.exc_info()[0]
-        return 'unknown'
+        print traceback.format_exc()
+        print "Can't get current user:"
+        print file
 
 
 

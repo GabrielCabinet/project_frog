@@ -52,6 +52,7 @@ class Package():
 
                 self.package_description = argv[2]
                 self.asigned_to = argv[3]
+                self.sequence = argv[4]
                 tasks_list_template_dic = {'Char':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Prop': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
                         'Back':["Reference", "Modeling", "Shading", "Textures"],
@@ -69,7 +70,8 @@ class Package():
                                               'created_time':str(get_time_now()),
                                               'last_modified_time':str(get_time_now()),
                                               'description':self.package_description,
-                                              'asigned_to':self.asigned_to
+                                              'asigned_to':self.asigned_to,
+                                              'sequence':self.sequence
                                           }
             for task_name in self.tasks_list_template:
                 self.create_task_folders(task_name)
