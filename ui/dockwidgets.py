@@ -29,6 +29,7 @@
 
 import qdarkstyle
 
+
 from app.package import *
 from app.comment import *
 
@@ -305,7 +306,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.comment_add_button = QtGui.QPushButton("Add")
         self.comment_add_text = QtGui.QTextEdit("yo")
-        self.comment_add_text.clicked.connect(lambda: )
+       # self.comment_add_text.clicked.connect(lambda: self.add_new_comment())
         self.comment_button_layout = QtGui.QHBoxLayout()
         self.comment_button_layout.addWidget(self.comment_edit_button)
         self.comment_button_layout.addWidget(self.comment_add_button)
@@ -336,6 +337,9 @@ class MainWindow(QtGui.QMainWindow):
         self.package_comment_layout.addWidget(self.comment_add_text)
 
 
+    def add_new_comment(self):
+        comment_txt = self.comment_add_text.text()
+        new_com = Comment(self.package,  )
 
     def create_metadata_package(self):
         '''

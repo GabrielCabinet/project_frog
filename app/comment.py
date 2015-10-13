@@ -1,8 +1,8 @@
 __author__ = 'GABI'
 
 from app.package import  *
-from app.comment import *
 
+import uuid
 import sys
 import os.path, time
 from core import *
@@ -12,24 +12,22 @@ session_config = SessionConfig()
 project = Project(session_config.session_project_name)
 class Comment:
 
-    def __init__(self,package_name,write=False):
+    def __init__(self,package_name,write=False,comment_txt=""):
 
         self.comment_file_name = "%s_comment.txt"%(package_name)
         self.comment_file_path = os.path.join(project.project_root,package_name,self.comment_file_name)
         if write is True:
-            self.new_comment_dic = {"1":{
+            self.new_comment_dic = {str(uuid.uuid4()):
+                {
                     "user":session_config.session_user_name,
-                    "comment": "Package creation ",
+                    "comment": comment_txt,
                     "date": str(get_time_now()),
                     "file": "unknown"}
-            }
+                }
 
             try:
-                print '*****************'
-                print self.comment_file_path
-                print type(self.new_comment_dic)
-                print str(self.new_comment_dic)
-                write_dic_to_file(self.comment_file_path, self.new_comment_dic)
+                comment_dic = read_dictionary_from_file(self.comment_file_path)
+                update_dic_with_new_dic_to_disk(comment_dic, self.new_comment_dic, self.comment_file_path )
             except:
                 msg =  "Can't write comment dic of the package to file:" + str(self.comment_dictionary)
                 print msg, sys.exc_info()[0]
