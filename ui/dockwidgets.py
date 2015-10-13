@@ -60,6 +60,7 @@ class MainWindow(QtGui.QMainWindow):
         self.createDockWindows()
         self.create_dock_contact_sheet()
         self.create_dock_package_info()
+#        self.create_dock_management_package()
 
         self.setWindowTitle("Dock Widgets")
 
@@ -254,38 +255,46 @@ class MainWindow(QtGui.QMainWindow):
         self.package = Package(package_name)
         self.create_metadata_package()
         self.create_comment_package()
-        self.create_package_task(package_name)
+        self.create_task_package()
 
 
+#############DOCK INFO####################################
     def create_dock_package_info(self, package=""):
+        '''
+        Init dock package information.
+        Dock package information groupe:
+        -The preview
+        -Comments
+        -Tasks
+        :param package: name of the package
+        :return:
+        '''
 
         dock = QtGui.QDockWidget("Package Info", self)
-
+        #Init widget
         self.package_info_widget = QtGui.QWidget()
         self.package_info_layout = QtGui.QVBoxLayout(self.package_info_widget)
         self.package_info_splitter = QtGui.QSplitter(QtCore.Qt.Vertical)
         self.package_comment_widget = QtGui.QWidget()
         self.package_comment_layout = QtGui.QVBoxLayout(self.package_comment_widget)
-        self.package_comment_layout.addWidget(QtGui.QLabel("yo"))
-
-
-
-
+        self.package_info_splitter = QtGui.QSplitter(QtCore.Qt.Vertical)
+        self.all_tasks_widget = QtGui.QWidget()
+        self.all_tasks_layout = QtGui.QGridLayout(self.all_tasks_widget)
 
         # Create package preview layout
         self.package_preview_widget =QtGui.QWidget()
         self.package_preview_layout = QtGui.QHBoxLayout(self.package_preview_widget)
-        self.package_mini = QtGui.QLabel("Task Miniature:")               #INIT LABEL FOR MAX MINIATURE
-        self.package_metadata = QtGui.QLabel("Metadata:")                 #LABEL POUR METADATA
-
+        self.package_mini = QtGui.QLabel("Task Miniature:")
+        self.package_metadata = QtGui.QLabel("Metadata:")
         self.package_preview_layout.addWidget(self.package_mini)
         self.package_preview_layout.addWidget(self.package_metadata)
 
+        #Add widget to main layout
         self.package_info_splitter.addWidget(self.package_preview_widget)
         self.package_info_splitter.addWidget(self.package_comment_widget)
-
-
+        self.package_info_splitter.addWidget(self.all_tasks_widget)
         self.package_info_layout.addWidget(self.package_info_splitter)
+
 
 
      #   self.create_metadata_package()
@@ -293,6 +302,61 @@ class MainWindow(QtGui.QMainWindow):
         dock.setWidget(self.package_info_splitter)
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
+
+    def create_task_package(self):
+        row = 0
+        clearLayout(self.all_tasks_layout)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Task"),row,1)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Schedule"),row,2)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Asigned to"),row,3)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Statut"),row,4)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Last user"),row,5)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Last edited"),row,6)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Created by"),row,7)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("File"),row,8)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Open"),row,9)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Folder"),row,10)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("Preview"),row,11)
+
+
+        list_task = get_immediate_sub_directories(self.package.package_path)
+
+        for task in list_task:
+            self.task = Task(self.package.package_name,task)
+            task_layout = QtGui.QHBoxLayout()
+            task_name_label = QtGui.QLabel(task)
+            task_schedule_label= QtGui.QLabel(self.task.schedule)
+            task_asigned_to_label= QtGui.QLabel( self.task.asigned_to)
+            task_statut_label =  QtGui.QLabel(self.task.statut )
+            task_last_user_label = QtGui.QLabel(self.task.last_user)
+            task_last_edited_time = QtGui.QLabel( self.task.last_edited_time)
+            task_created_by_label = QtGui.QLabel(self.task.created_by )
+            self.file_name_without_extention = "%s_%s"%(self.package.package_name,task)
+            self.task_file_name_with_ex = get_file_without_extention(self.task.task_path, self.file_name_without_extention)
+            task_file_name_with_ex_label = QtGui.QLabel(self.task_file_name_with_ex)
+            #Button
+            self.open_task_button = QtGui.QPushButton("Open",self)
+            self.fodler_task_button = QtGui.QPushButton("Folder",self)
+            prev_task_button = QtGui.QPushButton("Prev",self)
+            #Connect button
+            path = os.path.join(self.task.task_path,"Wip")
+
+            self.open_task_button.clicked.connect(lambda path=self.task.task_path, fname_no_ext=self.file_name_without_extention:open_file_without_extention(path,fname_no_ext))
+            self.fodler_task_button.clicked.connect(lambda path=path: open_folder_location(path))
+
+            row = row+1
+
+            self.all_tasks_layout.addWidget(task_name_label,row,1)
+            self.all_tasks_layout.addWidget(task_schedule_label,row,2)
+            self.all_tasks_layout.addWidget(task_asigned_to_label,row,3)
+            self.all_tasks_layout.addWidget(task_statut_label,row,4)
+            self.all_tasks_layout.addWidget(task_last_user_label,row,5)
+            self.all_tasks_layout.addWidget(task_last_edited_time,row,6)
+            self.all_tasks_layout.addWidget(task_created_by_label,row,7)
+            self.all_tasks_layout.addWidget(task_file_name_with_ex_label,row,8)
+            self.all_tasks_layout.addWidget(self.open_task_button,row,9)
+            self.all_tasks_layout.addWidget(self.fodler_task_button,row,10)
+            self.all_tasks_layout.addWidget(prev_task_button,row,11)
 
     def create_comment_package(self):
         '''
@@ -305,19 +369,28 @@ class MainWindow(QtGui.QMainWindow):
         self.comment_edit_button.clicked.connect(lambda: open_file_to_bloc_note(all_com.comment_file_path))
 
         self.comment_add_button = QtGui.QPushButton("Add")
-        self.comment_add_text = QtGui.QTextEdit("yo")
-       # self.comment_add_text.clicked.connect(lambda: self.add_new_comment())
+        self.comment_add_text = QtGui.QTextEdit("New comment")
+        self.comment_add_button.clicked.connect(lambda: self.add_new_comment())
+
         self.comment_button_layout = QtGui.QHBoxLayout()
         self.comment_button_layout.addWidget(self.comment_edit_button)
         self.comment_button_layout.addWidget(self.comment_add_button)
 
-        #Comment txt
-        self.com_grid_layout = QtGui.QGridLayout()
+
+        #Scroll on comment
+        self.scroll_comment = QtGui.QScrollArea()
+        self.scroll_comment.setWidgetResizable(True)
+        self.scroll_comment.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+        self.com_grid_widget = QtGui.QWidget()
+        self.com_grid_layout = QtGui.QGridLayout(self.com_grid_widget)
+
         all_com = Comment(self.package.package_name)
         row = 0
         colum = 0
 
-        for com in all_com.comment_dictionary.keys():
+        for com in sorted(all_com.comment_dictionary.keys(), reverse=True):
             comment_text = all_com.comment_dictionary[com].get('comment','unknown')
             comment_text_label = QtGui.QLabel(str(comment_text))
             comment_date_label = QtGui.QLabel(all_com.comment_dictionary[com].get('date','unknown'))
@@ -331,15 +404,15 @@ class MainWindow(QtGui.QMainWindow):
 
 
 
-
-        self.package_comment_layout.addLayout(self.com_grid_layout)
+        self.scroll_comment.setWidget(self.com_grid_widget)
+        self.package_comment_layout.addWidget(self.scroll_comment)
         self.package_comment_layout.addLayout(self.comment_button_layout)
         self.package_comment_layout.addWidget(self.comment_add_text)
 
-
     def add_new_comment(self):
-        comment_txt = self.comment_add_text.text()
-        new_com = Comment(self.package,  )
+        comment_txt = str(self.comment_add_text.toPlainText())
+        new_com = Comment(self.package.package_name, True, comment_txt)
+        self.create_comment_package()
 
     def create_metadata_package(self):
         '''
@@ -365,6 +438,9 @@ class MainWindow(QtGui.QMainWindow):
         self.package_mini.setPixmap(pixmap)
 
         return
+
+
+###########DOCK CONTACT SHEET###################################
     def create_dock_contact_sheet(self):
         '''
         Create a contact sheet of all package
@@ -430,7 +506,7 @@ class MainWindow(QtGui.QMainWindow):
         self.scroll.setWidgetResizable(True)
 
         self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scroll.setWidget(self.contact_sheet_widget)
 
@@ -440,6 +516,183 @@ class MainWindow(QtGui.QMainWindow):
         dock.setWidget(self.scroll)
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
+
+    """
+    def create_dock_management_package(self):
+
+
+        self.management_main_widget = QtGui.QWidget()
+        self.management_main_layout = QtGui.QVBoxLayout(self.management_main_widget)
+
+
+        row = 0
+        colum = -1
+        #Create Dock
+        dock = QtGui.QDockWidget("Management Package", self)
+        dock.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.RightDockWidgetArea | QtCore.Qt.BottomDockWidgetArea)
+
+
+        self.info_package_layout = QtGui.QHBoxLayout()
+        self.layout_cut_in_cut_out= QtGui.QHBoxLayout()
+        self.all_tasks_layout = QtGui.QVBoxLayout()
+        self.all_tasks_layout_groupbox = QtGui.QGroupBox("Tasks")
+        self.all_tasks_layout_groupbox.setLayout(self.all_tasks_layout)
+
+
+        #Create Widget
+        self.package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
+        self.package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
+        self.package_kind_combo.addItem("Prop")
+        self.package_kind_combo.addItem("Back")
+        self.package_kind_combo.addItem("Char")
+        self.package_kind_combo.addItem("Shot")
+
+        self.sequence_combo = QtGui.QComboBox(self)   #Layout combopackge
+        sequence_list =  ast.literal_eval(read_text_file(os.path.join(script_root_dir,'data\sequence')))
+        for sequence in sequence_list:
+            self.sequence_combo.addItem(sequence)
+
+
+        self.create_new_task_button = QtGui.QPushButton('+ Task ')
+        #Create Widget User
+        self.user_asigned_to_combo = QtGui.QComboBox(self)
+        self.user = User()
+        for user in self.user.all_user_dictionary.keys():
+            self.user_asigned_to_combo.addItem(user)
+
+        self.create_new_package_button = QtGui.QPushButton('Create')
+
+        #Add widget/layoyut to main
+        self.info_package_layout.addWidget(self.package_name_edit)
+        self.info_package_layout.addWidget(QtGui.QLabel('Type'))
+        self.info_package_layout.addWidget(self.package_kind_combo)
+        self.info_package_layout.addWidget(QtGui.QLabel('AssignTo'))
+        self.info_package_layout.addWidget(self.user_asigned_to_combo)
+        self.info_package_layout.addLayout(self.layout_cut_in_cut_out)
+        self.info_package_layout.addWidget(self.sequence_combo)
+        self.info_package_layout.addWidget(self.create_new_package_button)
+        self.management_main_layout.addLayout(self.info_package_layout)
+        self.management_main_layout.addWidget(self.create_new_task_button)
+
+
+        self.management_main_layout.addWidget( self.all_tasks_layout_groupbox)
+        self.uptdate_task_list ('Back')
+        #Get tasks
+
+
+
+        #Connect
+        self.package_kind_combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
+        self.create_new_package_button.clicked.connect(self.on_create_new_package_cliked)
+        self.create_new_task_button.clicked.connect(self.add_new_task_gui)
+
+
+
+        self.scroll = QtGui.QScrollArea()
+
+        self.scroll.setWidgetResizable(True)
+
+        self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+        self.scroll.setWidget(self.management_main_widget)
+
+
+        dock.setWidget(self.scroll)
+        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
+        self.viewMenu.addAction(dock.toggleViewAction())
+    """
+    def uptdate_task_list(self, kind):
+        '''
+        Create all the task of a template. (modelling,shading...)
+        :param kind:
+        :return:
+        '''
+        script_root_dir = os.path.abspath(__file__ + "/../../")
+
+        project_database_file_path = os.path.join(script_root_dir,'data\project_database')
+        template_all_task = read_dictionary_from_file(os.path.join(script_root_dir,'data\\template'))
+        print template_all_task
+        clearLayout(self.all_tasks_layout)
+        self.tasks_list_template = template_all_task.get(kind,'unknown')
+        self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
+        for task in self.tasks_list_template:
+            self.add_new_task_gui(task,self.user.all_user_dictionary)
+
+
+            print task
+
+
+
+    def add_new_task_gui(self,task="", all_user_dic={}):
+        '''
+        Create one task
+        :param task: task name
+        :param all_user_dic: combo box of users
+        :return:
+        '''
+        if all_user_dic is {}:
+            self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
+        task_layout = QtGui.QHBoxLayout()
+        self.task_name = QtGui.QLineEdit(task)
+        self.label_task_name= QtGui.QLabel('Task name:')
+        self.label_asigned = QtGui.QLabel('Asigned To:')
+        self.label_schedule= QtGui.QLabel('Schedule:')
+        self.user_asigned_to_combo = QtGui.QComboBox(self)
+        self.user_asigned_to_combo.addItem('All')
+        self.schedule_date_time = QtGui.QDateTimeEdit()
+        self.schedule_date_time.setDateTime(QtCore.QDateTime.currentDateTime())
+
+
+        for user in self.user.all_user_dictionary.keys():
+            self.user_asigned_to_combo.addItem(user)
+
+
+        task_layout.addWidget(self.label_task_name)
+        task_layout.addWidget(self.task_name)
+        task_layout.addWidget(self.label_asigned)
+        task_layout.addWidget(self.user_asigned_to_combo)
+        task_layout.addWidget(self.label_schedule)
+        task_layout.addWidget(self.schedule_date_time)
+        self.all_tasks_layout.addLayout(task_layout)
+
+
+    def on_create_new_package_cliked(self):
+        package = Package(str(self.package_kind_combo.currentText())+"_"+str(self.package_name_edit.text()),
+                          True ,
+                          str(self.package_kind_combo.currentText()),
+                          'Un chouette test de package',
+                          str(self.user_asigned_to_combo.currentText()),
+                          str(self.sequence_combo.currentText())
+                         )
+
+
+        item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
+        for task_layout in item_task:
+            self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
+            print self.task_name
+        #create_task_folders(task_dic)
+
+
+    def on_combo_box_Activated(self, text):
+        clearLayout(self.layout_cut_in_cut_out)
+        self.uptdate_task_list(text)
+        if text == "Shot":
+            self.cut_in = QtGui.QSpinBox()
+            self.cut_in.setSingleStep(1)
+
+            self.cut_out = QtGui.QSpinBox()
+            self.cut_out.setSingleStep(1)
+            self.cut_in.setMaximum(666666)
+            self.cut_out.setMaximum(666666)
+            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutIn'))
+            self.layout_cut_in_cut_out.addWidget(self.cut_in)
+            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutOut'))
+            self.layout_cut_in_cut_out.addWidget(self.cut_out)
+
+        else:
+            clearLayout(self.layout_cut_in_cut_out)
+
 
     def createDockWindows(self):
         dock = QtGui.QDockWidget("Yo", self)

@@ -5,6 +5,7 @@ from app.package import  *
 import uuid
 import sys
 import os.path, time
+from time import gmtime, strftime
 from core import *
 from PySide import QtCore, QtGui
 
@@ -17,11 +18,11 @@ class Comment:
         self.comment_file_name = "%s_comment.txt"%(package_name)
         self.comment_file_path = os.path.join(project.project_root,package_name,self.comment_file_name)
         if write is True:
-            self.new_comment_dic = {str(uuid.uuid4()):
+            self.new_comment_dic = {strftime("%Y-%m-%d %H:%M:%S", gmtime()):
                 {
                     "user":session_config.session_user_name,
                     "comment": comment_txt,
-                    "date": str(get_time_now()),
+                    "date": strftime("%Y-%m-%d %H:%M:%S", gmtime()),
                     "file": "unknown"}
                 }
 
