@@ -30,7 +30,7 @@ class Example(QtGui.QWidget):
             self.layout.addWidget(lbl)
 
 
-        self.setGeometry(300, 300, 280, 170)
+        self.setGeometry(300, 300, 280, 170)  #s
         self.setWindowTitle('Image viewer')
         self.show()
 
