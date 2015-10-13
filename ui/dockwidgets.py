@@ -294,13 +294,48 @@ class MainWindow(QtGui.QMainWindow):
         self.viewMenu.addAction(dock.toggleViewAction())
 
     def create_comment_package(self):
+        '''
+        Create a layout for the package comment
+        :return:
+        '''
         clearLayout(self.package_comment_layout)
+        #Button Comment
         self.comment_edit_button = QtGui.QPushButton("Edit")
+        self.comment_edit_button.clicked.connect(lambda: open_file_to_bloc_note(all_com.comment_file_path))
+
         self.comment_add_button = QtGui.QPushButton("Add")
+        self.comment_add_text = QtGui.QTextEdit("yo")
+        self.comment_add_text.clicked.connect(lambda: )
         self.comment_button_layout = QtGui.QHBoxLayout()
         self.comment_button_layout.addWidget(self.comment_edit_button)
         self.comment_button_layout.addWidget(self.comment_add_button)
+
+        #Comment txt
+        self.com_grid_layout = QtGui.QGridLayout()
+        all_com = Comment(self.package.package_name)
+        row = 0
+        colum = 0
+
+        for com in all_com.comment_dictionary.keys():
+            comment_text = all_com.comment_dictionary[com].get('comment','unknown')
+            comment_text_label = QtGui.QLabel(str(comment_text))
+            comment_date_label = QtGui.QLabel(all_com.comment_dictionary[com].get('date','unknown'))
+            comment_file_label = QtGui.QLabel(all_com.comment_dictionary[com].get('file','unkown'))
+            comment_user_label = QtGui.QLabel(all_com.comment_dictionary[com].get('user','unkown'))
+            self.com_grid_layout.addWidget(comment_date_label,row,0)
+            self.com_grid_layout.addWidget(comment_text_label,row,1)
+            self.com_grid_layout.addWidget(comment_file_label,row,2)
+            self.com_grid_layout.addWidget(comment_user_label,row,3)
+            row = row + 1
+
+
+
+
+        self.package_comment_layout.addLayout(self.com_grid_layout)
         self.package_comment_layout.addLayout(self.comment_button_layout)
+        self.package_comment_layout.addWidget(self.comment_add_text)
+
+
 
     def create_metadata_package(self):
         '''
