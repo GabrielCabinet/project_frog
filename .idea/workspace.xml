@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0528c278-cd3d-48ab-b6ec-7a292c101587" name="Default" comment="supinfocom">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/core.py" afterPath="$PROJECT_DIR$/app/core.py" />
+    <list default="true" id="0528c278-cd3d-48ab-b6ec-7a292c101587" name="Default" comment="supinfocom02">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/softwares/3dsmax.max" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/softwares/Maya.mb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/softwares/ZBrush.ZPR" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/softwares/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ui/dockwidgets.py" afterPath="$PROJECT_DIR$/ui/dockwidgets.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/package.py" afterPath="$PROJECT_DIR$/app/package.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/task.py" afterPath="$PROJECT_DIR$/app/task.py" />
@@ -36,9 +39,9 @@
                   <caret line="84" column="74" selection-start-line="84" selection-start-column="74" selection-end-line="84" selection-end-column="74" />
                   <folding>
                     <element signature="e#25#34#0" expanded="true" />
-                    <element signature="e#4184#4432#0" expanded="false" />
-                    <element signature="e#4491#4754#0" expanded="false" />
-                    <element signature="e#4813#5078#0" expanded="false" />
+                    <element signature="e#3139#3387#0" expanded="false" />
+                    <element signature="e#3446#3709#0" expanded="false" />
+                    <element signature="e#3768#4033#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -91,8 +94,18 @@
           <file leaf-file-name="task.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/task.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.85955054">
-                  <caret line="39" column="42" selection-start-line="39" selection-start-column="42" selection-end-line="39" selection-end-column="42" />
+                <state vertical-scroll-proportion="0.83426964">
+                  <caret line="54" column="80" selection-start-line="54" selection-start-column="80" selection-end-line="54" selection-end-column="80" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="__builtin__.py" pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/.PyCharm40/system/python_stubs/-762174762/__builtin__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="1825" column="8" selection-start-line="1825" selection-start-column="8" selection-end-line="1825" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -132,16 +145,16 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="package.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="package.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/package.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.0266854">
-                  <caret line="97" column="38" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="47" />
+                <state vertical-scroll-proportion="0.0">
+                  <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="80" selection-end-column="44" />
                   <folding>
                     <element signature="e#25#34#0" expanded="true" />
-                    <element signature="e#4184#4432#0" expanded="false" />
-                    <element signature="e#4491#4754#0" expanded="false" />
-                    <element signature="e#4813#5078#0" expanded="false" />
+                    <element signature="e#3139#3387#0" expanded="false" />
+                    <element signature="e#3446#3709#0" expanded="false" />
+                    <element signature="e#3768#4033#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -151,7 +164,7 @@
             <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="686" column="51" selection-start-line="686" selection-start-column="51" selection-end-line="686" selection-end-column="51" />
+                  <caret line="686" column="79" selection-start-line="686" selection-start-column="79" selection-end-line="686" selection-end-column="79" />
                   <folding>
                     <element signature="e#1185#1202#0" expanded="true" />
                   </folding>
@@ -169,11 +182,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="core.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="core.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/core.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="15" />
+                <state vertical-scroll-proportion="0.4747191">
+                  <caret line="174" column="0" selection-start-line="174" selection-start-column="0" selection-end-line="175" selection-end-column="29" />
                   <folding>
                     <element signature="e#20#37#0" expanded="true" />
                   </folding>
@@ -185,7 +198,7 @@
             <entry file="file://C:/Python27/Lib/shutil.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state vertical-scroll-proportion="0.0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                  <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
                   <folding />
                 </state>
               </provider>
@@ -260,9 +273,9 @@
         <option value="$PROJECT_DIR$/app/dockwidgets.py" />
         <option value="$PROJECT_DIR$/data/project_database" />
         <option value="$PROJECT_DIR$/app/comment.py" />
-        <option value="$PROJECT_DIR$/app/package.py" />
         <option value="$PROJECT_DIR$/softwares/test.py" />
         <option value="$PROJECT_DIR$/app/core.py" />
+        <option value="$PROJECT_DIR$/app/package.py" />
         <option value="$PROJECT_DIR$/ui/dockwidgets.py" />
         <option value="$PROJECT_DIR$/app/task.py" />
       </list>
@@ -897,14 +910,20 @@
       <option name="project" value="LOCAL" />
       <updated>1444750087121</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="supinfocom02">
+      <created>1444835881766</created>
+      <option name="number" value="00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1444835881766</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12328767" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12328767" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29186603" sideWeight="0.54004216" order="12" side_tool="true" content_ui="tabs" />
@@ -954,7 +973,8 @@
     <MESSAGE value="combo box0" />
     <MESSAGE value="add jury" />
     <MESSAGE value="supinfocom" />
-    <option name="LAST_COMMIT_MESSAGE" value="supinfocom" />
+    <MESSAGE value="supinfocom02" />
+    <option name="LAST_COMMIT_MESSAGE" value="supinfocom02" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1002,25 +1022,15 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/users.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="15" selection-start-line="25" selection-start-column="15" selection-end-line="25" selection-end-column="15" />
-          <folding>
-            <element signature="e#0#18#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/package.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
-            <element signature="e#4184#4432#0" expanded="false" />
-            <element signature="e#4491#4754#0" expanded="false" />
-            <element signature="e#4813#5078#0" expanded="false" />
+            <element signature="e#3139#3387#0" expanded="false" />
+            <element signature="e#3446#3709#0" expanded="false" />
+            <element signature="e#3768#4033#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1101,9 +1111,9 @@
           <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
-            <element signature="e#4184#4432#0" expanded="false" />
-            <element signature="e#4491#4754#0" expanded="false" />
-            <element signature="e#4813#5078#0" expanded="false" />
+            <element signature="e#3139#3387#0" expanded="false" />
+            <element signature="e#3446#3709#0" expanded="false" />
+            <element signature="e#3768#4033#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1149,9 +1159,9 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
-            <element signature="e#4184#4432#0" expanded="false" />
-            <element signature="e#4491#4754#0" expanded="false" />
-            <element signature="e#4813#5078#0" expanded="false" />
+            <element signature="e#3139#3387#0" expanded="false" />
+            <element signature="e#3446#3709#0" expanded="false" />
+            <element signature="e#3768#4033#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1404,49 +1414,57 @@
     <entry file="file://C:/Python27/Lib/shutil.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/core.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="15" />
-          <folding>
-            <element signature="e#20#37#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="686" column="51" selection-start-line="686" selection-start-column="51" selection-end-line="686" selection-end-column="51" />
+          <caret line="686" column="79" selection-start-line="686" selection-start-column="79" selection-end-line="686" selection-end-column="79" />
           <folding>
             <element signature="e#1185#1202#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/task.py">
+    <entry file="file://$PROJECT_DIR$/app/package.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.85955054">
-          <caret line="39" column="42" selection-start-line="39" selection-start-column="42" selection-end-line="39" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="74" selection-start-line="84" selection-start-column="74" selection-end-line="84" selection-end-column="74" />
+          <folding>
+            <element signature="e#25#34#0" expanded="true" />
+            <element signature="e#3139#3387#0" expanded="false" />
+            <element signature="e#3446#3709#0" expanded="false" />
+            <element signature="e#3768#4033#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4747191">
+          <caret line="174" column="0" selection-start-line="174" selection-start-column="0" selection-end-line="175" selection-end-column="29" />
+          <folding>
+            <element signature="e#20#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm40/system/python_stubs/-762174762/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1825" column="8" selection-start-line="1825" selection-start-column="8" selection-end-line="1825" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/package.py">
+    <entry file="file://$PROJECT_DIR$/app/task.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0266854">
-          <caret line="97" column="38" selection-start-line="97" selection-start-column="38" selection-end-line="97" selection-end-column="47" />
-          <folding>
-            <element signature="e#25#34#0" expanded="true" />
-            <element signature="e#4184#4432#0" expanded="false" />
-            <element signature="e#4491#4754#0" expanded="false" />
-            <element signature="e#4813#5078#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.83426964">
+          <caret line="54" column="80" selection-start-line="54" selection-start-column="80" selection-end-line="54" selection-end-column="80" />
+          <folding />
         </state>
       </provider>
     </entry>

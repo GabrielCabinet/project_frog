@@ -684,7 +684,7 @@ class ManagementWindow(QtGui.QDialog):
         self.schedule_date_time = QtGui.QDateEdit()
         self.schedule_date_time.setDateTime(QtCore.QDateTime.currentDateTime())
         self.file_type_combo_box = QtGui.QComboBox(self)
-        self.file_type_combo_box.addItems(["Maya.mb","Nuke.nk","3dsmax.max","Zbrush.zpr"])
+        self.file_type_combo_box.addItems(["Maya.mb","Nuke.nk","3dsmax.max","ZBrush.zpr"])
 
 
         for user in self.user.all_user_dictionary.keys():
@@ -716,7 +716,9 @@ class ManagementWindow(QtGui.QDialog):
             self.assigned = str(task_layout.layout().itemAt(3).widget().currentText())
             self.schedule = task_layout.layout().itemAt(5).widget().dateTime().toString("yyyy.MM.dd")
             self.file_type = str(task_layout.layout().itemAt(6).widget().currentText())
-            self.package.create_task_folders(self.task_name,self.assigned,self.schedule,self.file_type)
+            # TASK CREATION (folder, subfolder,metadata)
+            self.task = Task(self.package.package_name,self.task_name,True,'new',self.schedule,self.assigned,self.file_type)
+
 
 
     def on_combo_box_Activated(self, text):

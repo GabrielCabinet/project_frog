@@ -49,7 +49,7 @@ class Package():
         try:
             if argv[0] is True:
 
-                self.sub_folders =   ["Wip","Output","Preview"]
+
                 self.package_kind = argv[1]
 
                 self.package_description = argv[2]
@@ -83,30 +83,7 @@ class Package():
 
 
     def create_task_folders(self, task_name,asigned_to,schedule, file_type):
-        '''
-        Create folder and subfolder for ONE task
-        |---- Modeling
-        |-------------Wip
-        |-------------Output
-        |-------------Preview
-        :param task_name: Modeling
-        :return:
-        '''
-        # Create folder and sub_folders for one task
-
-        # Get the path, check if folder already exist, then create it.
-        task_path = os.path.join(self.root_path, self.package_name, task_name)  # ROOT_PATH/PACKAGE_NAME/TASK_NAME
-        if not os.path.exists(task_path):
-            os.makedirs(task_path)
-            task = Task( self.package_name, str(task_name),True,'new',schedule,asigned_to,file_type)
-
-            # Create the subfolder of the task
-            for folder in self.sub_folders:
-                folder_path = os.path.join(task_path,folder)
-                if not os.path.exists(folder_path):
-                    os.makedirs(folder_path)
-        else:
-            print "Folder already existe. Can't create task folder:"+ task_name
+        pass
 
 
 
