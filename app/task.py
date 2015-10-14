@@ -5,11 +5,11 @@ from Project import  *
 from users import *
 session_config = SessionConfig()
 project = Project(session_config.session_project_name)
-
+import shutil
 
 class Task:
-    def __init__ (self,package_name,task_name, write=False,statut='wip',schedule="",asigned_to=""):
-
+    def __init__ (self,package_name,task_name, write=False,statut='new',schedule="",asigned_to="", file_type="maya"):
+        self.package_name = package_name
         self.task_path = os.path.join(project.project_root,package_name,task_name)
         self.task_path_metadata_filename = "%s_%s_metadata.txt"%(package_name,task_name)
         self.task_path_metadata_filepath = os.path.join(self.task_path, self.task_path_metadata_filename)
@@ -36,6 +36,8 @@ class Task:
                                     'created_by':str(self.created_time)
                                     }
             write_dic_to_file(self.task_path_metadata_filepath,self.task_dictionary)
+            self.file_type = file_type
+            self.create_defaut_file_type()
 
         else:
             self.task_dictionary = read_dictionary_from_file(self.task_path_metadata_filepath)
@@ -52,4 +54,14 @@ class Task:
         self.refresh_task()
         update_dic_with_new_dic_to_disk(self.task_dictionary, comment_dic, self.file)
         return
+
+    def create_defaut_file_type(self):
+
+        fname = os.path.join(script_root_dir,'softwares',self.file_type)
+        print fname
+        if os.path.isfile(fname):
+            fname_copied = "%s_%s_001"%(self.package_name,self.task_name)
+            fname_copy_file_path = os.path.join(self.task_path,"Wip",fname_copied)
+            shutil.copy(fname,fname_copy_file_path)
+
 

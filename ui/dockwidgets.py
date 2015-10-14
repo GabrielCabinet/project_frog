@@ -39,6 +39,7 @@ project_root = project.project_root
 class MainWindow(QtGui.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.show_mangement_window()
 
 
         self.session_config = SessionConfig()
@@ -517,181 +518,8 @@ class MainWindow(QtGui.QMainWindow):
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
 
-    """
-    def create_dock_management_package(self):
 
 
-        self.management_main_widget = QtGui.QWidget()
-        self.management_main_layout = QtGui.QVBoxLayout(self.management_main_widget)
-
-
-        row = 0
-        colum = -1
-        #Create Dock
-        dock = QtGui.QDockWidget("Management Package", self)
-        dock.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.RightDockWidgetArea | QtCore.Qt.BottomDockWidgetArea)
-
-
-        self.info_package_layout = QtGui.QHBoxLayout()
-        self.layout_cut_in_cut_out= QtGui.QHBoxLayout()
-        self.all_tasks_layout = QtGui.QVBoxLayout()
-        self.all_tasks_layout_groupbox = QtGui.QGroupBox("Tasks")
-        self.all_tasks_layout_groupbox.setLayout(self.all_tasks_layout)
-
-
-        #Create Widget
-        self.package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
-        self.package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
-        self.package_kind_combo.addItem("Prop")
-        self.package_kind_combo.addItem("Back")
-        self.package_kind_combo.addItem("Char")
-        self.package_kind_combo.addItem("Shot")
-
-        self.sequence_combo = QtGui.QComboBox(self)   #Layout combopackge
-        sequence_list =  ast.literal_eval(read_text_file(os.path.join(script_root_dir,'data\sequence')))
-        for sequence in sequence_list:
-            self.sequence_combo.addItem(sequence)
-
-
-        self.create_new_task_button = QtGui.QPushButton('+ Task ')
-        #Create Widget User
-        self.user_asigned_to_combo = QtGui.QComboBox(self)
-        self.user = User()
-        for user in self.user.all_user_dictionary.keys():
-            self.user_asigned_to_combo.addItem(user)
-
-        self.create_new_package_button = QtGui.QPushButton('Create')
-
-        #Add widget/layoyut to main
-        self.info_package_layout.addWidget(self.package_name_edit)
-        self.info_package_layout.addWidget(QtGui.QLabel('Type'))
-        self.info_package_layout.addWidget(self.package_kind_combo)
-        self.info_package_layout.addWidget(QtGui.QLabel('AssignTo'))
-        self.info_package_layout.addWidget(self.user_asigned_to_combo)
-        self.info_package_layout.addLayout(self.layout_cut_in_cut_out)
-        self.info_package_layout.addWidget(self.sequence_combo)
-        self.info_package_layout.addWidget(self.create_new_package_button)
-        self.management_main_layout.addLayout(self.info_package_layout)
-        self.management_main_layout.addWidget(self.create_new_task_button)
-
-
-        self.management_main_layout.addWidget( self.all_tasks_layout_groupbox)
-        self.uptdate_task_list ('Back')
-        #Get tasks
-
-
-
-        #Connect
-        self.package_kind_combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
-        self.create_new_package_button.clicked.connect(self.on_create_new_package_cliked)
-        self.create_new_task_button.clicked.connect(self.add_new_task_gui)
-
-
-
-        self.scroll = QtGui.QScrollArea()
-
-        self.scroll.setWidgetResizable(True)
-
-        self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-
-        self.scroll.setWidget(self.management_main_widget)
-
-
-        dock.setWidget(self.scroll)
-        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
-        self.viewMenu.addAction(dock.toggleViewAction())
-    """
-    def uptdate_task_list(self, kind):
-        '''
-        Create all the task of a template. (modelling,shading...)
-        :param kind:
-        :return:
-        '''
-        script_root_dir = os.path.abspath(__file__ + "/../../")
-
-        project_database_file_path = os.path.join(script_root_dir,'data\project_database')
-        template_all_task = read_dictionary_from_file(os.path.join(script_root_dir,'data\\template'))
-        print template_all_task
-        clearLayout(self.all_tasks_layout)
-        self.tasks_list_template = template_all_task.get(kind,'unknown')
-        self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
-        for task in self.tasks_list_template:
-            self.add_new_task_gui(task,self.user.all_user_dictionary)
-
-
-            print task
-
-
-
-    def add_new_task_gui(self,task="", all_user_dic={}):
-        '''
-        Create one task
-        :param task: task name
-        :param all_user_dic: combo box of users
-        :return:
-        '''
-        if all_user_dic is {}:
-            self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
-        task_layout = QtGui.QHBoxLayout()
-        self.task_name = QtGui.QLineEdit(task)
-        self.label_task_name= QtGui.QLabel('Task name:')
-        self.label_asigned = QtGui.QLabel('Asigned To:')
-        self.label_schedule= QtGui.QLabel('Schedule:')
-        self.user_asigned_to_combo = QtGui.QComboBox(self)
-        self.user_asigned_to_combo.addItem('All')
-        self.schedule_date_time = QtGui.QDateTimeEdit()
-        self.schedule_date_time.setDateTime(QtCore.QDateTime.currentDateTime())
-
-
-        for user in self.user.all_user_dictionary.keys():
-            self.user_asigned_to_combo.addItem(user)
-
-
-        task_layout.addWidget(self.label_task_name)
-        task_layout.addWidget(self.task_name)
-        task_layout.addWidget(self.label_asigned)
-        task_layout.addWidget(self.user_asigned_to_combo)
-        task_layout.addWidget(self.label_schedule)
-        task_layout.addWidget(self.schedule_date_time)
-        self.all_tasks_layout.addLayout(task_layout)
-
-
-    def on_create_new_package_cliked(self):
-        package = Package(str(self.package_kind_combo.currentText())+"_"+str(self.package_name_edit.text()),
-                          True ,
-                          str(self.package_kind_combo.currentText()),
-                          'Un chouette test de package',
-                          str(self.user_asigned_to_combo.currentText()),
-                          str(self.sequence_combo.currentText())
-                         )
-
-
-        item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
-        for task_layout in item_task:
-            self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
-            print self.task_name
-        #create_task_folders(task_dic)
-
-
-    def on_combo_box_Activated(self, text):
-        clearLayout(self.layout_cut_in_cut_out)
-        self.uptdate_task_list(text)
-        if text == "Shot":
-            self.cut_in = QtGui.QSpinBox()
-            self.cut_in.setSingleStep(1)
-
-            self.cut_out = QtGui.QSpinBox()
-            self.cut_out.setSingleStep(1)
-            self.cut_in.setMaximum(666666)
-            self.cut_out.setMaximum(666666)
-            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutIn'))
-            self.layout_cut_in_cut_out.addWidget(self.cut_in)
-            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutOut'))
-            self.layout_cut_in_cut_out.addWidget(self.cut_out)
-
-        else:
-            clearLayout(self.layout_cut_in_cut_out)
 
 
     def createDockWindows(self):
@@ -736,6 +564,179 @@ class MainWindow(QtGui.QMainWindow):
         self.customerList.currentTextChanged.connect(self.insertCustomer)
         self.paragraphsList.currentTextChanged.connect(self.addParagraph)
 
+    def show_mangement_window(self):
+        p=ManagementWindow(self)
+        p.show()
+
+
+class ManagementWindow(QtGui.QDialog):
+    def __init__(self, parent=None):
+        QtGui.QDialog.__init__(self, parent)
+        self.setWindowTitle('PRC Editor')
+        self.resize(100,100)
+
+        self.create_dock_management_package()
+
+
+    def create_dock_management_package(self):
+
+        self.management_main_widget = QtGui.QWidget()
+        self.management_main_layout = QtGui.QVBoxLayout(self.management_main_widget)
+
+        row = 0
+        colum = -1
+
+        self.info_package_layout = QtGui.QHBoxLayout()
+        self.layout_cut_in_cut_out= QtGui.QHBoxLayout()
+        self.all_tasks_layout = QtGui.QVBoxLayout()
+        self.all_tasks_layout_groupbox = QtGui.QGroupBox("Tasks")
+        self.all_tasks_layout_groupbox.setLayout(self.all_tasks_layout)
+
+        #Create Widget
+        self.package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
+        self.package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
+        self.package_kind_combo.addItem("Prop")
+        self.package_kind_combo.addItem("Back")
+        self.package_kind_combo.addItem("Char")
+        self.package_kind_combo.addItem("Shot")
+
+        self.sequence_combo = QtGui.QComboBox(self)   #Layout combopackge
+        sequence_list =  ast.literal_eval(read_text_file(os.path.join(script_root_dir,'data\sequence')))
+        for sequence in sequence_list:
+            self.sequence_combo.addItem(sequence)
+
+        self.create_new_task_button = QtGui.QPushButton('+ Task ')
+        #Create Widget User
+        self.user_asigned_to_combo = QtGui.QComboBox(self)
+        self.user = User()
+        for user in self.user.all_user_dictionary.keys():
+            self.user_asigned_to_combo.addItem(user)
+
+        self.create_new_package_button = QtGui.QPushButton('Create')
+
+        #Add widget/layoyut to main
+        self.info_package_layout.addWidget(self.package_name_edit)
+        self.info_package_layout.addWidget(QtGui.QLabel('Type'))
+        self.info_package_layout.addWidget(self.package_kind_combo)
+        self.info_package_layout.addWidget(QtGui.QLabel('AssignTo'))
+        self.info_package_layout.addWidget(self.user_asigned_to_combo)
+        self.info_package_layout.addLayout(self.layout_cut_in_cut_out)
+        self.info_package_layout.addWidget(self.sequence_combo)
+        self.info_package_layout.addWidget(self.create_new_package_button)
+        self.management_main_layout.addLayout(self.info_package_layout)
+        self.management_main_layout.addWidget(self.create_new_task_button)
+
+
+        self.management_main_layout.addWidget( self.all_tasks_layout_groupbox)
+        self.uptdate_task_list ('Back')
+
+        #Connect
+        self.package_kind_combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
+        self.create_new_package_button.clicked.connect(self.on_create_new_package_cliked)
+        self.create_new_task_button.clicked.connect(self.add_new_task_gui)
+
+
+        self.scroll = QtGui.QScrollArea()
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll.setWidget(self.management_main_widget)
+
+
+        self.holder_scroll_layout = QtGui.QHBoxLayout()
+        self.holder_scroll_layout.addWidget(self.scroll)
+        self.setLayout(self.holder_scroll_layout)
+
+
+    def uptdate_task_list(self, kind):
+        '''
+        Create all the task of a template. (modelling,shading...)
+        :param kind:
+        :return:
+        '''
+        script_root_dir = os.path.abspath(__file__ + "/../../")
+
+        project_database_file_path = os.path.join(script_root_dir,'data\project_database')
+        template_all_task = read_dictionary_from_file(os.path.join(script_root_dir,'data\\template'))
+        print template_all_task
+        clearLayout(self.all_tasks_layout)
+        self.tasks_list_template = template_all_task.get(kind,'unknown')
+        self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
+        for task in self.tasks_list_template:
+            self.add_new_task_gui(task,self.user.all_user_dictionary)
+
+    def add_new_task_gui(self,task="", all_user_dic={}):
+        '''
+        Create one task
+        :param task: task name
+        :param all_user_dic: combo box of users
+        :return:
+        '''
+        if all_user_dic is {}:
+            self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
+        task_layout = QtGui.QHBoxLayout()
+        self.task_name = QtGui.QLineEdit(task)
+        self.label_task_name= QtGui.QLabel('Task name:')
+        self.label_asigned = QtGui.QLabel('Asigned To:')
+        self.label_schedule= QtGui.QLabel('Schedule:')
+        self.user_asigned_to_combo = QtGui.QComboBox(self)
+        self.user_asigned_to_combo.addItem('All')
+        self.schedule_date_time = QtGui.QDateEdit()
+        self.schedule_date_time.setDateTime(QtCore.QDateTime.currentDateTime())
+        self.file_type_combo_box = QtGui.QComboBox(self)
+        self.file_type_combo_box.addItems(["Maya.mb","Nuke.nk","3dsmax.max","Zbrush.zpr"])
+
+
+        for user in self.user.all_user_dictionary.keys():
+            self.user_asigned_to_combo.addItem(user)
+
+
+        task_layout.addWidget(self.label_task_name)
+        task_layout.addWidget(self.task_name)
+        task_layout.addWidget(self.label_asigned)
+        task_layout.addWidget(self.user_asigned_to_combo)
+        task_layout.addWidget(self.label_schedule)
+        task_layout.addWidget(self.schedule_date_time)
+        task_layout.addWidget(self.file_type_combo_box)
+        self.all_tasks_layout.addLayout(task_layout)
+
+
+    def on_create_new_package_cliked(self):
+        self.package = Package(str(self.package_kind_combo.currentText())+"_"+str(self.package_name_edit.text()),
+                          True ,
+                          str(self.package_kind_combo.currentText()),
+                          'Un chouette test de package',
+                          str(self.user_asigned_to_combo.currentText()),
+                          str(self.sequence_combo.currentText())
+                         )
+
+        item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
+        for task_layout in item_task:
+            self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
+            self.assigned = str(task_layout.layout().itemAt(3).widget().currentText())
+            self.schedule = task_layout.layout().itemAt(5).widget().dateTime().toString("yyyy.MM.dd")
+            self.file_type = str(task_layout.layout().itemAt(6).widget().currentText())
+            self.package.create_task_folders(self.task_name,self.assigned,self.schedule,self.file_type)
+
+
+    def on_combo_box_Activated(self, text):
+        clearLayout(self.layout_cut_in_cut_out)
+        self.uptdate_task_list(text)
+        if text == "Shot":
+            self.cut_in = QtGui.QSpinBox()
+            self.cut_in.setSingleStep(1)
+
+            self.cut_out = QtGui.QSpinBox()
+            self.cut_out.setSingleStep(1)
+            self.cut_in.setMaximum(666666)
+            self.cut_out.setMaximum(666666)
+            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutIn'))
+            self.layout_cut_in_cut_out.addWidget(self.cut_in)
+            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutOut'))
+            self.layout_cut_in_cut_out.addWidget(self.cut_out)
+
+        else:
+            clearLayout(self.layout_cut_in_cut_out)
 
 if __name__ == '__main__':
 

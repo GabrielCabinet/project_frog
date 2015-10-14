@@ -5,10 +5,11 @@ import ast
 import sys
 import json
 import traceback
+import shutil
 import pprint
 from datetime import datetime
 script_root_dir = os.path.abspath(__file__ + "/../../")
-
+from time import gmtime, strftime
 import subprocess
 import webbrowser
 
@@ -46,7 +47,7 @@ def underscore_to_camelcase(text):
     return ''.join(word.title()  for i, word in enumerate(text.split('_')))
 
 def get_time_now():
-    now = datetime.now().time()
+    now = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
     return now
 
@@ -109,8 +110,6 @@ def convert_str_to_dic(str):
 """
 INPUT/OUTPUT
 """
-
-
 
 def read_text_file(file):
     """

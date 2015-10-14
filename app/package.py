@@ -39,8 +39,10 @@ class Package():
         self.root_path = project.project_root
         self.package_path = os.path.join(self.root_path,self.package_name)
         self.package_metadata_file_name = str(self.package_name)+'_metadata.txt'
+        self.package_comment_file_name = str(self.package_name)+'_comment_metadata.txt'
         self.package_mini_file_name = str(self.package_name)+'_mini.jpg'
         self.package_metadata_path = os.path.join(self.package_path,self.package_metadata_file_name)
+        self.package_comment_path  = os.path.join(self.package_path,self.package_comment_file_name)
 
 
         self.package_mini_path = os.path.join(self.package_path,self.package_mini_file_name)
@@ -53,15 +55,7 @@ class Package():
                 self.package_description = argv[2]
                 self.asigned_to = argv[3]
                 self.sequence = argv[4]
-                tasks_list_template_dic = {'Char':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
-                        'Prop': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
-                        'Back':["Reference", "Modeling", "Shading", "Textures"],
-                        'Shot': ["Animation", "Assembly", "Compositing", "FX","Layout","Layout_Anim","Lighting","Previz","Render_out"] }
-                try:
-                    self.tasks_list_template = tasks_list_template_dic.get(self.package_kind,'unknown')
-                except:
-                    msg  = self.package_name+ ': Cant get tasks list template from tasks list template dic'+str(str)
-                    print msg, sys.exc_info()[0]
+
 
             self.package_metadata_dic =  {'package_name':self.package_name,
                                               'package_king':self.package_kind,
@@ -73,11 +67,11 @@ class Package():
                                               'asigned_to':self.asigned_to,
                                               'sequence':self.sequence
                                           }
-            for task_name in self.tasks_list_template:
-                self.create_task_folders(task_name)
 
+            os.makedirs(self.package_path)
             write_dic_to_file(self.package_metadata_path, self.package_metadata_dic)
-            comment = Comment(self.package_name,True)
+            write_dic_to_file(self.package_comment_path,{})
+
         except:
             try:
                 self.package_metadata_dic = read_dictionary_from_file(self.package_metadata_path)
@@ -88,7 +82,7 @@ class Package():
 
 
 
-    def create_task_folders(self, task_name):
+    def create_task_folders(self, task_name,asigned_to,schedule, file_type):
         '''
         Create folder and subfolder for ONE task
         |---- Modeling
@@ -104,7 +98,7 @@ class Package():
         task_path = os.path.join(self.root_path, self.package_name, task_name)  # ROOT_PATH/PACKAGE_NAME/TASK_NAME
         if not os.path.exists(task_path):
             os.makedirs(task_path)
-            task = Task( self.package_name, str(task_name),True,'wip',"tomoro","gabi")
+            task = Task( self.package_name, str(task_name),True,'new',schedule,asigned_to,file_type)
 
             # Create the subfolder of the task
             for folder in self.sub_folders:
