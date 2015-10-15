@@ -61,7 +61,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.create_dock_contact_sheet()
         self.create_dock_package_info()
-#        self.create_dock_management_package()
+        self.create_dock_arborescence()
 
         self.setWindowTitle("Dock Widgets")
 
@@ -165,8 +165,51 @@ class MainWindow(QtGui.QMainWindow):
         self.create_metadata_package()
         self.create_comment_package()
         self.create_task_package()
+        self.tree_focus()
+
+    def tree_focus(self):
+        pass
 
 
+
+
+############ARBO#########################################
+    def create_dock_arborescence(self):
+        '''
+        Init dock package information.
+        Dock package information groupe:
+        -The preview
+        -Comments
+        -Tasks
+        :param package: name of the package
+        :return:
+        '''
+
+        dock = QtGui.QDockWidget("Arborescence", self)
+
+
+        self.model = QtGui.QFileSystemModel()
+        self.model.setRootPath("D://project_viva")
+        self.model.setNameFilters(['metadata','comment'])
+        self.model.setReadOnly(False)
+
+
+
+        self.tree = QtGui.QTreeView()
+        self.tree.setModel(self.model)
+
+        self.tree.setRootIndex(self.model.index("D://project_viva"))
+        self.tree.setAnimated(True)
+
+        self.tree.setWindowTitle("Dir View")
+        self.tree.setModel(self.model)
+
+
+     #   self.create_metadata_package()
+
+        dock.setWidget(self.tree)
+        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
+        self.viewMenu.addAction(dock.toggleViewAction())
 #############DOCK INFO####################################
     def create_dock_package_info(self, package=""):
         '''

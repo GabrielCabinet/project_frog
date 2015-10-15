@@ -1,42 +1,48 @@
-__author__ = 'GABI'
-from PySide.QtCore import *
-from PySide.QtGui import *
+#!/usr/bin/python
+
+############################################################################
+##
+## Copyright (C) 2004-2005 Trolltech AS. All rights reserved.
+##
+## This file is part of the example classes of the Qt Toolkit.
+##
+## This file may be used under the terms of the GNU General Public
+## License version 2.0 as published by the Free Software Foundation
+## and appearing in the file LICENSE.GPL included in the packaging of
+## this file.  Please review the following information to ensure GNU
+## General Public Licensing requirements will be met:
+## http://www.trolltech.com/products/qt/opensource.html
+##
+## If you are unsure which license is appropriate for your use, please
+## review the following information:
+## http://www.trolltech.com/products/qt/licensing.html or contact the
+## sales department at sales@trolltech.com.
+##
+## This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+## WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+##
+############################################################################
 
 import sys
+from PySide import QtCore, QtGui
 
 
-class Main(QWidget):
+if __name__ == '__main__':
+
+    import sys
+
+    app = QtGui.QApplication(sys.argv)
 
 
-    def __init__(self, parent=None):
-        super(Main, self).__init__(parent)
+    tree = QtGui.QTreeView()
+    tree.setModel(model)
 
-        layout  = QHBoxLayout(self)
+    tree.setAnimated(False)
+    tree.setIndentation(20)
+    tree.setSortingEnabled(True)
 
-        picture = PictureLabel(r"C:\Users\GABI\Desktop\salledebain.jpg", self)
-        picture.pictureClicked.connect(self.anotherSlot)
+    tree.setWindowTitle("Dir View")
+    tree.resize(640, 480)
+    tree.show()
 
-        layout.addWidget(picture)
-        layout.addWidget(QLabel("click on the picture"))
-
-    def anotherSlot(self, passed):
-        print passed
-        print "now I'm in Main.anotherSlot"
-
-
-class PictureLabel(QLabel):
-
-    pictureClicked = Signal(str) # can be other types (list, dict, object...)
-
-    def __init__(self, image, parent=None):
-        super(PictureLabel, self).__init__(parent)
-        self.setPixmap(image)
-
-    def mousePressEvent(self, event):
-        print "from PictureLabel.mousePressEvent"
-        self.pictureClicked.emit("emit the signal")
-
-a = QApplication([])
-m = Main()
-m.show()
-sys.exit(a.exec_())
+    sys.exit(app.exec_())
