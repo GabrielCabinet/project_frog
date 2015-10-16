@@ -164,11 +164,18 @@ class MainWindow(QtGui.QMainWindow):
         self.package = Package(package_name)
         self.create_metadata_package()
         self.create_comment_package()
-        self.create_task_package()
+        #self.create_task_package()
         self.tree_focus()
 
     def tree_focus(self):
-        pass
+        model = QtGui.QFileSystemModel()
+
+        caca = self.tree.currentIndex().data()
+        path = "D://project_viva//%s"%(caca)
+        print path
+        model.setRootPath(path)
+        self.tree.setModel(model)
+        self.tree.setRootIndex(model.index(path))
 
 
 
@@ -191,9 +198,6 @@ class MainWindow(QtGui.QMainWindow):
         self.model = QtGui.QFileSystemModel()
         self.model.setRootPath("D://project_viva")
         self.model.setNameFilters(['metadata','comment'])
-        self.model.setReadOnly(False)
-
-
 
         self.tree = QtGui.QTreeView()
         self.tree.setModel(self.model)
@@ -204,6 +208,7 @@ class MainWindow(QtGui.QMainWindow):
         self.tree.setWindowTitle("Dir View")
         self.tree.setModel(self.model)
 
+        self.tree.clicked[QtCore.QModelIndex].connect(self.tree_focus)
 
      #   self.create_metadata_package()
 
@@ -211,6 +216,15 @@ class MainWindow(QtGui.QMainWindow):
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
 #############DOCK INFO####################################
+
+
+
+
+
+
+
+
+
     def create_dock_package_info(self, package=""):
         '''
         Init dock package information.

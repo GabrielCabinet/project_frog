@@ -4,23 +4,27 @@ import fnmatch
 import os
 app = QtGui.QApplication(sys.argv)
 
+
+
+#!/usr/bin/python
+
+import os
+
+# traverse root directory, and list directories as dirs and files as files
+model = QtGui.QStandardItemModel()
+for root, dirs, files in os.walk("D://project_viva"):
+    path = root.split('/')
+
+    print (len(path) - 1) *'---' , os.path.basename(root)
+    for file in files:
+        print len(path)*'---', file
+
+
 treeWidget = QtGui.QTreeWidget()
 treeWidget.setColumnCount(2)
 treeWidget.setHeaderLabels(['Title', 'Summary']);
 
 
-matches = []
-
-for dir in os.listdir("D:/project_viva"):
-    print dir
-
-    item0 = QtGui.QTreeWidgetItem(treeWidget, ['Title 0', 'Summary 0'])
-
-
-    print "yooooo"
-
-    for filename in fnmatch.filter(filenames, '*.c'):
-        matches.append(os.path.join(root, filename))
 
 
 #First top level item and its kids
