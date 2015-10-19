@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0528c278-cd3d-48ab-b6ec-7a292c101587" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/logo.jpg" afterPath="$PROJECT_DIR$/img/logo.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ui/dockwidgets.py" afterPath="$PROJECT_DIR$/ui/dockwidgets.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old/test/test4.py" afterPath="$PROJECT_DIR$/old/test/test4.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="frog_manager_home.iws" />
@@ -25,7 +23,7 @@
     <favorites_list name="frog_manager_home" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.42089844">
+    <splitter split-orientation="horizontal" split-proportion="0.32271636">
       <split-first>
         <leaf>
           <file leaf-file-name="package.py" pinned="false" current-in-tab="false">
@@ -64,10 +62,22 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="manager_client_ui.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="test4.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/old/test/test4.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.47692308">
+                  <caret line="28" column="8" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#177#187#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="manager_client_ui.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/ui/manager_client_ui.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.31384614">
+                <state vertical-scroll-proportion="0.0">
                   <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
                   <folding>
                     <element signature="e#262#294#0" expanded="true" />
@@ -117,6 +127,30 @@
       </split-first>
       <split-second>
         <leaf>
+          <file leaf-file-name="dockwidgets.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.1676923">
+                  <caret line="585" column="9" selection-start-line="585" selection-start-column="9" selection-end-line="585" selection-end-column="9" />
+                  <folding>
+                    <element signature="e#1185#1202#0" expanded="true" />
+                    <element signature="e#4575#6073#0" expanded="false" />
+                    <element signature="e#6184#6261#0" expanded="false" />
+                    <element signature="e#6309#6508#0" expanded="false" />
+                    <element signature="e#6570#8364#0" expanded="false" />
+                    <element signature="e#8409#9928#0" expanded="false" />
+                    <element signature="e#9976#12305#0" expanded="false" />
+                    <element signature="e#12346#12510#0" expanded="false" />
+                    <element signature="e#12559#13460#0" expanded="false" />
+                    <element signature="e#13576#16213#0" expanded="false" />
+                    <element signature="e#16264#16297#0" expanded="false" />
+                    <element signature="e#16346#17767#0" expanded="false" />
+                    <element signature="e#18156#21252#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="package.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/package.py">
               <provider selected="true" editor-type-id="text-editor">
@@ -129,35 +163,6 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="dockwidgets.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0">
-                  <caret line="99" column="22" selection-start-line="99" selection-start-column="8" selection-end-line="99" selection-end-column="22" />
-                  <folding>
-                    <element signature="e#1185#1202#0" expanded="true" />
-                    <element signature="e#3665#3885#0" expanded="false" />
-                    <element signature="e#3921#4299#0" expanded="false" />
-                    <element signature="e#4409#5907#0" expanded="false" />
-                    <element signature="e#6018#6095#0" expanded="false" />
-                    <element signature="e#6143#6342#0" expanded="false" />
-                    <element signature="e#6404#8198#0" expanded="false" />
-                    <element signature="e#8243#9762#0" expanded="false" />
-                    <element signature="e#9810#12139#0" expanded="false" />
-                    <element signature="e#12180#12344#0" expanded="false" />
-                    <element signature="e#12393#13294#0" expanded="false" />
-                    <element signature="e#13410#16047#0" expanded="false" />
-                    <element signature="e#16098#16131#0" expanded="false" />
-                    <element signature="e#16180#17601#0" expanded="false" />
-                    <element signature="e#17648#17689#0" expanded="false" />
-                    <element signature="e#17735#25448#0" expanded="false" />
-                    <element signature="e#17990#21086#0" expanded="false" />
-                    <element signature="e#21966#23441#0" expanded="false" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/old/test/test.py">
               <provider selected="true" editor-type-id="text-editor">
@@ -165,18 +170,6 @@
                   <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
                   <folding>
                     <element signature="e#0#24#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="test4.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/old/test/test4.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.84307694">
-                  <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
-                  <folding>
-                    <element signature="e#177#187#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -253,8 +246,8 @@
         <option value="$PROJECT_DIR$/old/test/test.py" />
         <option value="$PROJECT_DIR$/app/package.py" />
         <option value="$PROJECT_DIR$/app/core.py" />
-        <option value="$PROJECT_DIR$/ui/dockwidgets.py" />
         <option value="$PROJECT_DIR$/old/test/test4.py" />
+        <option value="$PROJECT_DIR$/ui/dockwidgets.py" />
       </list>
     </option>
   </component>
@@ -568,7 +561,7 @@
       </FILE-GROUP>
     </UpdatedFiles>
   </component>
-  <component name="RunManager" selected="Python.test4">
+  <component name="RunManager" selected="Python.dockwidgets (1)">
     <configuration default="false" name="dockwidgets" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -785,9 +778,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.test4" />
-        <item index="1" class="java.lang.String" itemvalue="Python.dockwidgets (1)" />
-        <item index="2" class="java.lang.String" itemvalue="Python.dockwidgets" />
+        <item index="0" class="java.lang.String" itemvalue="Python.dockwidgets (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.dockwidgets" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test4" />
         <item index="3" class="java.lang.String" itemvalue="Python.dockwidgets (2)" />
         <item index="4" class="java.lang.String" itemvalue="Python.test" />
       </list>
@@ -942,7 +935,13 @@
       <option name="project" value="LOCAL" />
       <updated>1445215590775</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="cleaning uv">
+      <created>1445280214726</created>
+      <option name="number" value="00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1445280214726</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1002,7 +1001,8 @@
     <MESSAGE value="Add new ui dock widget" />
     <MESSAGE value="Update" />
     <MESSAGE value="Updatemoi" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updatemoi" />
+    <MESSAGE value="cleaning uv" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaning uv" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1024,7 +1024,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>94</line>
+          <line>93</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
@@ -1034,22 +1034,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>159</line>
+          <line>149</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>145</line>
+          <line>135</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>203</line>
+          <line>193</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>202</line>
+          <line>192</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
@@ -1059,17 +1059,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>272</line>
+          <line>262</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>570</line>
-          <option name="timeStamp" value="27" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>189</line>
+          <line>179</line>
           <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
@@ -1458,46 +1453,9 @@
     <entry file="file://$PROJECT_DIR$/app/package.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <caret line="82" column="31" selection-start-line="82" selection-start-column="31" selection-end-line="82" selection-end-column="31" />
           <folding>
             <element signature="e#25#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="99" column="22" selection-start-line="99" selection-start-column="8" selection-end-line="99" selection-end-column="22" />
-          <folding>
-            <element signature="e#1185#1202#0" expanded="true" />
-            <element signature="e#3665#3885#0" expanded="false" />
-            <element signature="e#3921#4299#0" expanded="false" />
-            <element signature="e#4409#5907#0" expanded="false" />
-            <element signature="e#6018#6095#0" expanded="false" />
-            <element signature="e#6143#6342#0" expanded="false" />
-            <element signature="e#6404#8198#0" expanded="false" />
-            <element signature="e#8243#9762#0" expanded="false" />
-            <element signature="e#9810#12139#0" expanded="false" />
-            <element signature="e#12180#12344#0" expanded="false" />
-            <element signature="e#12393#13294#0" expanded="false" />
-            <element signature="e#13410#16047#0" expanded="false" />
-            <element signature="e#16098#16131#0" expanded="false" />
-            <element signature="e#16180#17601#0" expanded="false" />
-            <element signature="e#17648#17689#0" expanded="false" />
-            <element signature="e#17735#25448#0" expanded="false" />
-            <element signature="e#17990#21086#0" expanded="false" />
-            <element signature="e#21966#23441#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old/test/test4.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84307694">
-          <caret line="45" column="10" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="10" />
-          <folding>
-            <element signature="e#177#187#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1514,13 +1472,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/manager_client_ui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31384614">
+        <state vertical-scroll-proportion="0.0">
           <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
           <folding>
             <element signature="e#262#294#0" expanded="true" />
             <element signature="e#13694#13928#0" expanded="false" />
             <element signature="e#13972#14134#0" expanded="false" />
             <element signature="e#20863#21279#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/old/test/test4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.47692308">
+          <caret line="28" column="8" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="8" />
+          <folding>
+            <element signature="e#177#187#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1676923">
+          <caret line="585" column="9" selection-start-line="585" selection-start-column="9" selection-end-line="585" selection-end-column="9" />
+          <folding>
+            <element signature="e#1185#1202#0" expanded="true" />
+            <element signature="e#4575#6073#0" expanded="false" />
+            <element signature="e#6184#6261#0" expanded="false" />
+            <element signature="e#6309#6508#0" expanded="false" />
+            <element signature="e#6570#8364#0" expanded="false" />
+            <element signature="e#8409#9928#0" expanded="false" />
+            <element signature="e#9976#12305#0" expanded="false" />
+            <element signature="e#12346#12510#0" expanded="false" />
+            <element signature="e#12559#13460#0" expanded="false" />
+            <element signature="e#13576#16213#0" expanded="false" />
+            <element signature="e#16264#16297#0" expanded="false" />
+            <element signature="e#16346#17767#0" expanded="false" />
+            <element signature="e#18156#21252#0" expanded="false" />
           </folding>
         </state>
       </provider>

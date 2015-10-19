@@ -29,18 +29,16 @@
 
 import qdarkstyle
 
-
 from app.package import *
 from app.comment import *
 
 session_config = SessionConfig()
 project = Project(session_config.session_project_name)
 project_root = project.project_root
+
 class MainWindow(QtGui.QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        self.show_mangement_window()
-
 
         self.session_config = SessionConfig()
         self.project = Project(session_config.session_project_name)
@@ -56,7 +54,6 @@ class MainWindow(QtGui.QMainWindow):
 
         self.createActions()
         self.createMenus()
-        self.createToolBars()
         self.createStatusBar()
 
         self.create_dock_contact_sheet()
@@ -65,11 +62,13 @@ class MainWindow(QtGui.QMainWindow):
 
         self.setWindowTitle("Dock Widgets")
 
-
         self.setUnifiedTitleAndToolBarOnMac(True)
 
-
-
+        self.package_editorAction = QtGui.QAction(QtGui.QIcon(os.path.join(script_root_dir,'img/package_crafter.jpg')), 'Exit', self)
+        self.package_editorAction.setShortcut('Ctrl+Q')
+        self.package_editorAction.triggered.connect(self.show_mangement_window)
+        self.toolbar = self.addToolBar('Exit')
+        self.toolbar.addAction(self.package_editorAction)
 
     def about(self):
         QtGui.QDesktopServices.openUrl("https://www.google.com/intl/fr_fr/drive/")
@@ -97,11 +96,6 @@ class MainWindow(QtGui.QMainWindow):
         self.helpMenu.addAction(self.aboutAct)
         self.helpMenu.addAction(self.missionAct)
 
-    def createToolBars(self):
-        self.fileToolBar = self.addToolBar("File")
-        self.editToolBar = self.addToolBar("Edit")
-
-
     def createStatusBar(self):
         self.statusBar().showMessage("Ready")
 
@@ -117,17 +111,13 @@ class MainWindow(QtGui.QMainWindow):
         self.model = QtGui.QFileSystemModel()
         #self.model.setNameFilters()
 
-
         package_name = self.package.package_name
         root_path = "D://project_viva//%s"%(package_name)
         self.model.setRootPath(root_path)
         self.indexRoot = self.model.index(self.model.rootPath())
 
-
         self.tree.setModel(self.model)
         self.tree.setRootIndex(self.indexRoot)
-
-
 
 ############ARBO#########################################
     def create_dock_arborescence(self):
@@ -558,10 +548,7 @@ class ManagementWindow(QtGui.QDialog):
         :return:
         '''
         script_root_dir = os.path.abspath(__file__ + "/../../")
-
-        project_database_file_path = os.path.join(script_root_dir,'data\project_database')
         template_all_task = read_dictionary_from_file(os.path.join(script_root_dir,'data\\template'))
-        print template_all_task
         clearLayout(self.all_tasks_layout)
         self.tasks_list_template = template_all_task.get(kind,'unknown')
         self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
@@ -596,13 +583,12 @@ class ManagementWindow(QtGui.QDialog):
 
         task_layout.addWidget(self.label_task_name)
         task_layout.addWidget(self.task_name)
-        task_layout.addWidget(self.label_asigned)
-        task_layout.addWidget(self.user_asigned_to_combo)
-        task_layout.addWidget(self.label_schedule)
-        task_layout.addWidget(self.schedule_date_time)
+        #task_layout.addWidget(self.label_asigned)
+        #task_layout.addWidget(self.user_asigned_to_combo)
+        #task_layout.addWidget(self.label_schedule)
+        #task_layout.addWidget(self.schedule_date_time)
         task_layout.addWidget(self.file_type_combo_box)
         self.all_tasks_layout.addLayout(task_layout)
-
 
     def on_create_new_package_cliked(self):
         self.package = Package(str(self.package_kind_combo.currentText())+"_"+str(self.package_name_edit.text()),
