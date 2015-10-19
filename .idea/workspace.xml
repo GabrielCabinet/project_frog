@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0528c278-cd3d-48ab-b6ec-7a292c101587" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/core.py" afterPath="$PROJECT_DIR$/app/core.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ui/dockwidgets.py" afterPath="$PROJECT_DIR$/ui/dockwidgets.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/package.py" afterPath="$PROJECT_DIR$/app/package.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old/test/test4.py" afterPath="$PROJECT_DIR$/old/test/test4.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="frog_manager_home.iws" />
@@ -133,8 +130,8 @@
           <file leaf-file-name="dockwidgets.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.41076922">
-                  <caret line="444" column="8" selection-start-line="444" selection-start-column="8" selection-end-line="444" selection-end-column="8" />
+                <state vertical-scroll-proportion="0.59384614">
+                  <caret line="454" column="33" selection-start-line="454" selection-start-column="33" selection-end-line="454" selection-end-column="33" />
                   <folding>
                     <element signature="e#1185#1202#0" expanded="true" />
                     <element signature="e#1451#2302#0" expanded="false" />
@@ -144,9 +141,9 @@
                     <element signature="e#7847#9640#0" expanded="false" />
                     <element signature="e#12572#14901#0" expanded="false" />
                     <element signature="e#14942#15106#0" expanded="false" />
-                    <element signature="e#19366#27077#0" expanded="false" />
-                    <element signature="e#19619#22715#0" expanded="false" />
-                    <element signature="e#23595#25070#0" expanded="false" />
+                    <element signature="e#20112#27823#0" expanded="false" />
+                    <element signature="e#20365#23461#0" expanded="false" />
+                    <element signature="e#24341#25816#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -992,27 +989,33 @@
       <option name="project" value="LOCAL" />
       <updated>1444737022086</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Updatemoi">
+      <created>1445213980202</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1445213980202</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12328767" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26702702" sideWeight="0.55479455" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.49367756" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.49367756" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26702702" sideWeight="0.44520548" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26702702" sideWeight="0.44520548" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12328767" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.49367756" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39675677" sideWeight="0.4768177" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1051,7 +1054,8 @@
     <MESSAGE value=".new ui" />
     <MESSAGE value="Add new ui dock widget" />
     <MESSAGE value="Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update" />
+    <MESSAGE value="Updatemoi" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updatemoi" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1118,7 +1122,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/ui/dockwidgets.py</url>
-          <line>619</line>
+          <line>640</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
@@ -1552,8 +1556,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ui/dockwidgets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41076922">
-          <caret line="444" column="8" selection-start-line="444" selection-start-column="8" selection-end-line="444" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.59384614">
+          <caret line="454" column="33" selection-start-line="454" selection-start-column="33" selection-end-line="454" selection-end-column="33" />
           <folding>
             <element signature="e#1185#1202#0" expanded="true" />
             <element signature="e#1451#2302#0" expanded="false" />
@@ -1563,9 +1567,9 @@
             <element signature="e#7847#9640#0" expanded="false" />
             <element signature="e#12572#14901#0" expanded="false" />
             <element signature="e#14942#15106#0" expanded="false" />
-            <element signature="e#19366#27077#0" expanded="false" />
-            <element signature="e#19619#22715#0" expanded="false" />
-            <element signature="e#23595#25070#0" expanded="false" />
+            <element signature="e#20112#27823#0" expanded="false" />
+            <element signature="e#20365#23461#0" expanded="false" />
+            <element signature="e#24341#25816#0" expanded="false" />
           </folding>
         </state>
       </provider>

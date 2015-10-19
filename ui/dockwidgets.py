@@ -440,13 +440,34 @@ class MainWindow(QtGui.QMainWindow):
         self.contact_sheet_filter = QtGui.QVBoxLayout()
 
         self.contact_sheet_filter.addWidget(QtGui.QLabel("Filter by name(* or .+)"))
+        self.kind_groupBox = QtGui.QGroupBox("Exclusive Radio Buttons")
+
+        self.kind_radio1 = QtGui.QRadioButton("&Props")
+        self.kind_radio2 = QtGui.QRadioButton("Background")
+
+        self.kind_radio3 = QtGui.QRadioButton("Characters")
+        self.kind_radio4 = QtGui.QRadioButton("Shot")
+
+
+        self.kind_radio1.setChecked(True)
+
+
+        self.kind_vbox = QtGui.QHBoxLayout()
+        self.kind_vbox.addWidget(self.kind_radio1)
+        self.kind_vbox.addWidget(self.kind_radio2)
+        self.kind_vbox.addWidget(self.kind_radio3)
+        self.kind_vbox.addWidget(self.kind_radio4)
+        self.kind_vbox.addStretch(1)
+        self.kind_groupBox.setLayout(self.kind_vbox)
+
         self.contact_sheet_main_layout.addLayout(self.contact_sheet_filter)
         self.contact_sheet_main_layout.addLayout(self.contact_sheet_mini_layout)
-        
+
 
         self.filter_by_name = QtGui.QLineEdit()
         self.filter_by_name.textChanged.connect(self.on_list_package_changed)
         self.contact_sheet_filter.addWidget(self.filter_by_name)
+        self.contact_sheet_filter.addWidget(self.kind_groupBox)
 
         #Populate mini list package
         self.on_list_package_changed()
