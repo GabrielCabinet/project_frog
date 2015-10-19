@@ -143,21 +143,16 @@ class TreeModel(QAbstractItemModel):
 
                      if parents[-1].childCount() > 0:
                          
-parents.append(parents[-1].child(parents[-1].childCount() - 1))
+                         parents.append(parents[-1].child(parents[-1].childCount() - 1))
                          indentations.append(position)
 
                  else:
                      while position < indentations[-1] and len(parents) > 0:
                          parents.pop()
                          indentations.pop()
-
-                 # Append a new item to the current parent's list of 
-children.
-                 parents[-1].appendChild(TreeItem(columnData, parents[-1]))
-
-             number += 1
-         self.rowsInserted.emit(self, self.rowCount() - 1, 
-self.rowCount() - 1)
+                         children.parents[-1].appendChild(TreeItem(columnData, parents[-1]))
+                         number += 1
+                         self.rowsInserted.emit(self, self.rowCount() - 1,self.rowCount() - 1)
 
 if __name__ == '__main__':
      app = QApplication(sys.argv)

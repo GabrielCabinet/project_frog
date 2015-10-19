@@ -164,18 +164,22 @@ class MainWindow(QtGui.QMainWindow):
         self.package = Package(package_name)
         self.create_metadata_package()
         self.create_comment_package()
-        #self.create_task_package()
+        self.create_task_package()
         self.tree_focus()
 
     def tree_focus(self):
-        model = QtGui.QFileSystemModel()
+        self.model = QtGui.QFileSystemModel()
+        #self.model.setNameFilters()
 
-        caca = self.tree.currentIndex().data()
-        path = "D://project_viva//%s"%(caca)
-        print path
-        model.setRootPath(path)
-        self.tree.setModel(model)
-        self.tree.setRootIndex(model.index(path))
+
+        package_name = self.package.package_name
+        root_path = "D://project_viva//%s"%(package_name)
+        self.model.setRootPath(root_path)
+        self.indexRoot = self.model.index(self.model.rootPath())
+
+
+        self.tree.setModel(self.model)
+        self.tree.setRootIndex(self.indexRoot)
 
 
 
@@ -196,30 +200,51 @@ class MainWindow(QtGui.QMainWindow):
 
 
         self.model = QtGui.QFileSystemModel()
-        self.model.setRootPath("D://project_viva")
+        root_path = project.project_root
+        self.model.setRootPath(root_path)
         self.model.setNameFilters(['metadata','comment'])
+
+        self.indexRoot = self.model.index(self.model.rootPath())
+
+
+        self.arbo_widget = QtGui.QWidget()
+        self.arbo_layout = QtGui.QVBoxLayout(self.arbo_widget)
 
         self.tree = QtGui.QTreeView()
         self.tree.setModel(self.model)
 
-        self.tree.setRootIndex(self.model.index("D://project_viva"))
+        self.tree.setRootIndex(self.indexRoot)
         self.tree.setAnimated(True)
 
         self.tree.setWindowTitle("Dir View")
         self.tree.setModel(self.model)
 
-        self.tree.clicked[QtCore.QModelIndex].connect(self.tree_focus)
+        button_arbo_open = QtGui.QPushButton("Open")
+        button_arbo_import = QtGui.QPushButton("Import")
+
+
+        button_arbo_open.clicked.connect(self.on_button_arbo_open_cliked)
+
+        self.tree.clicked[QtCore.QModelIndex].connect(self.on_tree_clicked)
 
      #   self.create_metadata_package()
-
-        dock.setWidget(self.tree)
+        self.arbo_layout.addWidget(self.tree)
+        self.arbo_layout.addWidget(button_arbo_open)
+        self.arbo_layout.addWidget(button_arbo_import)
+        dock.setWidget(self.arbo_widget)
         self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
 #############DOCK INFO####################################
 
+    def on_button_arbo_open_cliked(self):
+        path = self.selected_arbo_filePath
+        print path
+        open_file(path)
+    def on_tree_clicked(self, index):
+        indexItem = self.model.index(index.row(), 0, index.parent())
 
-
-
+        self.selected_arbo_fileName = self.model.fileName(indexItem)
+        self.selected_arbo_filePath = self.model.filePath(indexItem)
 
 
 
@@ -272,17 +297,14 @@ class MainWindow(QtGui.QMainWindow):
     def create_task_package(self):
         row = 0
         clearLayout(self.all_tasks_layout)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Task"),row,1)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Schedule"),row,2)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Asigned to"),row,3)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Statut"),row,4)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Last user"),row,5)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Last edited"),row,6)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Created by"),row,7)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("File"),row,8)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Open"),row,9)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Folder"),row,10)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("Preview"),row,11)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Task</b>"),row,1)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Schedule</b>"),row,2)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Asigned to</b>"),row,3)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Statut</b>"),row,4)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>File</b>"),row,5)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Open</b>"),row,6)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Folder</b>"),row,7)
+        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Preview</b>"),row,8)
 
 
         list_task = get_immediate_sub_directories(self.package.package_path)
@@ -316,13 +338,12 @@ class MainWindow(QtGui.QMainWindow):
             self.all_tasks_layout.addWidget(task_schedule_label,row,2)
             self.all_tasks_layout.addWidget(task_asigned_to_label,row,3)
             self.all_tasks_layout.addWidget(task_statut_label,row,4)
-            self.all_tasks_layout.addWidget(task_last_user_label,row,5)
-            self.all_tasks_layout.addWidget(task_last_edited_time,row,6)
-            self.all_tasks_layout.addWidget(task_created_by_label,row,7)
-            self.all_tasks_layout.addWidget(task_file_name_with_ex_label,row,8)
-            self.all_tasks_layout.addWidget(self.open_task_button,row,9)
-            self.all_tasks_layout.addWidget(self.fodler_task_button,row,10)
-            self.all_tasks_layout.addWidget(prev_task_button,row,11)
+            self.all_tasks_layout.addWidget(task_file_name_with_ex_label,row,5)
+            self.all_tasks_layout.addWidget(self.open_task_button,row,6)
+            self.all_tasks_layout.addWidget(self.fodler_task_button,row,7)
+            self.all_tasks_layout.addWidget(prev_task_button,row,8)
+
+
 
     def create_comment_package(self):
         '''
@@ -412,25 +433,58 @@ class MainWindow(QtGui.QMainWindow):
         Create a contact sheet of all package
         :return:
         '''
+        self.contact_sheet_main_widget = QtGui.QWidget()
+        self.contact_sheet_main_layout = QtGui.QVBoxLayout(self.contact_sheet_main_widget)
+
+        self.contact_sheet_mini_layout = QtGui.QVBoxLayout()
+        self.contact_sheet_filter = QtGui.QVBoxLayout()
+
+        self.contact_sheet_filter.addWidget(QtGui.QLabel("Filter by name(* or .+)"))
+        self.contact_sheet_main_layout.addLayout(self.contact_sheet_filter)
+        self.contact_sheet_main_layout.addLayout(self.contact_sheet_mini_layout)
+        
+
+        self.filter_by_name = QtGui.QLineEdit()
+        self.filter_by_name.textChanged.connect(self.on_list_package_changed)
+        self.contact_sheet_filter.addWidget(self.filter_by_name)
+
+        #Populate mini list package
+        self.on_list_package_changed()
 
 
-        self.contact_sheet_widget = QtGui.QWidget()
-        self.contact_sheet_layout = QtGui.QGridLayout(self.contact_sheet_widget)
-
-
-        row = 0
-        colum = -1
         #Create Dock
         dock = QtGui.QDockWidget("Contact Sheet", self)
         dock.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.RightDockWidgetArea | QtCore.Qt.BottomDockWidgetArea)
 
+
+
+        #List package and create miniature
+
+
+
+
+        self.scroll = QtGui.QScrollArea()
+
+        self.scroll.setWidgetResizable(True)
+
+        self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+        self.scroll.setWidget(self.contact_sheet_main_widget)
+
+
+
+
+        dock.setWidget(self.scroll)
+        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
+        self.viewMenu.addAction(dock.toggleViewAction())
+
+    def on_list_package_changed(self):
+        clearLayout(self.contact_sheet_mini_layout)
         #Create defaut pixmap
         self.defaut_pixmap = QtGui.QPixmap(os.path.join(script_root_dir,'img','defaut_package_icon.jpg'))
         self.defaut_package_ico = QtGui.QIcon(self.defaut_pixmap)
-
-        #List package and create miniature
-        self.list_packages = list_packages(project_root)
-
+        self.list_packages = list_packages(project_root,name_filter=self.filter_by_name.text(),task_filter="")
         for package in self.list_packages:
 
             # Create layout for package img and metadata
@@ -444,7 +498,7 @@ class MainWindow(QtGui.QMainWindow):
 
             #Create pushbutton
             self.picture_button = QtGui.QToolButton()
-            self.picture_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+            self.picture_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
             self.picture_button.setText(package)
             if os.path.isfile(self.mini_file_path):
                 self.pixmap = QtGui.QPixmap(self.mini_file_path)
@@ -458,30 +512,7 @@ class MainWindow(QtGui.QMainWindow):
             #Connect Button
             self.picture_button.clicked.connect(self.picture_buttonClick)
 
-
-            if colum >= 5:
-                colum = 0
-                row = row +1
-            else:
-                colum = colum+1
-
-            self.contact_sheet_layout.addWidget(self.picture_button,row,colum)
-
-        self.scroll = QtGui.QScrollArea()
-
-        self.scroll.setWidgetResizable(True)
-
-        self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-
-        self.scroll.setWidget(self.contact_sheet_widget)
-
-
-
-
-        dock.setWidget(self.scroll)
-        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
-        self.viewMenu.addAction(dock.toggleViewAction())
+            self.contact_sheet_mini_layout.addWidget(self.picture_button)
 
 
 

@@ -43,9 +43,8 @@ class Package():
         self.package_mini_file_name = str(self.package_name)+'_mini.jpg'
         self.package_metadata_path = os.path.join(self.package_path,self.package_metadata_file_name)
         self.package_comment_path  = os.path.join(self.package_path,self.package_comment_file_name)
-
-
         self.package_mini_path = os.path.join(self.package_path,self.package_mini_file_name)
+
         try:
             if argv[0] is True:
 
@@ -79,13 +78,6 @@ class Package():
             except:
                 msg =  "Can't get paramater of the package:" + self.package_name
                 print msg, sys.exc_info()[0]
-
-
-
-    def create_task_folders(self, task_name,asigned_to,schedule, file_type):
-        pass
-
-
 
 
     def get_package_path(self):
@@ -125,22 +117,6 @@ class Package():
 
 
 
-
-'''
-package = Package('Char_TEST02',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST03',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST04',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST05',True ,'Char','Un chouette test de package' )
-package = Package('Char_TEST06',True ,'Char','Un chouette test de package' )
-package = Package('Back_TEST01',True ,'Back','Un chouette test de package' )
-package = Package('Back_TEST02',True ,'Back','Un chouette test de package' )
-package = Package('Back_TEST03',True ,'Back','Un chouette test de package' )
-package = Package('Shot_TEST01',True ,'Back','Un chouette test de package' )
-package = Package('Shot_TEST02',True ,'Back','Un chouette test de package' )
-package = Package('Shot_TEST03',True ,'Back','Un chouette test de package' )
-package = Package('Shot_TEST04',True ,'Back','Un chouette test de package' )
-
-'''
 def list_package_tasks_directory(package_path):
         '''
         List package tasks

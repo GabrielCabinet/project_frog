@@ -5,6 +5,7 @@ import ast
 import sys
 import json
 import traceback
+import re
 import shutil
 import pprint
 from datetime import datetime
@@ -200,6 +201,14 @@ def open_file_without_extention(file_path,filename_without_extention):
 
     if file_exist is False:
             print "Can't open file %s.\nTry to open it manually\n%s"%(filename_without_extention,file_path)
+
+
+def open_file(file_path):
+    if os.path.isfile(file_path):
+        os.system("start "+file_path)
+    else:
+        print "Can't open:"+str(file_path)
+
 
 def update_dic_with_new_dic_to_disk(dic, new_dic, file ):
     '''
