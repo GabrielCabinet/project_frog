@@ -70,89 +70,35 @@ class MainWindow(QtGui.QMainWindow):
 
 
 
-    def undo(self):
-        document = self.textEdit.document()
-        document.undo()
-
-    def insertCustomer(self, customer):
-        if not customer:
-            return
-        customerList = customer.split(', ')
-        document = self.textEdit.document()
-        cursor = document.find('NAME')
-        if not cursor.isNull():
-            cursor.beginEditBlock()
-            cursor.insertText(customerList[0])
-            oldcursor = cursor
-            cursor = document.find('ADDRESS')
-            if not cursor.isNull():
-                for i in customerList[1:]:
-                    cursor.insertBlock()
-                    cursor.insertText(i)
-                cursor.endEditBlock()
-            else:
-                oldcursor.endEditBlock()
-
-    def addParagraph(self, paragraph):
-        if not paragraph:
-            return
-        document = self.textEdit.document()
-        cursor = document.find("Yours sincerely,")
-        if cursor.isNull():
-            return
-        cursor.beginEditBlock()
-        cursor.movePosition(QtGui.QTextCursor.PreviousBlock,
-                QtGui.QTextCursor.MoveAnchor, 2)
-        cursor.insertBlock()
-        cursor.insertText(paragraph)
-        cursor.insertBlock()
-        cursor.endEditBlock()
 
     def about(self):
-        QtGui.QMessageBox.about(self, "About Dock Widgets",
-                "The <b>Dock Widgets</b> example demonstrates how to use "
-                "Qt's dock widgets. You can enter your own text, click a "
-                "customer to add a customer name and address, and click "
-                "standard paragraphs to add them.")
+        QtGui.QDesktopServices.openUrl("https://www.google.com/intl/fr_fr/drive/")
 
+    def mission(self):
+        QtGui.QDesktopServices.openUrl("http://www.greluche.info/images.php?galerie=velos&page=1")
     def createActions(self):
-
-
-
 
         self.quitAct = QtGui.QAction("&Quit", self, shortcut="Ctrl+Q",
                 statusTip="Quit the application", triggered=self.close)
-
-        self.aboutAct = QtGui.QAction("&About", self,
-                statusTip="Show the application's About box",
+        self.aboutAct = QtGui.QAction("&Google Drive", self,
+                statusTip="https://www.google.com/intl/fr_fr/drive/",
                 triggered=self.about)
-
-        self.aboutQtAct = QtGui.QAction("About &Qt", self,
-                statusTip="Show the Qt library's About box",
-                triggered=QtGui.qApp.aboutQt)
+        self.missionAct = QtGui.QAction("&Mission du jour", self,
+                statusTip="http://www.greluche.info/images.php?galerie=velos&page=1",
+                triggered=self.mission)
 
     def createMenus(self):
         self.fileMenu = self.menuBar().addMenu("&File")
 
-
         self.fileMenu.addAction(self.quitAct)
-
-        self.editMenu = self.menuBar().addMenu("&Edit")
-
-
         self.viewMenu = self.menuBar().addMenu("&View")
 
-        self.menuBar().addSeparator()
-
-        self.helpMenu = self.menuBar().addMenu("&Help")
+        self.helpMenu = self.menuBar().addMenu("&Links")
         self.helpMenu.addAction(self.aboutAct)
-        self.helpMenu.addAction(self.aboutQtAct)
+        self.helpMenu.addAction(self.missionAct)
 
     def createToolBars(self):
         self.fileToolBar = self.addToolBar("File")
-
-
-
         self.editToolBar = self.addToolBar("Edit")
 
 
@@ -180,7 +126,6 @@ class MainWindow(QtGui.QMainWindow):
 
         self.tree.setModel(self.model)
         self.tree.setRootIndex(self.indexRoot)
-
 
 
 
@@ -232,7 +177,7 @@ class MainWindow(QtGui.QMainWindow):
         self.arbo_layout.addWidget(button_arbo_open)
         self.arbo_layout.addWidget(button_arbo_import)
         dock.setWidget(self.arbo_widget)
-        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
 #############DOCK INFO####################################
 
@@ -240,15 +185,12 @@ class MainWindow(QtGui.QMainWindow):
         path = self.selected_arbo_filePath
         print path
         open_file(path)
+
     def on_tree_clicked(self, index):
         indexItem = self.model.index(index.row(), 0, index.parent())
 
         self.selected_arbo_fileName = self.model.fileName(indexItem)
         self.selected_arbo_filePath = self.model.filePath(indexItem)
-
-
-
-
 
     def create_dock_package_info(self, package=""):
         '''
@@ -291,59 +233,42 @@ class MainWindow(QtGui.QMainWindow):
      #   self.create_metadata_package()
 
         dock.setWidget(self.package_info_splitter)
-        self.addDockWidget(QtCore.Qt.RightDockWidgetArea, dock)
+        self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
 
     def create_task_package(self):
         row = 0
         clearLayout(self.all_tasks_layout)
         self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Task</b>"),row,1)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Schedule</b>"),row,2)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Asigned to</b>"),row,3)
         self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Statut</b>"),row,4)
         self.all_tasks_layout.addWidget(QtGui.QLabel("<b>File</b>"),row,5)
         self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Open</b>"),row,6)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Folder</b>"),row,7)
-        self.all_tasks_layout.addWidget(QtGui.QLabel("<b>Preview</b>"),row,8)
-
 
         list_task = get_immediate_sub_directories(self.package.package_path)
 
         for task in list_task:
             self.task = Task(self.package.package_name,task)
-            task_layout = QtGui.QHBoxLayout()
+
             task_name_label = QtGui.QLabel(task)
-            task_schedule_label= QtGui.QLabel(self.task.schedule)
-            task_asigned_to_label= QtGui.QLabel( self.task.asigned_to)
+
             task_statut_label =  QtGui.QLabel(self.task.statut )
-            task_last_user_label = QtGui.QLabel(self.task.last_user)
-            task_last_edited_time = QtGui.QLabel( self.task.last_edited_time)
-            task_created_by_label = QtGui.QLabel(self.task.created_by )
+
             self.file_name_without_extention = "%s_%s"%(self.package.package_name,task)
             self.task_file_name_with_ex = get_file_without_extention(self.task.task_path, self.file_name_without_extention)
             task_file_name_with_ex_label = QtGui.QLabel(self.task_file_name_with_ex)
             #Button
             self.open_task_button = QtGui.QPushButton("Open",self)
-            self.fodler_task_button = QtGui.QPushButton("Folder",self)
-            prev_task_button = QtGui.QPushButton("Prev",self)
-            #Connect button
-            path = os.path.join(self.task.task_path,"Wip")
+
+
 
             self.open_task_button.clicked.connect(lambda path=self.task.task_path, fname_no_ext=self.file_name_without_extention:open_file_without_extention(path,fname_no_ext))
-            self.fodler_task_button.clicked.connect(lambda path=path: open_folder_location(path))
 
             row = row+1
 
             self.all_tasks_layout.addWidget(task_name_label,row,1)
-            self.all_tasks_layout.addWidget(task_schedule_label,row,2)
-            self.all_tasks_layout.addWidget(task_asigned_to_label,row,3)
             self.all_tasks_layout.addWidget(task_statut_label,row,4)
             self.all_tasks_layout.addWidget(task_file_name_with_ex_label,row,5)
             self.all_tasks_layout.addWidget(self.open_task_button,row,6)
-            self.all_tasks_layout.addWidget(self.fodler_task_button,row,7)
-            self.all_tasks_layout.addWidget(prev_task_button,row,8)
-
-
 
     def create_comment_package(self):
         '''
@@ -426,7 +351,6 @@ class MainWindow(QtGui.QMainWindow):
 
         return
 
-
 ###########DOCK CONTACT SHEET###################################
     def create_dock_contact_sheet(self):
         '''
@@ -442,26 +366,34 @@ class MainWindow(QtGui.QMainWindow):
         self.contact_sheet_filter.addWidget(QtGui.QLabel("Filter by name(* or .+)"))
         self.kind_groupBox = QtGui.QGroupBox("Exclusive Radio Buttons")
 
-        self.kind_radio1 = QtGui.QRadioButton("&Props")
-        self.kind_radio2 = QtGui.QRadioButton("Background")
+        self.kind_radio1 = QtGui.QRadioButton("&Prop")
+        self.kind_radio2 = QtGui.QRadioButton("Back")
 
-        self.kind_radio3 = QtGui.QRadioButton("Characters")
+        self.kind_radio3 = QtGui.QRadioButton("Char")
         self.kind_radio4 = QtGui.QRadioButton("Shot")
 
 
         self.kind_radio1.setChecked(True)
 
+        #Connect radio button
+        self.kind_radio1.toggled.connect(lambda : self.kind_radio_clicked("Prop_*"))
+        self.kind_radio2.toggled.connect(lambda : self.kind_radio_clicked("Back_*"))
+        self.kind_radio3.toggled.connect(lambda : self.kind_radio_clicked("Char_*"))
+        self.kind_radio4.toggled.connect(lambda : self.kind_radio_clicked("Shot_*"))
 
+
+
+        #Build a groupbox for kind package radio button
         self.kind_vbox = QtGui.QHBoxLayout()
         self.kind_vbox.addWidget(self.kind_radio1)
         self.kind_vbox.addWidget(self.kind_radio2)
         self.kind_vbox.addWidget(self.kind_radio3)
         self.kind_vbox.addWidget(self.kind_radio4)
-        self.kind_vbox.addStretch(1)
         self.kind_groupBox.setLayout(self.kind_vbox)
 
         self.contact_sheet_main_layout.addLayout(self.contact_sheet_filter)
         self.contact_sheet_main_layout.addLayout(self.contact_sheet_mini_layout)
+        self.contact_sheet_main_layout.addStretch(1)
 
 
         self.filter_by_name = QtGui.QLineEdit()
@@ -475,7 +407,7 @@ class MainWindow(QtGui.QMainWindow):
 
         #Create Dock
         dock = QtGui.QDockWidget("Contact Sheet", self)
-        dock.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea | QtCore.Qt.RightDockWidgetArea | QtCore.Qt.BottomDockWidgetArea)
+
 
 
 
@@ -492,13 +424,13 @@ class MainWindow(QtGui.QMainWindow):
         #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.scroll.setWidget(self.contact_sheet_main_widget)
-
-
-
-
         dock.setWidget(self.scroll)
         self.addDockWidget(QtCore.Qt.BottomDockWidgetArea, dock)
         self.viewMenu.addAction(dock.toggleViewAction())
+
+    def kind_radio_clicked(self, kind):
+
+        self.filter_by_name.setText(kind)
 
     def on_list_package_changed(self):
         clearLayout(self.contact_sheet_mini_layout)
@@ -535,8 +467,6 @@ class MainWindow(QtGui.QMainWindow):
 
             self.contact_sheet_mini_layout.addWidget(self.picture_button)
 
-
-
     def show_mangement_window(self):
         p=ManagementWindow(self)
         p.show()
@@ -545,8 +475,8 @@ class MainWindow(QtGui.QMainWindow):
 class ManagementWindow(QtGui.QDialog):
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.setWindowTitle('PRC Editor')
-        self.resize(100,100)
+        self.setWindowTitle('Asset Editor')
+        self.resize(700,500)
 
         self.create_dock_management_package()
 
