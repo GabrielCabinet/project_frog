@@ -479,44 +479,53 @@ class ManagementWindow(QtGui.QDialog):
         row = 0
         colum = -1
 
-        self.info_package_layout = QtGui.QHBoxLayout()
+        self.info_package_layout = QtGui.QGridLayout()
         self.layout_cut_in_cut_out= QtGui.QHBoxLayout()
         self.all_tasks_layout = QtGui.QVBoxLayout()
         self.all_tasks_layout_groupbox = QtGui.QGroupBox("Tasks")
         self.all_tasks_layout_groupbox.setLayout(self.all_tasks_layout)
 
         #Create Widget
-        self.package_name_edit = QtGui.QLineEdit('Nom_du_package_001')   #Layout name edit
+        self.package_name_edit = QtGui.QLineEdit('Asset name')   #Layout name edit
         self.package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
         self.package_kind_combo.addItem("Prop")
         self.package_kind_combo.addItem("Back")
         self.package_kind_combo.addItem("Char")
         self.package_kind_combo.addItem("Shot")
 
-        self.sequence_combo = QtGui.QComboBox(self)   #Layout combopackge
-        sequence_list =  ast.literal_eval(read_text_file(os.path.join(script_root_dir,'data\sequence')))
-        for sequence in sequence_list:
-            self.sequence_combo.addItem(sequence)
+        self.package_tags_label = QtGui.QLabel('Tags')
+        self.package_tags_edit = QtGui.QLineEdit('')
+
+        self.package_description = QtGui.QTextEdit('')
+
 
         self.create_new_task_button = QtGui.QPushButton('+ Task ')
-        #Create Widget User
-        self.user_asigned_to_combo = QtGui.QComboBox(self)
-        self.user = User()
-        for user in self.user.all_user_dictionary.keys():
-            self.user_asigned_to_combo.addItem(user)
 
+
+        #Create Widget User
         self.create_new_package_button = QtGui.QPushButton('Create')
 
-        #Add widget/layoyut to main
-        self.info_package_layout.addWidget(self.package_name_edit)
-        self.info_package_layout.addWidget(QtGui.QLabel('Type'))
-        self.info_package_layout.addWidget(self.package_kind_combo)
-        self.info_package_layout.addWidget(QtGui.QLabel('AssignTo'))
-        self.info_package_layout.addWidget(self.user_asigned_to_combo)
-        self.info_package_layout.addLayout(self.layout_cut_in_cut_out)
-        self.info_package_layout.addWidget(self.sequence_combo)
-        self.info_package_layout.addWidget(self.create_new_package_button)
+        #Add widget/layoyut to info grid
+        #Package Name
+        self.info_package_layout.addWidget(QtGui.QLabel('Nane'),0,0)
+        self.info_package_layout.addWidget(self.package_name_edit,0,1)
+        #Package Type
+        self.info_package_layout.addWidget(QtGui.QLabel('Type'),1,0)
+        self.info_package_layout.addWidget(self.package_kind_combo,1,1)
+        #Package Description
+        self.info_package_layout.addWidget(QtGui.QLabel('Description'),2,0)
+        self.info_package_layout.addWidget(self.package_description,2,1)
+        #Package Tags
+        self.info_package_layout.addWidget(QtGui.QLabel('Tags'),3,0)
+        self.info_package_layout.addWidget(self.package_tags_edit,3,1)
+
+
+
         self.management_main_layout.addLayout(self.info_package_layout)
+
+
+        self.management_main_layout.addWidget(self.create_new_package_button)
+
         self.management_main_layout.addWidget(self.create_new_task_button)
 
 
@@ -551,42 +560,27 @@ class ManagementWindow(QtGui.QDialog):
         template_all_task = read_dictionary_from_file(os.path.join(script_root_dir,'data\\template'))
         clearLayout(self.all_tasks_layout)
         self.tasks_list_template = template_all_task.get(kind,'unknown')
-        self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
         for task in self.tasks_list_template:
-            self.add_new_task_gui(task,self.user.all_user_dictionary)
+            self.add_new_task_gui(task)
 
-    def add_new_task_gui(self,task="", all_user_dic={}):
+    def add_new_task_gui(self,task=""):
         '''
         Create one task
         :param task: task name
         :param all_user_dic: combo box of users
         :return:
         '''
-        if all_user_dic is {}:
-            self.user.all_user_dictionary = read_dictionary_from_file(os.path.join(script_root_dir,'data/user_database.txt'))
         task_layout = QtGui.QHBoxLayout()
         self.task_name = QtGui.QLineEdit(task)
         self.label_task_name= QtGui.QLabel('Task name:')
-        self.label_asigned = QtGui.QLabel('Asigned To:')
-        self.label_schedule= QtGui.QLabel('Schedule:')
-        self.user_asigned_to_combo = QtGui.QComboBox(self)
-        self.user_asigned_to_combo.addItem('All')
-        self.schedule_date_time = QtGui.QDateEdit()
-        self.schedule_date_time.setDateTime(QtCore.QDateTime.currentDateTime())
+
         self.file_type_combo_box = QtGui.QComboBox(self)
         self.file_type_combo_box.addItems(["Maya.mb","Nuke.nk","3dsmax.max","ZBrush.zpr"])
 
 
-        for user in self.user.all_user_dictionary.keys():
-            self.user_asigned_to_combo.addItem(user)
-
 
         task_layout.addWidget(self.label_task_name)
         task_layout.addWidget(self.task_name)
-        #task_layout.addWidget(self.label_asigned)
-        #task_layout.addWidget(self.user_asigned_to_combo)
-        #task_layout.addWidget(self.label_schedule)
-        #task_layout.addWidget(self.schedule_date_time)
         task_layout.addWidget(self.file_type_combo_box)
         self.all_tasks_layout.addLayout(task_layout)
 
@@ -594,24 +588,26 @@ class ManagementWindow(QtGui.QDialog):
         self.package = Package(str(self.package_kind_combo.currentText())+"_"+str(self.package_name_edit.text()),
                           True ,
                           str(self.package_kind_combo.currentText()),
-                          'Un chouette test de package',
-                          str(self.user_asigned_to_combo.currentText()),
-                          str(self.sequence_combo.currentText())
+                          "description",
+                          (self.package_tags_edit.text()).split(',')
+
+
                          )
 
         item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
         for task_layout in item_task:
             self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
-            self.assigned = str(task_layout.layout().itemAt(3).widget().currentText())
-            self.schedule = task_layout.layout().itemAt(5).widget().dateTime().toString("yyyy.MM.dd")
-            self.file_type = str(task_layout.layout().itemAt(6).widget().currentText())
+
+
+            self.file_type = str(task_layout.layout().itemAt(2).widget().currentText())
+
             # TASK CREATION (folder, subfolder,metadata)
-            self.task = Task(self.package.package_name,self.task_name,True,'new',self.schedule,self.assigned,self.file_type)
+            self.task = Task(self.package.package_name,self.task_name,True,'new',file_type = self.file_type)
 
 
 
     def on_combo_box_Activated(self, text):
-        clearLayout(self.layout_cut_in_cut_out)
+
         self.uptdate_task_list(text)
         if text == "Shot":
             self.cut_in = QtGui.QSpinBox()
@@ -621,13 +617,28 @@ class ManagementWindow(QtGui.QDialog):
             self.cut_out.setSingleStep(1)
             self.cut_in.setMaximum(666666)
             self.cut_out.setMaximum(666666)
-            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutIn'))
-            self.layout_cut_in_cut_out.addWidget(self.cut_in)
-            self.layout_cut_in_cut_out.addWidget(QtGui.QLabel('cutOut'))
-            self.layout_cut_in_cut_out.addWidget(self.cut_out)
+
+            self.cut_layout = QtGui.QHBoxLayout()
+            self.cut_layout.addWidget(QtGui.QLabel('In'))
+            self.cut_layout.addWidget(self.cut_in)
+            self.cut_layout.addWidget(QtGui.QLabel('Out'))
+            self.cut_layout.addWidget(self.cut_out)
+            self.cut_layout.addStretch()
+            self.cut_label = QtGui.QLabel("Cut")
+            self.info_package_layout.addWidget(self.cut_label,5,0)
+            self.info_package_layout.addLayout(self.cut_layout,5,1)
 
         else:
-            clearLayout(self.layout_cut_in_cut_out)
+
+            self.info_package_layout.removeWidget(self.cut_label)
+            self.info_package_layout.removeWidget(self.cut_layout.widget())
+            self.cut_label.setParent(None)
+            self.cut_layout.widget().setParent(None)
+
+
+
+
+
 
 if __name__ == '__main__':
 
