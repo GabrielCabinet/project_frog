@@ -1,0 +1,286 @@
+__author__ = 'Vivarium'
+
+
+
+from maya import cmds
+from maya import mel
+from maya import OpenMayaUI as omui
+from PySide import QtCore
+from PySide import QtGui
+from shiboken import wrapInstance
+import os
+import traceback
+mayaMainWindowPtr = omui.MQtUtil.mainWindow()
+mayaMainWindow = wrapInstance(long(mayaMainWindowPtr), QtGui.QWidget)
+import shutil
+
+def clearLayout(layout):
+    while layout.count():
+        child = layout.takeAt(0)
+        if child.widget() is not None:
+            child.widget().deleteLater()
+        elif child.layout() is not None:
+            clearLayout(child.layout())
+
+    del layout
+
+
+def create_text_file(file, file_text):
+    '''
+    Write a text file to disk
+    :param file: absolute path of the file
+    :param file_text: String to write
+    :return:
+    '''
+    try:
+        with open(file, 'w') as proc_seqf:
+            proc_seqf.write(file_text)
+    except IOError as e:
+        print "{0}".format(e)
+    except:
+        print "Unexpected error while writing file_text to disk:"
+        print traceback.format_exc()
+        print file
+        raise
+
+
+class CreatePolygonUI(QtGui.QWidget):
+    def __init__(self, *args, **kwargs):
+        super(CreatePolygonUI, self).__init__(*args, **kwargs)
+        self.setParent(mayaMainWindow)
+        self.setWindowFlags(QtCore.Qt.Window)
+        self.setObjectName('CreatePolygonUI_uniqueId')
+        self.setWindowTitle('Create polygon')
+        self.setGeometry(50, 50, 250, 150)
+        self.initUI()
+        self.cmd = 'polyCone'
+
+    def initUI(self):
+        self.management_main_widget = QtGui.QWidget()
+        self.management_main_layout = QtGui.QVBoxLayout(self.management_main_widget)
+
+        self.all_info_package_layout = QtGui.QVBoxLayout()
+
+        self.info_package_layout = QtGui.QGridLayout()
+
+        self.cut_layout = QtGui.QHBoxLayout()
+
+        self.layout_cut_in_cut_out= QtGui.QHBoxLayout()
+        self.all_tasks_layout = QtGui.QVBoxLayout()
+        self.all_tasks_layout_groupbox = QtGui.QGroupBox("Tasks")
+        self.all_tasks_layout_groupbox.setLayout(self.all_tasks_layout)
+
+        #Create Widget
+
+        self.project_root = QtGui.QComboBox(self)
+        self.project_root.addItem("D:/project_viva")
+
+        self.package_name_edit = QtGui.QLineEdit('Asset name')   #Layout name edit
+        self.package_kind_combo = QtGui.QComboBox(self)   #Layout combopackge
+        self.package_kind_combo.addItem("PR")
+        self.package_kind_combo.addItem("BG")
+        self.package_kind_combo.addItem("CH")
+        self.package_kind_combo.addItem("Shot")
+
+
+        self.package_description = QtGui.QTextEdit('')
+
+        self.create_new_task_button = QtGui.QPushButton('Add task ')
+
+        #Create Widget User
+        self.create_new_package_button = QtGui.QPushButton('Create Asset !')
+
+        #Add widget/layoyut to info grid
+        #Package Name
+        self.info_package_layout.addWidget(QtGui.QLabel('Project Path'),4,0)
+        self.info_package_layout.addWidget(self.project_root,4,1)
+        self.info_package_layout.addWidget(QtGui.QLabel('Nane'),0,0)
+        self.info_package_layout.addWidget(self.package_name_edit,0,1)
+        #Package Type
+        self.info_package_layout.addWidget(QtGui.QLabel('Type'),1,0)
+        self.info_package_layout.addWidget(self.package_kind_combo,1,1)
+        #Package Description
+        self.info_package_layout.addWidget(QtGui.QLabel('Description'),2,0)
+        self.info_package_layout.addWidget(self.package_description,2,1)
+
+        self.all_info_package_layout.addLayout(self.info_package_layout)
+        self.all_info_package_layout.addLayout(self.cut_layout)
+
+        self.management_main_layout.addLayout(self.all_info_package_layout)
+
+
+
+        self.management_main_layout.addWidget(self.create_new_task_button)
+
+
+        self.management_main_layout.addWidget( self.all_tasks_layout_groupbox)
+        self.management_main_layout.addWidget(self.create_new_package_button)
+        self.uptdate_task_list ('BG')
+
+        #Connect
+        self.package_kind_combo.activated[str].connect(self.on_combo_box_Activated)   #Connect combobox
+        self.create_new_package_button.clicked.connect(self.on_create_new_package_cliked)
+        self.create_new_task_button.clicked.connect(self.add_new_task_gui)
+
+        self.scroll = QtGui.QScrollArea()
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        #self.scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll.setWidget(self.management_main_widget)
+
+        self.holder_scroll_layout = QtGui.QHBoxLayout()
+        self.holder_scroll_layout.addWidget(self.scroll)
+        self.setLayout(self.holder_scroll_layout)
+
+
+    def uptdate_task_list(self, kind):
+        '''
+        Create all the task of a template. (modelling,shading...)
+        :param kind:
+        :return:
+        '''
+
+        template_all_task = {'CH':["Reference", "Modeling", "Shading", "Rigging", "Textures"],
+'PR': ["Reference", "Modeling", "Shading", "Rigging", "Textures"],
+'BG':["Reference", "Modeling", "Shading", "Textures"],
+'Shot': ["Animation", "Assembly", "Compositing", "FX","Layout","Layout_Anim","Lighting","Previz","Render_out"] }
+
+        clearLayout(self.all_tasks_layout)
+
+        self.tasks_list_template = template_all_task.get(kind,'unknown')
+        for task in self.tasks_list_template:
+            self.add_new_task_gui(task)
+
+    def add_new_task_gui(self,task=""):
+        '''
+        Create one task
+        :param task: task name
+        :param all_user_dic: combo box of users
+        :return:
+        '''
+        task_layout = QtGui.QHBoxLayout()
+
+
+        self.task_name = QtGui.QLineEdit(task)
+        self.label_task_name= QtGui.QLabel('Task name:')
+        self.task_delete = QtGui.QPushButton("X")
+
+        self.task_delete.clicked.connect(lambda : task_layout.setParent(None))
+
+        self.file_type_combo_box = QtGui.QComboBox(self)
+        self.file_type_combo_box.addItems(["Maya.mb","Nuke.nk","3dsmax.max","ZBrush.zpr","none"])
+
+
+        task_layout.addWidget(self.label_task_name)
+        task_layout.addWidget(self.task_name)
+        task_layout.addWidget(self.file_type_combo_box)
+        task_layout.addWidget(self.task_delete)
+
+
+        self.all_tasks_layout.addLayout(task_layout)
+
+
+
+    def create_defaut_file_type(self):
+        print self.file_type
+        fname = os.path.join('Y:/Ressources/file_template', self.file_type)
+        if self.file_type is not "none":
+            if os.path.isfile(fname):
+                try:
+                    extension = os.path.splitext(fname)[1]
+                    fname_copied = "%s_%s_001%s"%(self.package_name,self.task_name,extension)
+                    fname_copy_file_path = os.path.join(self.task_path,"Wip",fname_copied)
+                    shutil.copy(fname,fname_copy_file_path)
+                except IOError as e:
+                    print "{0}".format(e)
+                except:
+                    print "Can't copy the template file (max,maya,nuke...):",traceback.format_exc() , fname
+
+
+
+
+
+    def on_create_new_package_cliked(self):
+
+
+        self.package_name = self.package_kind_combo.currentText()+'_'+self.package_name_edit.text()
+        self.package_path = os.path.join(self.project_root.currentText(),self.package_name)
+        if not os.path.exists(self.package_path):
+            os.makedirs(self.package_path)
+            comment = self.package_description.toPlainText()
+
+            create_text_file (os.path.join(self.package_path,"_description.txt"),comment)
+
+            if self.package_kind_combo.currentText() == "Shot":
+                cut_list = str(self.cut_in.value())+"," +str(self.cut_out.value())
+                create_text_file ((os.path.join(self.package_path,"_cutInOut.txt")),cut_list)
+
+
+            item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
+            for task_layout in item_task:
+                self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
+                self.file_type = str(task_layout.layout().itemAt(2).widget().currentText())
+                self.task_path = os.path.join(self.package_path,self.task_name)
+
+                # TASK CREATION (folder, subfolder,metadata)
+
+                if not os.path.exists(self.task_path):
+                    os.makedirs(self.task_path)
+
+
+                    self.sub_folders =   ["Wip","Output","Preview"]
+                    for folder in self.sub_folders:
+                        folder_path = os.path.join(self.task_path,folder)
+                        if not os.path.exists(folder_path):
+                            os.makedirs(folder_path)
+
+                    self.create_defaut_file_type()
+
+
+
+
+            msgBox = QtGui.QMessageBox()
+            text_message = "New asset created ! \n " + str(os.path.join(self.project_root.currentText(),self.package_name))
+            msgBox.setText(text_message)
+            msgBox.setStandardButtons(QtGui.QMessageBox.Ok)
+            msgBox.exec_()
+
+        else:
+           msgBox = QtGui.QMessageBox()
+           text_message = "Directory already exist ! \n " + str(os.path.join(self.project_root.currentText(),self.package_name))
+           msgBox.setText(text_message)
+           msgBox.setStandardButtons(QtGui.QMessageBox.Cancel)
+           msgBox.exec_()
+
+
+    def on_combo_box_Activated(self, text):
+
+        self.uptdate_task_list(text)
+        if text == "Shot":
+            self.cut_in = QtGui.QSpinBox()
+            self.cut_in.setSingleStep(1)
+
+            self.cut_out = QtGui.QSpinBox()
+            self.cut_out.setSingleStep(1)
+            self.cut_in.setMaximum(666666)
+            self.cut_out.setMaximum(666666)
+
+            self.cut_layout.addWidget(QtGui.QLabel('Cut In'))
+            self.cut_layout.addWidget(self.cut_in)
+            self.cut_layout.addWidget(QtGui.QLabel('Cut Out'))
+            self.cut_layout.addWidget(self.cut_out)
+            self.cut_layout.addStretch()
+
+        else:
+            clearLayout(self.cut_layout)
+
+
+
+def main():
+    ui = CreatePolygonUI()
+    ui.show()
+
+    return ui
+
+if __name__ == '__main__':
+    main()
