@@ -151,7 +151,7 @@ class CreatePolygonUI(QtGui.QWidget):
         for task in self.tasks_list_template:
             self.add_new_task_gui(task)
 
-    def add_new_task_gui(self,task=""):
+    def add_new_task_gui(self,task="no name"):
         '''
         Create one task
         :param task: task name
@@ -162,10 +162,10 @@ class CreatePolygonUI(QtGui.QWidget):
 
 
         self.task_name = QtGui.QLineEdit(task)
-        self.label_task_name= QtGui.QLabel('Task name:')
+        self.label_task_name= QtGui.QLabel('Task:')
         self.task_delete = QtGui.QPushButton("X")
 
-        self.task_delete.clicked.connect(lambda : task_layout.setParent(None))
+        self.task_delete.clicked.connect(lambda : clearLayout(task_layout))
 
         self.file_type_combo_box = QtGui.QComboBox(self)
         self.file_type_combo_box.addItems(["Maya.mb","Nuke.nk","3dsmax.max","ZBrush.zpr","none"])
@@ -218,23 +218,31 @@ class CreatePolygonUI(QtGui.QWidget):
 
             item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
             for task_layout in item_task:
-                self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
-                self.file_type = str(task_layout.layout().itemAt(2).widget().currentText())
-                self.task_path = os.path.join(self.package_path,self.task_name)
+                try:
+                    self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
+                    self.file_type = str(task_layout.layout().itemAt(2).widget().currentText())
+                    self.task_path = os.path.join(self.package_path,self.task_name)
 
-                # TASK CREATION (folder, subfolder,metadata)
+                    # TASK CREATION (folder, subfolder,metadata)
 
-                if not os.path.exists(self.task_path):
-                    os.makedirs(self.task_path)
+                    if not os.path.exists(self.task_path):
+                        os.makedirs(self.task_path)
 
 
-                    self.sub_folders =   ["Wip","Output","Preview"]
-                    for folder in self.sub_folders:
-                        folder_path = os.path.join(self.task_path,folder)
-                        if not os.path.exists(folder_path):
-                            os.makedirs(folder_path)
+                        self.sub_folders =   ["Wip","Output","Preview"]
+                        for folder in self.sub_folders:
+                            folder_path = os.path.join(self.task_path,folder)
+                            if not os.path.exists(folder_path):
+                                os.makedirs(folder_path)
 
-                    self.create_defaut_file_type()
+                        self.create_defaut_file_type()
+                except:
+                    msgBox = QtGui.QMessageBox()
+                    text_message = "Can't create one task directory \n "
+                    msgBox.setText(text_message)
+                    msgBox.setStandardButtons(QtGui.QMessageBox.Cancel)
+                    msgBox.exec_()
+
 
 
 
@@ -278,6 +286,7 @@ class CreatePolygonUI(QtGui.QWidget):
 
 def main():
     ui = CreatePolygonUI()
+    ui.resize(400,650)
     ui.show()
 
     return ui
