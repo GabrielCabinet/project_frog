@@ -44,13 +44,13 @@ def create_text_file(file, file_text):
         raise
 
 
-class CreatePolygonUI(QtGui.QWidget):
+class AssetCreator(QtGui.QWidget):
     def __init__(self, *args, **kwargs):
-        super(CreatePolygonUI, self).__init__(*args, **kwargs)
+        super(AssetCreator, self).__init__(*args, **kwargs)
         self.setParent(mayaMainWindow)
         self.setWindowFlags(QtCore.Qt.Window)
         self.setObjectName('CreatePolygonUI_uniqueId')
-        self.setWindowTitle('Create polygon')
+        self.setWindowTitle('Asset Crafter 2000')
         self.setGeometry(50, 50, 250, 150)
         self.initUI()
         self.cmd = 'polyCone'
@@ -90,6 +90,19 @@ class CreatePolygonUI(QtGui.QWidget):
         #Create Widget User
         self.create_new_package_button = QtGui.QPushButton('Create Asset !')
 
+
+        self.uptdate_package_task_layout = QtGui.QHBoxLayout()
+        self.list_package_combo = QtGui.QComboBox()
+        list_package = os.listdir("D:/project_viva")
+        self.update_button  =QtGui.QPushButton('Add new task to ')
+        self.update_button.clicked.connect(self.update_old_package)
+
+        for package in list_package:
+            self.list_package_combo.addItem(str(package))
+        self.uptdate_package_task_layout.addWidget(self.update_button)
+        self.uptdate_package_task_layout.addWidget(self.list_package_combo)
+
+
         #Add widget/layoyut to info grid
         #Package Name
         self.info_package_layout.addWidget(QtGui.QLabel('Project Path'),4,0)
@@ -115,6 +128,7 @@ class CreatePolygonUI(QtGui.QWidget):
 
         self.management_main_layout.addWidget( self.all_tasks_layout_groupbox)
         self.management_main_layout.addWidget(self.create_new_package_button)
+        self.management_main_layout.addLayout(self.uptdate_package_task_layout)
         self.uptdate_task_list ('BG')
 
         #Connect
@@ -131,6 +145,9 @@ class CreatePolygonUI(QtGui.QWidget):
         self.holder_scroll_layout = QtGui.QHBoxLayout()
         self.holder_scroll_layout.addWidget(self.scroll)
         self.setLayout(self.holder_scroll_layout)
+
+
+
 
 
     def uptdate_task_list(self, kind):
@@ -181,14 +198,15 @@ class CreatePolygonUI(QtGui.QWidget):
 
 
 
-    def create_defaut_file_type(self):
-        print self.file_type
+    def create_defaut_file_type(self, package_name):
+
         fname = os.path.join('Y:/Ressources/file_template', self.file_type)
         if self.file_type is not "none":
             if os.path.isfile(fname):
                 try:
                     extension = os.path.splitext(fname)[1]
-                    fname_copied = "%s_%s_001%s"%(self.package_name,self.task_name,extension)
+                    print "defautfilepackagename"+package_name
+                    fname_copied = "%s_%s_001%s"%(str(package_name),self.task_name,extension)
                     fname_copy_file_path = os.path.join(self.task_path,"Wip",fname_copied)
                     shutil.copy(fname,fname_copy_file_path)
                 except IOError as e:
@@ -235,13 +253,9 @@ class CreatePolygonUI(QtGui.QWidget):
                             if not os.path.exists(folder_path):
                                 os.makedirs(folder_path)
 
-                        self.create_defaut_file_type()
+                        self.create_defaut_file_type(self.package_name)
                 except:
-                    msgBox = QtGui.QMessageBox()
-                    text_message = "Can't create one task directory \n "
-                    msgBox.setText(text_message)
-                    msgBox.setStandardButtons(QtGui.QMessageBox.Cancel)
-                    msgBox.exec_()
+                    print 'One task deleted - GohstLayout'
 
 
 
@@ -259,6 +273,50 @@ class CreatePolygonUI(QtGui.QWidget):
            msgBox.setText(text_message)
            msgBox.setStandardButtons(QtGui.QMessageBox.Cancel)
            msgBox.exec_()
+
+    def update_old_package(self):
+        msgBox = QtGui.QMessageBox()
+        text = "Do you want to update the asset %s with new tasks ?"%(self.list_package_combo.currentText())
+        msgBox.setText(text)
+        msgBox.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+        msgBox.setDefaultButton(QtGui.QMessageBox.Ok)
+        ret = msgBox.exec_()
+        if ret == QtGui.QMessageBox.Ok:
+
+            item_task = (self.all_tasks_layout.layout().itemAt(i) for i in range(self.all_tasks_layout.layout().count()))
+            for task_layout in item_task:
+                try:
+                    self.task_name = task_layout.layout().itemAt(1).widget().text()  # Get the task name QtGui.all_task_layout.QtGui.taskLayout.QtGui.QLineEdit
+                    print self.task_name
+                    self.file_type = str(task_layout.layout().itemAt(2).widget().currentText())
+                    self.package_path = os.path.join(self.project_root.currentText(),self.list_package_combo.currentText())
+                    self.task_path = os.path.join(self.package_path,self.task_name)
+
+
+                    # TASK CREATION (folder, subfolder,metadata)
+
+                    if not os.path.exists(self.task_path):
+
+                        os.makedirs(self.task_path)
+
+                        self.sub_folders =   ["Wip","Output","Preview"]
+                        for folder in self.sub_folders:
+                            folder_path = os.path.join(self.task_path,folder)
+                            if not os.path.exists(folder_path):
+                                os.makedirs(folder_path)
+
+                        self.create_defaut_file_type(self.list_package_combo.currentText())
+                    else:
+                        msgBox = QtGui.QMessageBox()
+                        text_message = "Task already exist \n " + str(self.task_name)
+                        msgBox.setText(text_message)
+                        msgBox.setStandardButtons(QtGui.QMessageBox.Cancel)
+                        msgBox.exec_()
+
+                except:
+
+                    print "Task deleted - Ghost layout "
+
 
 
     def on_combo_box_Activated(self, text):
@@ -285,7 +343,7 @@ class CreatePolygonUI(QtGui.QWidget):
 
 
 def main():
-    ui = CreatePolygonUI()
+    ui = AssetCreator()
     ui.resize(400,650)
     ui.show()
 
