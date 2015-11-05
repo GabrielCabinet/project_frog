@@ -1,11 +1,11 @@
 __author__ = 'Vivarium'
+import os
 import maya.cmds as cmds
 import mtoa.utils as mutils
 from maya import OpenMayaUI as omui
 from PySide.QtCore import *
 from PySide.QtGui import *
 from shiboken import wrapInstance
-
 
 if cmds.objExists("Studio"):
     print 'Studio already created'
@@ -39,9 +39,9 @@ class CreatePolygonUI(QWidget):
         self.combo.activated[str].connect(self.combo_onActivated)
 
         self.button = QPushButton('Create dome', self)
-        self.buttoncyclo = QPushButton ('Create cylo', self)
-        self.button_sun = QPushButton ("Create sun", self)
-        self.button_camera = QPushButton("Create  Camera", self)
+        self.buttoncyclo = QPushButton ('Create Cyclo', self)
+        self.button_sun = QPushButton ("Create Sun", self)
+        self.button_camera = QPushButton("Create  DofCamera", self)
 
         
 
@@ -51,9 +51,10 @@ class CreatePolygonUI(QWidget):
         self.button_camera.clicked.connect(self.button_cam_onClicked)
         self.mainlayout.addWidget(self.combo)
         self.mainlayout.addWidget(self.button)
-        self.mainlayout.addWidget(self.buttoncyclo)
+
         self.mainlayout.addWidget(self.button_sun)
         self.mainlayout.addWidget(self.button_camera)
+        self.mainlayout.addWidget(self.buttoncyclo)
 
         self.setLayout(self.mainlayout)
 

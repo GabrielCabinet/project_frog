@@ -1,3 +1,6 @@
+__author__ = 'Vivarium'
+from __future__ import unicode_literals
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -13,7 +16,6 @@
 #**********************************************************************************************************************
 #***	Future imports.
 #**********************************************************************************************************************
-from __future__ import unicode_literals
 
 #**********************************************************************************************************************
 #***	External imports.
@@ -241,9 +243,98 @@ def renameTextures(textures, input="zbrush", output="mari", prefix=None, preview
 
 	return True
 
-DIRECTORY = "D:/Users/kelsolaar/textures"
-PATTERN = "\.exr$"
+#**********************************************************************************************************************
+#*** Launcher.
+#**********************************************************************************************************************
+if __name__ == "__main__":
+	if "*" in sys.argv[-1]:
+		sys.argv[-1:] = glob.glob(sys.argv[-1])
 
-TEXTURES = filter(lambda x: re.search(PATTERN, x), [os.path.join(DIRECTORY, texture) for texture in os.listdir(DIRECTORY)])
+	parameters, arguments = getCommandLineParametersParser().parse_args(sys.argv)
+	renameTextures([os.path.join(os.getcwd(), texture) for texture in arguments[1:]],
+					parameters.input.lower(),
+					parameters.output.lower(),
+					parameters.name,
+					parameters.preview)
 
-renameTextures.renameTextures(TEXTURES, input="mari", output="zbrush", preview=True)
+
+import maya.cmds as cmds
+
+from maya import OpenMayaUI as omui
+from PySide.QtCore import *
+from PySide.QtGui import *
+from shiboken import wrapInstance
+
+mayaMainWindowPtr = omui.MQtUtil.mainWindow()
+mayaMainWindow = wrapInstance(long(mayaMainWindowPtr), QWidget)
+
+class RenameTextureUi(QWidget):
+    def __init__(self, *args, **kwargs):
+        super(RenameTextureUi, self).__init__(*args, **kwargs)
+        self.setParent(mayaMainWindow)
+        self.setWindowFlags(Qt.Window)
+        self.setObjectName('Rename Texture')
+        self.setWindowTitle('Rename Textures')
+        self.setGeometry(50, 50, 250, 150)
+        self.initUI()
+
+
+    def initUI(self):
+        self.mainlayout = QVBoxLayout()
+
+        self.button = QPushButton('Rename to UDIM', self)
+
+        self.path_edit=  QLineEdit("D://path_to_textures")
+        self.browse_button = QPushButton("Browse")
+
+        self.browse_layout = QHBoxLayout()
+        self.browse_layout.addWidget(self.path_edit)
+        self.browse_layout.addWidget(self.browse_button)
+        self.pattern_label = QLabel('Image type')
+        self.combo_type = QComboBox()
+        self.combo_type.addItems(['exr', 'jpg','tiff','tga','png'])
+        self.pattern_layout = QHBoxLayout()
+        self.pattern_layout.addWidget(self.pattern_label)
+        self.pattern_layout.addWidget(self.combo_type)
+
+        self.button.clicked.connect(self.button_onClicked)
+        self.browse_button.clicked.connect(self.browse_button_onClicked)
+        self.mainlayout.addLayout(self.browse_layout)
+        self.mainlayout.addLayout(self.pattern_layout)
+        self.mainlayout.addWidget(self.button)
+
+
+        self.setLayout(self.mainlayout)
+
+    def browse_button_onClicked(self):
+
+        self.path_edit.setText(QFileDialog.getExistingDirectory())
+
+    def button_onClicked(self):
+        path = self.path_edit.text()
+        if os.path.isdir(path):
+            msgBox = QMessageBox()
+            DIRECTORY = self.path_edit.text()
+            PATTERN = "\.%s$"%(self.combo_type.currentText())
+
+            TEXTURES = filter(lambda x: re.search(PATTERN, x), [os.path.join(DIRECTORY, texture) for texture in os.listdir(DIRECTORY)])
+            text = 'Do you want to rename following textures ?\n'
+            for tex in TEXTURES:
+                text += '\n%s'%(str(tex))
+
+            msgBox.setText(text)
+            msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            msgBox.setDefaultButton(QMessageBox.Ok)
+            ret = msgBox.exec_()
+
+            if ret == QMessageBox.Ok:
+                renameTextures(TEXTURES, input="mari", output="zbrush", preview=False)
+
+
+def main():
+    ui = RenameTextureUi()
+    ui.show()
+    return ui
+
+if __name__ == '__main__':
+    main()
